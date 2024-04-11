@@ -1,3 +1,4 @@
+import csv
 from pathlib import Path
 from typing import Dict, Any, List, Optional
 
@@ -26,9 +27,25 @@ def count_words(text: str) -> Dict[str, int]:
              значение - количество вхождений слов в текст
     """
 
-    # пиши свой код здесь
-
-    return {}
+    dict_true_words = {}
+    nums = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    words = text.split()
+    for word in words:
+        has_num = False
+        for num in nums:
+            if num in word:
+                has_num = True
+                break
+        if not has_num and len(word) > 1:
+            word = word.lower()
+            while not word.isalpha():
+                word = word[:-1]
+            word = word[:-1] if not word.isalpha() else word
+            if word in dict_true_words:
+                dict_true_words[word] += 1
+            else:
+                dict_true_words[word] = 1
+    return dict_true_words
 
 
 def exp_list(numbers: List[int], exp: int) -> List[int]:
@@ -40,9 +57,7 @@ def exp_list(numbers: List[int], exp: int) -> List[int]:
     :return: список натуральных чисел
     """
 
-    # пиши свой код здесь
-
-    return []
+    return list(map(lambda x: x ** exp, numbers))
 
 
 def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) -> float:
@@ -57,7 +72,12 @@ def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) 
     :param special_category: список категорий повышенного кешбека
     :return: размер кешбека
     """
-
+    result = 0
+    for operation in operations:
+        if operation['category'] in special_category:
+            result += operation['amount'] * 0.05
+        else:
+            result += operation['amount'] * 0.01
     return result
 
 
@@ -99,6 +119,11 @@ def csv_reader(header: str) -> int:
     :return: количество уникальных элементов в столбце
     """
 
-    # пиши свой код здесь
-
-    return 0
+    with open(get_path_to_file(), 'r') as csvfile:
+        unique_words = set()
+        csvreader = csv.reader(csvfile)
+        headers = list(next(csvreader))
+        i = headers.index(header)
+        for row in csvreader:
+            unique_words.add(row[i])
+    return len(unique_words)
