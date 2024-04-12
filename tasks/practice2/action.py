@@ -18,13 +18,11 @@ USER_DATABASE = {}
 
 
 def register_user(user_id: int, force: bool = False):
-    if user_id in USER_DATABASE and not force:
-        return
-
-    USER_DATABASE[user_id] = {
-        'amount': get_amount(),
-        'state': 'welcome',
-    }
+    if user_id not in USER_DATABASE or force:
+        USER_DATABASE[user_id] = {
+            'amount': get_amount(),
+            'state': 'welcome',
+        }
 
 
 def welcome_state(update: Update, context: CallbackContext):
@@ -81,10 +79,7 @@ def choose_recipient_state(update: Update, context: CallbackContext):
         USER_DATABASE[update.message.from_user.id]['to_phone'] = update.message.text
         return enter_message_state(update, context)
 
-    if update.message.text == SEND_MONEY_BUTTON:
-        text = 'Введите номер получателя:'
-    else:
-        text = 'Ошибка! Введите корректный номер получателя:'
+    text = 'Введите номер получателя:' if update.message.text == SEND_MONEY_BUTTON else 'Ошибка! Введите корректный номер получателя:'
 
     context.bot.send_message(
         update.message.from_user.id,
@@ -93,7 +88,8 @@ def choose_recipient_state(update: Update, context: CallbackContext):
 
 
 def enter_message_state(update: Update, context: CallbackContext):
-    if USER_DATABASE[update.message.from_user.id]['state'] == 'choose_recipient':
+    user_state = USER_DATABASE[update.message.from_user.id]['state']
+    if user_state == 'choose_recipient':
         USER_DATABASE[update.message.from_user.id]['state'] = 'enter_message'
         text = 'Введите сообщение получателю:'
         context.bot.send_message(
@@ -107,15 +103,15 @@ def enter_message_state(update: Update, context: CallbackContext):
 
 
 def enter_amount_state(update: Update, context: CallbackContext):
-    if USER_DATABASE[update.message.from_user.id]['state'] == 'enter_message':
+    user_state = USER_DATABASE[update.message.from_user.id]['state']
+    if user_state == 'enter_message':
         USER_DATABASE[update.message.from_user.id]['state'] = 'enter_amount'
         text = 'Введите сумму фантиков, которую хотите перевести:'
         context.bot.send_message(
             update.message.from_user.id,
             text,
         )
-        return None
-
+        
     if is_amount_correct(USER_DATABASE[update.message.from_user.id]['amount'], update.message.text):
         USER_DATABASE[update.message.from_user.id]['to_amount'] = float(update.message.text)
         return send_money_state(update, context)
@@ -124,8 +120,8 @@ def enter_amount_state(update: Update, context: CallbackContext):
 
 
 def send_money_state(update: Update, context: CallbackContext):
-    USER_DATABASE[update.message.from_user.id]['state'] = 'welcome'
     user = USER_DATABASE[update.message.from_user.id]
+    user['state'] = 'welcome'
     text = f'Перевод для {user["to_phone"]} в размере {user["to_amount"]} успешно отправлен!\n\n' \
            f'Сообщение к переводу:\n{user["to_message"]}'
     context.bot.send_message(
@@ -135,7 +131,8 @@ def send_money_state(update: Update, context: CallbackContext):
 
 
 def get_loan_state(update: Update, context: CallbackContext):
-    if USER_DATABASE[update.message.from_user.id]['state'] == 'enter_amount':
+    user_state = USER_DATABASE[update.message.from_user.id]['state']
+    if user_state == 'enter_amount':
         USER_DATABASE[update.message.from_user.id]['state'] = 'get_loan'
         text = 'У вас недостаточно денег!\n\nОтправьте заявку на кредит!\n' \
                'Для этого отправьте строку по примеру ниже:\n' \
