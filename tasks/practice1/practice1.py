@@ -9,7 +9,10 @@ def concatenate_strings(a: str, b: str) -> str:
     """
 
     # пиши свой код здесь
-
+    if a.isnumeric() and b.isnumeric():
+        result = str(int(a) + int(b))
+    else:
+        result = a + b
     return result
 
 
@@ -23,5 +26,5 @@ def calculate_salary(total_compensation: int) -> float:
     """
 
     # пиши свой код здесь
-
+    result = total_compensation * 0.87
     return result
