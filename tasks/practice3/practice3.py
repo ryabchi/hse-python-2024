@@ -1,4 +1,6 @@
 from pathlib import Path
+import csv
+import re
 from typing import Dict, Any, List, Optional
 
 
@@ -25,10 +27,18 @@ def count_words(text: str) -> Dict[str, int]:
              ключ - слово в нижнем регистре
              значение - количество вхождений слов в текст
     """
-
+    result = {}
+    text = re.sub(r"[.,!]", "", text)
+    for elem in text.split(' '):
+        if not(any(character.isdigit() for character in elem)) and len(elem) > 1:
+            elemCopy = elem.lower() 
+            if elemCopy in result:
+                result[elemCopy] += 1
+            else:
+                result[elemCopy] = 1
     # пиши свой код здесь
 
-    return {}
+    return result
 
 
 def exp_list(numbers: List[int], exp: int) -> List[int]:
@@ -41,8 +51,8 @@ def exp_list(numbers: List[int], exp: int) -> List[int]:
     """
 
     # пиши свой код здесь
-
-    return []
+    result = [elem**exp for elem in numbers]
+    return result
 
 
 def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) -> float:
@@ -57,7 +67,12 @@ def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) 
     :param special_category: список категорий повышенного кешбека
     :return: размер кешбека
     """
-
+    result = 0
+    for operation in operations:
+        if operation['category'] in special_category:
+            result += operation['amount'] * 0.05
+        else:
+            result += operation['amount'] * 0.01
     return result
 
 
@@ -100,5 +115,12 @@ def csv_reader(header: str) -> int:
     """
 
     # пиши свой код здесь
-
-    return 0
+    path = get_path_to_file()
+    elems = set()
+    with open(path, 'r', newline='') as csvfile:
+        spamreader = csv.reader(csvfile, delimiter=',')
+        listElems = list(spamreader)
+        index = listElems[0].index(header)
+        for i in range(1, len(listElems)):
+            elems.add(listElems[i][index])
+    return len(elems)
