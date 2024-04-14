@@ -1,5 +1,7 @@
 from pathlib import Path
 from typing import Dict, Any, List, Optional
+import re
+import csv
 
 
 def count_words(text: str) -> Dict[str, int]:
@@ -26,9 +28,25 @@ def count_words(text: str) -> Dict[str, int]:
              значение - количество вхождений слов в текст
     """
 
-    # пиши свой код здесь
+    text = re.sub(r'[,.!-]+', '', text)
+    text = text.split(' ')
 
-    return {}
+    d = dict()
+
+    for word in text:
+        if len(word) <= 1:
+            continue
+
+        for i in range(10):
+            if str(i) in word:
+                break
+        else:
+            if(d.get(word.lower()) == None):
+                d[word.lower()] = 1
+            else:
+                d.update( { word.lower(): d[word.lower()] + 1 } )
+
+    return d
 
 
 def exp_list(numbers: List[int], exp: int) -> List[int]:
@@ -40,9 +58,7 @@ def exp_list(numbers: List[int], exp: int) -> List[int]:
     :return: список натуральных чисел
     """
 
-    # пиши свой код здесь
-
-    return []
+    return [num ** exp for num in numbers]
 
 
 def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) -> float:
@@ -57,6 +73,14 @@ def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) 
     :param special_category: список категорий повышенного кешбека
     :return: размер кешбека
     """
+
+    result = 0
+
+    for elem in operations:
+        if(elem['category'] in special_category):
+            result += elem['amount'] * 0.05
+        else:
+            result += elem['amount'] * 0.01
 
     return result
 
@@ -98,7 +122,12 @@ def csv_reader(header: str) -> int:
     :param header: название заголовка
     :return: количество уникальных элементов в столбце
     """
+    PATH = get_path_to_file()
 
-    # пиши свой код здесь
+    with open(PATH) as csvfile:
+        reader = csv.reader(csvfile)
+        headers = next(reader)
+        column_idx = headers.index(header)
+        elems = {row[column_idx] for row in reader}
 
-    return 0
+    return len(elems)
