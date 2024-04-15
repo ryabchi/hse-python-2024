@@ -13,6 +13,8 @@ def greet_user(name: str) -> str:
     """
 
     # пиши код здесь
+    greeting = f"Привет, {name}!"
+
     return greeting
 
 
