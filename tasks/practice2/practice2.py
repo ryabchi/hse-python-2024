@@ -1,4 +1,5 @@
 from typing import Iterable
+import random
 
 UNCULTURED_WORDS = ('kotleta', 'pirog')
 
@@ -31,6 +32,8 @@ def get_amount() -> float:
     """
 
     # пиши код здесь
+    amount = round(random.uniform(100, 1000000), 2)
+
     return amount
 
 
@@ -45,6 +48,21 @@ def is_phone_correct(phone_number: str) -> bool:
     """
 
     # пиши код здесь
+    is_phone_wrong = 0
+
+    for number in range(len(phone_number)):
+        if number == 0 and phone_number[number] != "+":
+            is_phone_wrong = 1
+        if number == 1 and phone_number[number] != "7":
+            is_phone_wrong = 1
+        if number > 1 and phone_number[number] not in "0123456789":
+            is_phone_wrong = 1
+
+    if is_phone_wrong == 0:
+        result = True
+    else:
+        result = False
+
     return result
 
 
