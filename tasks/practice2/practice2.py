@@ -1,5 +1,5 @@
 from typing import Iterable
-
+import random
 UNCULTURED_WORDS = ('kotleta', 'pirog')
 
 
