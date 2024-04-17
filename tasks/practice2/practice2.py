@@ -13,6 +13,7 @@ def greet_user(name: str) -> str:
     """
 
     # пиши код здесь
+    greeting = "Привет, {name}!".format(name=name)
     return greeting
 
 
@@ -29,6 +30,7 @@ def get_amount() -> float:
     """
 
     # пиши код здесь
+    amount = float('{:.2f}'.format(random.uniform(100, 1000000)))
     return amount
 
 
@@ -43,6 +45,9 @@ def is_phone_correct(phone_number: str) -> bool:
     """
 
     # пиши код здесь
+    result = False
+    if phone_number[0]=="+" and phone_number[1]=="7" and len(phone_number)==12 and phone_number[2:].isdigit():
+        result = True
     return result
 
 
@@ -59,6 +64,10 @@ def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
     """
 
     # пиши код здесь
+    if current_amount >= float(transfer_amount):
+        result = True
+    else:
+        result = False
     return result
 
 
@@ -78,6 +87,16 @@ def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
     """
 
     # пиши код здесь
+    items = ["'",'"']
+    for char in items:
+        text = text.replace(char, "")
+    for word in uncultured_words:
+        replacement = "#" * len(word)
+        text = text.replace(word, replacement)
+    text = ' '.join(text.split())
+    text = text.lower()
+    text = text[0].upper() + text[1:]
+    result = text
     return result
 
 
@@ -101,4 +120,6 @@ def create_request_for_loan(user_info: str) -> str:
     """
 
     # пиши код здесь
+    words = user_info.split(",")
+    result = "Фамилия: {surname}\nИмя: {name}\nОтчество: {middlename}\nДата рождения: {date}\nЗапрошенная сумма: {sum}".format(surname=words[0], name=words[1], middlename=words[2], date=words[3], sum=words[4])
     return result
