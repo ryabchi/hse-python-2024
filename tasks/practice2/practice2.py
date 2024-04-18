@@ -1,4 +1,5 @@
 from typing import Iterable
+import random
 
 UNCULTURED_WORDS = ('kotleta', 'pirog')
 
@@ -12,7 +13,7 @@ def greet_user(name: str) -> str:
     :return: приветствие
     """
 
-    # пиши код здесь
+    greeting = "Greetings, " + name
     return greeting
 
 
@@ -28,10 +29,11 @@ def get_amount() -> float:
     :return: случайную сумму на счете
     """
 
-    # пиши код здесь
+    amount = round(random.uniform(100, 1000000), 2)
+
     return amount
 
-
+ALLOWED_SYMBOLS = "1234567890"
 def is_phone_correct(phone_number: str) -> bool:
     """
     Функция проверяет, что номер телефона соответствует следующему формату:
@@ -41,9 +43,15 @@ def is_phone_correct(phone_number: str) -> bool:
     :return: буленовское значение - bool: True - если номер корректны,
                                           False - если номер некорректный
     """
+    result = True
+    if phone_number[:2] != "+7":
+        return False
 
-    # пиши код здесь
-    return result
+    for i in phone_number[2:]:
+        if i not in ALLOWED_SYMBOLS:
+            return False
+
+    return True
 
 
 def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
@@ -59,7 +67,7 @@ def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
     """
 
     # пиши код здесь
-    return result
+    return current_amount >= float(transfer_amount)
 
 
 def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
@@ -77,7 +85,19 @@ def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
     :return: текст, соответсвующий правилам
     """
 
-    # пиши код здесь
+    result = ""
+    text = text.lower()
+    words = text.split()
+    words[0] = words[0][0].upper() + words[0][1:].lower()
+
+    for i in range(len(words)):
+        words[i] = words[i].replace("\'", "")
+        words[i] = words[i].replace('\"', "")
+
+    result = " ".join(words)
+    for i in uncultured_words:
+        result = result.replace(i, "#"*len(i))
+
     return result
 
 
@@ -100,5 +120,11 @@ def create_request_for_loan(user_info: str) -> str:
     :return: текст кредитной заявки
     """
 
-    # пиши код здесь
+    words = user_info.split(",")
+    labelNames = ["Фамилия: ", "Имя: ", "Отчество: ", "Дата рождения: ", "Запрошенная сумма: "]
+    result = ""
+    for i in range(4):
+        result += labelNames[i] + words[i] + "\n"
+    result += labelNames[4] + words[4]
+
     return result

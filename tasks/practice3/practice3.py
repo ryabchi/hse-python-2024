@@ -26,9 +26,33 @@ def count_words(text: str) -> Dict[str, int]:
              значение - количество вхождений слов в текст
     """
 
-    # пиши свой код здесь
+    IgnoreSymbols = [".", ",", "!", "-"]
+    ForbiddenSymbols = "1234567890-"
 
-    return {}
+    result = {}
+
+    words = text.split()
+    isWord = True
+
+    for word in words:
+        isWord = True
+        for f in ForbiddenSymbols:
+            if f in word:
+                isWord = False
+                break
+        if not isWord:
+            continue
+
+        for i in IgnoreSymbols:
+            word = word.replace(i, '')
+        word = word.lower()
+
+        if word not in result:
+            result[word] = 1
+        else:
+            result[word] += 1
+
+    return result
 
 
 def exp_list(numbers: List[int], exp: int) -> List[int]:
@@ -40,9 +64,7 @@ def exp_list(numbers: List[int], exp: int) -> List[int]:
     :return: список натуральных чисел
     """
 
-    # пиши свой код здесь
-
-    return []
+    return list(map(lambda x: x**exp, numbers))
 
 
 def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) -> float:
@@ -57,6 +79,13 @@ def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) 
     :param special_category: список категорий повышенного кешбека
     :return: размер кешбека
     """
+
+    result = 0
+    for item in operations:
+        if item["category"] in special_category:
+            result += item["amount"] * 0.05
+        else:
+            result += item["amount"] * 0.01
 
     return result
 
@@ -76,6 +105,7 @@ def get_path_to_file() -> Optional[Path]:
         base_path = Path().resolve()
     return base_path / 'tasks' / 'practice3' / 'tasks.csv'
 
+import csv
 
 def csv_reader(header: str) -> int:
     """
@@ -98,7 +128,13 @@ def csv_reader(header: str) -> int:
     :param header: название заголовка
     :return: количество уникальных элементов в столбце
     """
+    diversed_values = []
 
-    # пиши свой код здесь
+    with open(get_path_to_file(), mode='r') as csv_file:
+        csv_reader = csv.DictReader(csv_file)
 
-    return 0
+        for row in csv_reader:
+            if row[header] not in diversed_values:
+                diversed_values.append(row[header])
+
+    return len(diversed_values)
