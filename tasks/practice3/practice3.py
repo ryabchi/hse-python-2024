@@ -1,5 +1,14 @@
 from pathlib import Path
 from typing import Dict, Any, List, Optional
+import csv
+
+
+def is_correct_word(word: str) -> bool:
+    return len(word) > 1 and all(not x.isdigit() for x in word)
+
+
+def remove_special_symbols(word: str) -> str:
+    return "".join(filter(lambda x: x.isalpha(), word))
 
 
 def count_words(text: str) -> Dict[str, int]:
@@ -26,9 +35,14 @@ def count_words(text: str) -> Dict[str, int]:
              значение - количество вхождений слов в текст
     """
 
-    # пиши свой код здесь
+    result = {}
+    words = text.split(' ')
+    for word in words:
+        if is_correct_word(word):
+            word_lower = remove_special_symbols(word).lower()
+            result[word_lower] = result.get(word_lower, 0) + 1
 
-    return {}
+    return result
 
 
 def exp_list(numbers: List[int], exp: int) -> List[int]:
@@ -40,9 +54,7 @@ def exp_list(numbers: List[int], exp: int) -> List[int]:
     :return: список натуральных чисел
     """
 
-    # пиши свой код здесь
-
-    return []
+    return [x ** exp for x in numbers]
 
 
 def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) -> float:
@@ -57,6 +69,12 @@ def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) 
     :param special_category: список категорий повышенного кешбека
     :return: размер кешбека
     """
+    result = 0
+    for operation in operations:
+        if operation["category"] in special_category:
+            result += operation["amount"] * 0.05
+        else:
+            result += operation["amount"] * 0.01
 
     return result
 
@@ -99,6 +117,14 @@ def csv_reader(header: str) -> int:
     :return: количество уникальных элементов в столбце
     """
 
-    # пиши свой код здесь
+    unique_values = set()
+    with open(get_path_to_file(), 'r', newline='') as csvfile:
+        reader = csv.reader(csvfile, delimiter=',')
+        column_index = -1
+        for i, row in enumerate(reader):
+            if i == 0:
+                column_index = row.index(header)
+            else:
+                unique_values.add(row[column_index])
 
-    return 0
+    return len(unique_values)
