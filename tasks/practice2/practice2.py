@@ -13,6 +13,7 @@ def greet_user(name: str) -> str:
     """
 
     # пиши код здесь
+    greeting = f"Привет, {name}"
     return greeting
 
 
@@ -29,6 +30,8 @@ def get_amount() -> float:
     """
 
     # пиши код здесь
+    import random
+    amount = round(random.uniform(100, 1000000), 2)
     return amount
 
 
@@ -43,6 +46,8 @@ def is_phone_correct(phone_number: str) -> bool:
     """
 
     # пиши код здесь
+    import re
+    result = True if re.match(r'^((\+7)+([0-9]){10})$', phone_number) else False
     return result
 
 
@@ -59,6 +64,7 @@ def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
     """
 
     # пиши код здесь
+    result = current_amount >= float(transfer_amount)
     return result
 
 
@@ -78,6 +84,13 @@ def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
     """
 
     # пиши код здесь
+    result = text.strip()
+    result = result.capitalize()
+    for word in uncultured_words:
+        if word in result:
+            result = result.replace(word, '#' * len(word))
+    result = result.replace('"', '')
+    result = result.replace("'", '')    
     return result
 
 
@@ -101,4 +114,6 @@ def create_request_for_loan(user_info: str) -> str:
     """
 
     # пиши код здесь
+    data = user_info.split(',')
+    result = f"Фамилия: {data[0]}\nИмя: {data[1]}\nОтчество: {data[2]}\nДата рождения: {data[3]}\nЗапрошенная сумма: {data[4]}"
     return result
