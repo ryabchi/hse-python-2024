@@ -12,7 +12,7 @@ def greet_user(name: str) -> str:
     :return: приветствие
     """
 
-    # пиши код здесь
+    greeting = "Guten Tag, " + str.format(name)  # пиши код здесь
     return greeting
 
 
@@ -28,7 +28,8 @@ def get_amount() -> float:
     :return: случайную сумму на счете
     """
 
-    # пиши код здесь
+    import random
+    amount = float(random.randint(100, 1000000))  # пиши код здесь
     return amount
 
 
@@ -42,7 +43,11 @@ def is_phone_correct(phone_number: str) -> bool:
                                           False - если номер некорректный
     """
 
-    # пиши код здесь
+    if phone_number[0:1] == "+" and phone_number[1:].isdigit() and phone_number[1:2] == "7" and len(
+            phone_number[1:]) == 11:
+        result = True
+    else:
+        result = False
     return result
 
 
@@ -58,7 +63,10 @@ def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
                                           False - если денег недостаточно
     """
 
-    # пиши код здесь
+    if current_amount >= float(transfer_amount):  # пиши код здесь
+        result = True
+    else:
+        result = False
     return result
 
 
@@ -77,28 +85,51 @@ def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
     :return: текст, соответсвующий правилам
     """
 
-    # пиши код здесь
-    return result
+    censorship_length = ""  # пиши код здесь
+    for uncultured_word in uncultured_words:
+        if uncultured_word in text:
+            for i in range(len(uncultured_word)):
+                censorship_length = censorship_length + "#"
+            text = text.replace(uncultured_word, censorship_length)
+            censorship_length = ""
+    text = text.casefold()
+    text = text.split()
+    text[0] = text[0].title()
+    text = ' '.join(text)
+    print(text)
+    for word in text:
+        for dangerous_symbol in word:
+            text = text.replace("'", "")
+    for word in text:
+        for dangerous_symbol in word:
+            text = text.replace('"', '')
+    text = ' '.join(text.split())
+    return text
 
 
 def create_request_for_loan(user_info: str) -> str:
     """
     Генерирует заявку на кредит на основе входящей строки.
     Формат входящий строки:
-    
+
     Иванов,Петр,Сергеевич,01.01.1991,10000
-    
+
     Что должны вернуть на ее основе:
-    
+
     Фамилия: Иванов
     Имя: Петр
     Отчество: Сергеевич
     Дата рождения: 01.01.1991
     Запрошенная сумма: 10000
-    
+
     :param user_info: строка с информацией о клиенте
     :return: текст кредитной заявки
     """
 
-    # пиши код здесь
+    intermediate_result = user_info.split(",")  # пиши код здесь
+    result = (("Фамилия: " + intermediate_result[0] + "\n" + "Имя: " + intermediate_result[1] + "\n" + "Отчество: " +
+               intermediate_result[2]) + "\n" + "Дата рождения: " + intermediate_result[
+                  3] + "\n" + "Запрошенная сумма: "
+              + intermediate_result[4])
     return result
+
