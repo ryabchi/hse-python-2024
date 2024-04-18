@@ -26,9 +26,21 @@ def count_words(text: str) -> Dict[str, int]:
              значение - количество вхождений слов в текст
     """
 
-    # пиши свой код здесь
+    result = {}
 
-    return {}
+    alphabet = 'abcdefghijklmnopqrstuvwxyz '
+    text = ''.join(list(filter(lambda x: x in alphabet, text.lower())))
+
+    words = text.split()
+
+    for word in words:
+        if len(word) > 1 and word != 'notword':
+            if word not in result:
+                result[word] = 1
+                continue
+            result[word] += 1
+
+    return result
 
 
 def exp_list(numbers: List[int], exp: int) -> List[int]:
@@ -40,9 +52,9 @@ def exp_list(numbers: List[int], exp: int) -> List[int]:
     :return: список натуральных чисел
     """
 
-    # пиши свой код здесь
+    result = [num ** exp for num in numbers]
 
-    return []
+    return result
 
 
 def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) -> float:
@@ -58,6 +70,14 @@ def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) 
     :return: размер кешбека
     """
 
+    result = 0
+
+    for operation in operations:
+        if operation['category'] in special_category:
+            result += 0.05 * operation['amount']
+        else:
+            result += 0.01 * operation['amount']
+    
     return result
 
 
@@ -99,6 +119,18 @@ def csv_reader(header: str) -> int:
     :return: количество уникальных элементов в столбце
     """
 
-    # пиши свой код здесь
+    with open(get_path_to_file()) as file:
+        file_reader = csv.reader(file, delimiter=',')
+        count = 0
+        objects = set()
+        for row in file_reader:
+            if count == 0:
+                for i in range(len(row)):
+                    if row[i] == header:
+                        ind = i
+            else:
+                objects.add(row[ind])
+            count += 1
+    result = len(objects)
 
-    return 0
+    return result
