@@ -13,7 +13,7 @@ import random
 
 def get_amount() -> float:
     amount = round(random.uniform(100, 1000000), 2)
-    return amount
+    return  amount
 
 
 

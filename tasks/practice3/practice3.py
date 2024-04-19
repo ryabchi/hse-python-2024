@@ -48,5 +48,5 @@ def csv_reader(header: str) -> int:
         for row in reader:
             unique_elements.add(row[header])
 
-    return len(unique_elements)
+    return len( unique_elements)
 
