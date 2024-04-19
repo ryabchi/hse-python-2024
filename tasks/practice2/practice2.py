@@ -1,4 +1,5 @@
 from typing import Iterable
+import random
 
 UNCULTURED_WORDS = ('kotleta', 'pirog')
 
@@ -12,7 +13,8 @@ def greet_user(name: str) -> str:
     :return: приветствие
     """
 
-    # пиши код здесь
+    greeting = f'Привет, {name}'
+
     return greeting
 
 
@@ -28,7 +30,8 @@ def get_amount() -> float:
     :return: случайную сумму на счете
     """
 
-    # пиши код здесь
+    amount = round(random.uniform(100, 1000000), 2)
+
     return amount
 
 
@@ -42,8 +45,14 @@ def is_phone_correct(phone_number: str) -> bool:
                                           False - если номер некорректный
     """
 
-    # пиши код здесь
-    return result
+    if phone_number[0] != '+' or phone_number[1] != '7' or len(phone_number) != 12:
+        return False
+
+    for i in phone_number[2:]:
+        if i not in "0123456789":
+            return False
+
+    return True
 
 
 def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
@@ -58,8 +67,9 @@ def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
                                           False - если денег недостаточно
     """
 
-    # пиши код здесь
-    return result
+    if current_amount >= float(transfer_amount):
+        return True
+    return False
 
 
 def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
@@ -77,7 +87,15 @@ def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
     :return: текст, соответсвующий правилам
     """
 
-    # пиши код здесь
+    result = text.strip(" ")
+    result = result.lower()
+    result = result.capitalize()
+    result = result.replace('\'', "")
+    result = result.replace("\"", "")
+    for i in UNCULTURED_WORDS:
+        if i in result:
+            result = result.replace(i, "#" * len(i))
+
     return result
 
 
@@ -100,5 +118,7 @@ def create_request_for_loan(user_info: str) -> str:
     :return: текст кредитной заявки
     """
 
-    # пиши код здесь
+    info = user_info.split(",")
+    result = f"Фамилия: {info[0]}\nИмя: {info[1]}\nОтчество: {info[2]}\nДата рождения: {info[3]}\nЗапрошенная сумма: {info[4]}"
+
     return result
