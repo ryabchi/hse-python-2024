@@ -1,6 +1,5 @@
 from pathlib import Path
 from typing import Dict, Any, List, Optional
-import pandas as pd
 
 
 def count_words(text: str) -> Dict[str, int]:
@@ -128,5 +127,20 @@ def csv_reader(header: str) -> int:
     :return: количество уникальных элементов в столбце
     """
 
-    df = pd.read_csv(get_path_to_file())
-    return len(set(df[header]))
+    # Это некрасиво, красивее через pd.read_csv)) (предыдущий коммит - 2 строки)
+    file = open(get_path_to_file(), 'r')
+    data = file.readlines()
+    headers = data[0].replace('\n', '').replace('\"', '').split(',')
+    header_index = 0
+    while header_index < len(headers):
+        if headers[header_index] == header:
+            break
+        header_index += 1
+
+    distinct_values = set()
+    for index in range(1, len(data)):
+        distinct_values.add(data[index].replace('\n', '').split(',')[header_index])
+
+    return len(distinct_values)
+
+print(csv_reader('Project Key')) # 3
