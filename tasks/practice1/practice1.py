@@ -9,6 +9,7 @@ def concatenate_strings(a: str, b: str) -> str:
     """
 
     # пиши свой код здесь
+    result = a + b
 
     return result
 
