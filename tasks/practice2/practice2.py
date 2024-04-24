@@ -1,4 +1,5 @@
 from typing import Iterable
+from random import uniform
 
 UNCULTURED_WORDS = ('kotleta', 'pirog')
 
@@ -12,7 +13,7 @@ def greet_user(name: str) -> str:
     :return: приветствие
     """
 
-    # пиши код здесь
+    greeting = "Hello " + name + "!"
     return greeting
 
 
@@ -28,7 +29,7 @@ def get_amount() -> float:
     :return: случайную сумму на счете
     """
 
-    # пиши код здесь
+    amount = round(uniform(100, 1000000), 2)
     return amount
 
 
@@ -42,7 +43,9 @@ def is_phone_correct(phone_number: str) -> bool:
                                           False - если номер некорректный
     """
 
-    # пиши код здесь
+    result = False
+    if phone_number[0] == '+' and phone_number[1] == '7' and len(phone_number) == 12 and phone_number[2:].isnumeric():
+        result = True
     return result
 
 
@@ -58,7 +61,9 @@ def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
                                           False - если денег недостаточно
     """
 
-    # пиши код здесь
+    result = False
+    if current_amount >= float(transfer_amount):
+        result = True
     return result
 
 
@@ -77,7 +82,11 @@ def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
     :return: текст, соответсвующий правилам
     """
 
-    # пиши код здесь
+    result = text.strip()
+    result = result.capitalize()
+    result = result.replace("'","").replace('"', "")
+    for i in range(len(uncultured_words)):
+        result = result.replace(uncultured_words[i], len(uncultured_words[i])*"#") 
     return result
 
 
@@ -100,5 +109,10 @@ def create_request_for_loan(user_info: str) -> str:
     :return: текст кредитной заявки
     """
 
-    # пиши код здесь
+    parts_of_user_info = user_info.split(',')
+    result = "Фамилия: " + parts_of_user_info[0] + '\n'
+    result += "Имя: " + parts_of_user_info[1] + "\n"
+    result += "Отчество: " + parts_of_user_info[2] + "\n"
+    result += "Дата рождения: " + parts_of_user_info[3] + "\n"
+    result += "Запрошенная сумма: " + parts_of_user_info[4]
     return result
