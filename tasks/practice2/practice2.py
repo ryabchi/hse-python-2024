@@ -117,8 +117,7 @@ def create_request_for_loan(user_info: str) -> str:
     """
 
     surname, name, second_name, birth, req_sum = user_info.split(',')
-    result = ('Фамилия: ' + surname + '\n' +
-              'Имя: ' + name + '\n' +
+    result = ('Фамилия: ' + surname + '\n' + 'Имя: ' + name + '\n' +
               'Отчество: ' + second_name + '\n' +
               'Дата рождения: ' + birth + '\n' +
               'Запрошенная сумма: ' + req_sum)
