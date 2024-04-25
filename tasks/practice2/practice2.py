@@ -100,7 +100,16 @@ def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
     """
 
     # пиши код здесь
+
+    res=text
+    res=res.replace('"','')
+    res=res.replace("'", '')
+    for word in uncultured_words:
+        res=res.replace(word,'#'*len(word))
+    res=" ".join(res.split())
+    result=res.capitalize()
     return result
+
 
 
 def create_request_for_loan(user_info: str) -> str:
@@ -123,4 +132,12 @@ def create_request_for_loan(user_info: str) -> str:
     """
 
     # пиши код здесь
+
+    array_of_info= user_info.split(',')
+    result='Фамилия: {}\n' \
+           'Имя: {}\n' \
+           'Отчество: {}\n' \
+           'Дата рождения: {}\n' \
+           'Запрошенная сумма: {}'.format(array_of_info[0],array_of_info[1],array_of_info[2],array_of_info[3],array_of_info[4])
+
     return result

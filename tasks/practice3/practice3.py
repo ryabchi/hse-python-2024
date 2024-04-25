@@ -28,6 +28,17 @@ def count_words(text: str) -> Dict[str, int]:
     """
 
     # пиши свой код здесь
+    words=[]
+    arr_index=-1
+    is_last_symbol_letter=0
+    for symbol in text:
+        if symbol.isalpha() and symbol.isascii():
+            if not is_last_symbol_letter:
+                arr_index+=1
+                words.append(symbol.lower())
+            else:
+                words[arr_index]+=symbol.lower()
+
 
     result={}
     words=text.split()
