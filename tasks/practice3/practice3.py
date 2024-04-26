@@ -1,5 +1,6 @@
 from pathlib import Path
 from typing import Dict, Any, List, Optional
+import csv
 
 
 def count_words(text: str) -> Dict[str, int]:
@@ -26,9 +27,20 @@ def count_words(text: str) -> Dict[str, int]:
              значение - количество вхождений слов в текст
     """
 
-    # пиши свой код здесь
+    text = text.replace("\n", " ")
+    text = text.replace(",", "").replace(".", "").replace("?", "").replace("!", "")
+    text = text.lower()
+    words = text.split()
 
-    return {}
+    result = {}
+    for item in words:
+        if item.isalpha():
+            if item in result.keys():
+                result[item] += 1
+            else:
+                result[item] = 1
+
+    return result
 
 
 def exp_list(numbers: List[int], exp: int) -> List[int]:
@@ -40,9 +52,7 @@ def exp_list(numbers: List[int], exp: int) -> List[int]:
     :return: список натуральных чисел
     """
 
-    # пиши свой код здесь
-
-    return []
+    return [x**exp for x in numbers]
 
 
 def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) -> float:
@@ -57,7 +67,14 @@ def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) 
     :param special_category: список категорий повышенного кешбека
     :return: размер кешбека
     """
-
+    result = 0
+    for item in operations:
+        count = item['amount']
+        category = item['category']
+        if category in special_category:
+            result += count * 0.05
+        else:
+            result += count * 0.01
     return result
 
 
@@ -98,7 +115,12 @@ def csv_reader(header: str) -> int:
     :param header: название заголовка
     :return: количество уникальных элементов в столбце
     """
-
-    # пиши свой код здесь
-
-    return 0
+    result = []
+    count = 0
+    with open(get_path_to_file(), encoding='utf-8') as path:
+        file_reader = csv.DictReader(path, delimiter=",")
+        for row in file_reader:
+            if row[header] not in result:
+                count += 1
+                result.append(row[header])
+    return count
