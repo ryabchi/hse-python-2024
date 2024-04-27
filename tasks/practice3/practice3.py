@@ -38,7 +38,7 @@ def count_words(text: str) -> Dict[str, int]:
             else:
                 Dict[word] += 1
 
-    return {}
+    return Dict
 
 
 def exp_list(numbers: List[int], exp: int) -> List[int]:
