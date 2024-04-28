@@ -1,3 +1,4 @@
+import csv
 from pathlib import Path
 from typing import Dict, Any, List, Optional
 
@@ -26,9 +27,17 @@ def count_words(text: str) -> Dict[str, int]:
              значение - количество вхождений слов в текст
     """
 
-    # пиши свой код здесь
-
-    return {}
+    Dict={}
+    punctuation_marks=['!','"',"'",',','-','.',':',';','?','_','`']
+    for mark in punctuation_marks:
+        text=text.replace(mark,' ')
+    data=text.lower().split()
+    for word in data:
+        if word.isalpha() and len(word)>1:
+            Dict[word.lower()]=data.count(word)
+        elif (word[:-1].isalpha() and ( word[-1] == ',' or word[-1] == '?' or word[-1] == '!' or word[-1] == '.' and len(word) > 1)):
+            Dict[word[:-1].lower()] = data.count(word[:-1])
+    return Dict
 
 
 def exp_list(numbers: List[int], exp: int) -> List[int]:
@@ -40,9 +49,8 @@ def exp_list(numbers: List[int], exp: int) -> List[int]:
     :return: список натуральных чисел
     """
 
-    # пиши свой код здесь
-
-    return []
+    List=[n**exp for n in numbers]
+    return List
 
 
 def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) -> float:
@@ -57,7 +65,12 @@ def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) 
     :param special_category: список категорий повышенного кешбека
     :return: размер кешбека
     """
-
+    result=0
+    for i in range(len(operations)):
+        if len(special_category)>0 and operations[i]['category']==special_category[0]:
+            result+=operations[i]['amount']*0.05
+        else:
+            result+= operations[i]['amount'] * 0.01
     return result
 
 
@@ -98,7 +111,9 @@ def csv_reader(header: str) -> int:
     :param header: название заголовка
     :return: количество уникальных элементов в столбце
     """
-
-    # пиши свой код здесь
-
-    return 0
+    column=[]
+    with open(get_path_to_file()) as csvfile:
+        read = csv.DictReader(csvfile)
+        for r in read:
+            column.append(r[header])
+    return len(set(column))
