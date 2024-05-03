@@ -1,5 +1,7 @@
 from pathlib import Path
 from typing import Dict, Any, List, Optional
+from re import split
+import csv
 
 
 def count_words(text: str) -> Dict[str, int]:
@@ -27,8 +29,15 @@ def count_words(text: str) -> Dict[str, int]:
     """
 
     # пиши свой код здесь
-
-    return {}
+    data = list(re.split(r"[,|.|?|!| ]", text))
+    result = {}
+    for i in data:
+        if i != '' and any(ch.isdigit() for ch in i) == False:
+            if i.lower() not in result:
+                result[i.lower()] = 1
+            else:
+                result[i.lower()] += 1
+    return result
 
 
 def exp_list(numbers: List[int], exp: int) -> List[int]:
@@ -41,8 +50,18 @@ def exp_list(numbers: List[int], exp: int) -> List[int]:
     """
 
     # пиши свой код здесь
-
-    return []
+    result = []
+    for number in numbers:
+        n = exp
+        ans = number
+        while n > 0:
+            if n % 2 == 1:
+                ans *= number
+            else:
+                number *= number
+            n //= 2     
+        result.append(ans)
+    return result
 
 
 def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) -> float:
@@ -57,7 +76,12 @@ def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) 
     :param special_category: список категорий повышенного кешбека
     :return: размер кешбека
     """
-
+    result = 0
+    for charge in operations:
+        if charge['category'] in special_category:
+            result += (charge['amount'] * 0.05)
+        else:
+            result += (charge['amount'] * 0.01)
     return result
 
 
@@ -100,5 +124,15 @@ def csv_reader(header: str) -> int:
     """
 
     # пиши свой код здесь
-
-    return 0
+    file_to_read = get_path_to_file()
+    with open(file_to_read, 'r', newline='') as csvfile:
+        rows = csv.reader(csvfile, delimiter=',')
+        data = [row for row in rows]
+        csv_dict = {}
+        
+        for key in range(len(data[0])):
+            csv_dict[data[0][key]] = set()
+            print(data[0][key])
+            for i in range(1, len(data)):
+                csv_dict[data[0][key]].add(data[i][key])
+    return len(csv_dict[header])
