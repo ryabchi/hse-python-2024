@@ -69,7 +69,7 @@ def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
 
     # пиши код здесь
     result = False
-    if current_amount >= transfer_amount:
+    if current_amount >= float(transfer_amount):
         result = True
     return result
 
@@ -90,18 +90,26 @@ def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
     """
 
     # пиши код здесь
-    text = text.capitalize()
+    
     text = text.replace("'", "\"")
+    text = text.replace("\"", "")
     data = text.split()
     result = ""
     for i in data:
         if i != " " and len(i) > 0:
+            f = 0
+            if i[-1] == "!":
+                f += 1
+                i = i[:-1]
             if i not in uncultured_words:
                 result += (i)
             else:
                 result += ("#" * len(i))
-            if i != data[-1]:
+            if f == 1:
+                result += "!"
+            if i != data[-1] or f != 1:
                 result += " "
+    result = result.capitalize()
     return result
 
 
