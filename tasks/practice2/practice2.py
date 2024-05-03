@@ -12,7 +12,6 @@ def greet_user(name: str) -> str:
     :param name: имя пользователя
     :return: приветствие
     """
-
     greeting = f'Hello, dear {name}! You are welcome ^^'
 
     return greeting
@@ -29,7 +28,6 @@ def get_amount() -> float:
 
     :return: случайную сумму на счете
     """
-
     amount = round(random.uniform(100, 10 ** 6), 2)
 
     return amount
@@ -61,7 +59,6 @@ def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
     :return: буленовское значение - bool: True - если перевод возможен,
                                           False - если денег недостаточно
     """
-
     alpha = '0123456789.'
     is_correct = all(ch in alpha for ch in transfer_amount)
 
@@ -82,7 +79,6 @@ def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
     :param uncultured_words: список запрещенных слов
     :return: текст, соответсвующий правилам
     """
-
     s = text.strip()
     result = s[0].upper() + s[1:].lower().replace('\'', '').replace('"', '')
     for item in uncultured_words:
@@ -109,7 +105,6 @@ def create_request_for_loan(user_info: str) -> str:
     :param user_info: строка с информацией о клиенте
     :return: текст кредитной заявки
     """
-
     items = [i.strip() for i in user_info.split(',')]
     if len(items) < 5:
         return 'Incorrect input!'

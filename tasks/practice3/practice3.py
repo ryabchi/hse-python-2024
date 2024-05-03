@@ -25,7 +25,6 @@ def count_words(text: str) -> Dict[str, int]:
              ключ - слово в нижнем регистре
              значение - количество вхождений слов в текст
     """
-
     words = (text.replace('.', ' ').replace(',', ' ').
              replace('?', ' ').replace('!', ' ').split())
     d = {}
@@ -48,7 +47,6 @@ def exp_list(numbers: List[int], exp: int) -> List[int]:
     :param exp: в какую степень возвести числа в списке
     :return: список натуральных чисел
     """
-
     # result = list(map(lambda num: num ** exp, numbers))
     return [n ** exp for n in numbers]
 
@@ -65,7 +63,6 @@ def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) 
     :param special_category: список категорий повышенного кешбека
     :return: размер кешбека
     """
-
     cashback = 0.0
     for operation in operations:
         if operation["category"] in special_category:
@@ -113,7 +110,6 @@ def csv_reader(header: str) -> int:
     :param header: название заголовка
     :return: количество уникальных элементов в столбце
     """
-
     f = open(get_path_to_file(), 'r')
     headers = f.readline().split(',')
     pos = -1
