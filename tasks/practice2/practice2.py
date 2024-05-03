@@ -107,7 +107,7 @@ def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
                 result += ("#" * len(i))
             if f == 1:
                 result += "!"
-            if i != data[-1] or f != 1:
+            if i != data[-1] and f != 1:
                 result += " "
     result = result.capitalize()
     return result
