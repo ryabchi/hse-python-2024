@@ -7,6 +7,7 @@ def concatenate_strings(a: str, b: str) -> str:
     :param b: число
     :return: результат сложения
     """
+
     result = a + b
 
     return result
@@ -20,6 +21,7 @@ def calculate_salary(total_compensation: int) -> float:
     :param total_compensation: сумма зарплаты до вычета налога
     :return: сумма заплаты после вычета налога
     """
+
     result = total_compensation * 0.87
 
     return result
