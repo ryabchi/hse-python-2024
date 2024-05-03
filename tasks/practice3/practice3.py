@@ -29,7 +29,7 @@ def count_words(text: str) -> Dict[str, int]:
     """
 
     # пиши свой код здесь
-    data = list(re.split(r"[,|.|?|!| ]", text))
+    data = list(split(r"[,|.|?|!| |-]", text))
     result = {}
     for i in data:
         if i != '' and any(ch.isdigit() for ch in i) == False:
@@ -52,14 +52,7 @@ def exp_list(numbers: List[int], exp: int) -> List[int]:
     # пиши свой код здесь
     result = []
     for number in numbers:
-        n = exp
-        ans = number
-        while n > 0:
-            if n % 2 == 1:
-                ans *= number
-            else:
-                number *= number
-            n //= 2     
+        ans = number ** exp
         result.append(ans)
     return result
 
