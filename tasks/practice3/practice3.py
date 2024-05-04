@@ -1,3 +1,4 @@
+import csv
 from pathlib import Path
 from typing import Dict, Any, List, Optional
 
@@ -28,7 +29,19 @@ def count_words(text: str) -> Dict[str, int]:
 
     # пиши свой код здесь
 
-    return {}
+    result = {}
+    for i in '.,:!?-;':
+        text = text.replace(i, '')
+    array_of_words = text.split()
+    for word in array_of_words:
+        if (not any(symb.isdigit() for symb in word)):
+            if (word and len(word) > 1):
+                key = word.lower()
+                if (result.get(key)):
+                    result[key] += 1
+                else:
+                    result[key] = 1
+    return result
 
 
 def exp_list(numbers: List[int], exp: int) -> List[int]:
@@ -42,7 +55,9 @@ def exp_list(numbers: List[int], exp: int) -> List[int]:
 
     # пиши свой код здесь
 
-    return []
+    result = [x ** exp for x in numbers]
+
+    return result
 
 
 def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) -> float:
@@ -57,7 +72,8 @@ def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) 
     :param special_category: список категорий повышенного кешбека
     :return: размер кешбека
     """
-
+    is_cashback = lambda x: x['amount'] * 0.05 if x['category'] in special_category else x['amount'] * 0.01
+    result = sum(is_cashback(i) for i in operations)
     return result
 
 
@@ -74,7 +90,7 @@ def get_path_to_file() -> Optional[Path]:
         base_path = Path().resolve().parent
     else:
         base_path = Path().resolve()
-    return base_path / 'tasks' / 'practice3' / 'tasks.csv'
+    return base_path / 'PyHw' / 'hse-python-2024' / 'tasks' / 'practice3' / 'tasks.csv'
 
 
 def csv_reader(header: str) -> int:
@@ -101,4 +117,12 @@ def csv_reader(header: str) -> int:
 
     # пиши свой код здесь
 
-    return 0
+    reader = csv.reader(open(get_path_to_file(), 'r', newline=''), delimiter=',')
+    values = set()
+    column = 0
+    for i, row in enumerate(reader):
+        if i == 0:
+            column = row.index(header)
+        else:
+            values.add(row[column])
+    return len(values)
