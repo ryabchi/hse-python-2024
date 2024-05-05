@@ -31,6 +31,7 @@ def count_words(text: str) -> Dict[str, int]:
     words=[]
     arr_index=-1
     is_last_symbol_letter=0
+    #надо разбить текст на слова по пробелам мб
     for symbol in text:
         if symbol.isalpha() and symbol.isascii():
             if not is_last_symbol_letter:
