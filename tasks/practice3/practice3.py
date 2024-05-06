@@ -41,28 +41,7 @@ def count_words(text: str) -> Dict[str, int]:
                 words[arr_index]+=symbol.lower()
 
 
-    result={}
-    words=text.split()
-    for word in words:
-        is_word = True
-        symbols= False
-        for symbol in word:
-            if symbol.isalpha():
-                symbols=True
-                continue
-            elif symbol.isdigit():
-                is_word=False
-            elif symbols:
-                word=word[:-1]
-            else:
-                is_word = False
-        if is_word:
-            if result.get(word.lower()) is None:
-                result[word.lower()]=1
-            else:
-                result[word.lower()] += 1
-
-    return result
+    return {}
 
 
 def exp_list(numbers: List[int], exp: int) -> List[int]:
