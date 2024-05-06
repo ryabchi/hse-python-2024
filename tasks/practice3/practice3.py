@@ -28,20 +28,29 @@ def count_words(text: str) -> Dict[str, int]:
     """
 
     # пиши свой код здесь
-    words=[]
-    arr_index=-1
-    is_last_symbol_letter=0
-    #надо разбить текст на слова по пробелам мб
-    for symbol in text:
-        if symbol.isalpha() and symbol.isascii():
-            if not is_last_symbol_letter:
-                arr_index+=1
-                words.append(symbol.lower())
+
+    result={}
+    words=text.split()
+    for word in words:
+        is_word = True
+        symbols= False
+        for symbol in word:
+            if symbol.isalpha():
+                symbols=True
+                continue
+            elif symbol.isdigit():
+                is_word=False
+            elif symbols:
+                word=word[:-1]
             else:
-                words[arr_index]+=symbol.lower()
+                is_word = False
+        if is_word:
+            if result.get(word.lower()) is None:
+                result[word.lower()]=1
+            else:
+                result[word.lower()] += 1
 
-
-    return {}
+    return result
 
 
 def exp_list(numbers: List[int], exp: int) -> List[int]:
