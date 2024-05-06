@@ -1,0 +1,6 @@
+IssueType,Summary,"Project Name","Project Key"
+bug,"First issue",Sample,CHAT
+bug,"Second issue",Sample,CHAT
+task,"Third issue",Test,SME
+story,"Forth issue",Test,SME
+task,"Fifth issue",Test,SME
