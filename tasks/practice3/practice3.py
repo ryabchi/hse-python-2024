@@ -1,6 +1,7 @@
 from pathlib import Path
 from typing import Dict, Any, List, Optional
-
+import csv
+import re
 
 def count_words(text: str) -> Dict[str, int]:
     """
@@ -26,9 +27,29 @@ def count_words(text: str) -> Dict[str, int]:
              значение - количество вхождений слов в текст
     """
 
-    # пиши свой код здесь
+    dict_of_words = {}
 
-    return {}
+    text = re.sub("  ", " ", text)
+    list_of_word = text.split()
+    for word in list_of_word:
+        if len(word) > 1:
+            new_world = ''
+            flag_of_num = 0
+            for i in range (len(word)):
+                if word[i].isdigit():
+                    flag_of_num = 1
+                if (word[i] >= 'A' and word[i] <= 'Z') or (word[i] <= 'z' and word[i] >= 'a'):
+                    new_world += word[i].lower()
+            if flag_of_num == 0:
+                if new_world in dict_of_words:
+                    dict_of_words[new_world] += 1
+                else:
+                    dict_of_words[new_world] = 1
+
+
+
+
+    return dict_of_words
 
 
 def exp_list(numbers: List[int], exp: int) -> List[int]:
@@ -40,9 +61,9 @@ def exp_list(numbers: List[int], exp: int) -> List[int]:
     :return: список натуральных чисел
     """
 
-    # пиши свой код здесь
 
-    return []
+
+    return [i**exp for i in numbers]
 
 
 def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) -> float:
@@ -57,6 +78,14 @@ def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) 
     :param special_category: список категорий повышенного кешбека
     :return: размер кешбека
     """
+    result = 0
+    for operation in operations:
+        if operation['category'] in special_category:
+            result += operation['amount']*0.05
+        else:
+            result += operation['amount']*0.01
+
+
 
     return result
 
@@ -98,7 +127,11 @@ def csv_reader(header: str) -> int:
     :param header: название заголовка
     :return: количество уникальных элементов в столбце
     """
+    set_of_unique_elemets = set()
+    with open(get_path_to_file()) as table:
+        file_reader = csv.DictReader(table)
+        for row in file_reader:
+            set_of_unique_elemets.add(row[header])
 
-    # пиши свой код здесь
 
-    return 0
+    return len(set_of_unique_elemets)
