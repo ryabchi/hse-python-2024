@@ -1,5 +1,7 @@
 from pathlib import Path
 from typing import Dict, Any, List, Optional
+from re import split as re_split
+import csv
 
 
 def count_words(text: str) -> Dict[str, int]:
@@ -26,9 +28,16 @@ def count_words(text: str) -> Dict[str, int]:
              значение - количество вхождений слов в текст
     """
 
-    # пиши свой код здесь
+    text_dict = {}
+    for word in re_split('[.,;:!? ]', text):
+        if word.isalpha():
+            if text_dict.get(word.lower()) is None:
+                text_dict[word.lower()] = 1
+            else:
+                text_dict[word.lower()] += 1
 
-    return {}
+    print(text_dict)
+    return text_dict
 
 
 def exp_list(numbers: List[int], exp: int) -> List[int]:
@@ -40,9 +49,9 @@ def exp_list(numbers: List[int], exp: int) -> List[int]:
     :return: список натуральных чисел
     """
 
-    # пиши свой код здесь
+    result = list(map(lambda x: x**exp, numbers))
 
-    return []
+    return result
 
 
 def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) -> float:
@@ -58,6 +67,12 @@ def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) 
     :return: размер кешбека
     """
 
+    result = 0
+    for i in operations:
+        if i['category'] in special_category:
+            result += 0.05 * i['amount']
+        else:
+            result += 0.01 * i['amount']
     return result
 
 
@@ -99,6 +114,13 @@ def csv_reader(header: str) -> int:
     :return: количество уникальных элементов в столбце
     """
 
-    # пиши свой код здесь
+    file_path = get_path_to_file()
+    result = 0
+    checklist = []
+    with open("C:\\Users\\dabho\\PycharmProjects\\hse-python-2024\\tasks\\practice3\\tasks.csv", newline='') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            result += 1 if row[header] not in checklist else 0
+            checklist.append(row[header])
 
-    return 0
+    return result
