@@ -117,7 +117,7 @@ def csv_reader(header: str) -> int:
     file_path = get_path_to_file()
     result = 0
     checklist = []
-    with open("C:\\Users\\dabho\\PycharmProjects\\hse-python-2024\\tasks\\practice3\\tasks.csv", newline='') as csvfile:
+    with open(file_path, newline='') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             result += 1 if row[header] not in checklist else 0
