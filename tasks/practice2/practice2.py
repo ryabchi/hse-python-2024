@@ -1,4 +1,5 @@
 from typing import Iterable
+from random import random
 
 UNCULTURED_WORDS = ('kotleta', 'pirog')
 
@@ -12,7 +13,7 @@ def greet_user(name: str) -> str:
     :return: приветствие
     """
 
-    # пиши код здесь
+    greeting = f"Привет, {name}!"
     return greeting
 
 
@@ -28,7 +29,7 @@ def get_amount() -> float:
     :return: случайную сумму на счете
     """
 
-    # пиши код здесь
+    amount = round(random() * (1000000 - 100) + 100, 2)
     return amount
 
 
@@ -42,7 +43,7 @@ def is_phone_correct(phone_number: str) -> bool:
                                           False - если номер некорректный
     """
 
-    # пиши код здесь
+    result = phone_number[:2] == "+7" and all(list(map(lambda i: "0" <= i <= "9", phone_number[2:])))
     return result
 
 
@@ -58,7 +59,7 @@ def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
                                           False - если денег недостаточно
     """
 
-    # пиши код здесь
+    result = (current_amount >= float(transfer_amount))
     return result
 
 
@@ -68,7 +69,7 @@ def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
 
     Требования к тексту:
     - Первая буква заглавная, остальные буквы только в нижнем регистре
-    - отсутствую лишние пробелы
+    - отсутствуют лишние пробелы
     - фильтруются 'опасные' символы: " ' (двойные и одинарные кавычки)
     - слова, перечисленные в переменной uncultured_words заменяются на аналогичное количество знаков #
 
@@ -77,7 +78,14 @@ def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
     :return: текст, соответсвующий правилам
     """
 
-    # пиши код здесь
+    if len(text) == 0:
+        return text
+    result = ' '.join(text.lower().strip().split(" "))
+    result = ''.join(filter(lambda s: s not in ['"', "'"], result))
+    for word in uncultured_words:
+        result = result.replace(word, "#"*len(word))
+    result = result[0].upper() + result[1::]
+
     return result
 
 
@@ -100,5 +108,6 @@ def create_request_for_loan(user_info: str) -> str:
     :return: текст кредитной заявки
     """
 
-    # пиши код здесь
+    info_arr = list(user_info.split(","))
+    result = f"Фамилия: {info_arr[0]}\nИмя: {info_arr[1]}\nОтчество: {info_arr[2]}\nДата рождения: {info_arr[3]}\nЗапрошенная сумма: {info_arr[4]}"
     return result
