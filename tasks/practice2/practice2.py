@@ -89,6 +89,7 @@ def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
     :return: текст, соответсвующий правилам
     """
 
+    text = text.strip()
     text = text.capitalize()
     text = " ".join(text.split())
     text = text.replace('"', '').replace("'", '')
@@ -125,5 +126,5 @@ def create_request_for_loan(user_info: str) -> str:
 
     last_name, first_name, middle_name, birth_date, requested_amount = user_data
     result = (f"Фамилия: {last_name}\nИмя: {first_name}\nОтчество: {middle_name}\nДата рождения: {birth_date}"
-              f"\n Запрошенная сумма: {requested_amount}")
+              f"\nЗапрошенная сумма: {requested_amount}")
     return result
