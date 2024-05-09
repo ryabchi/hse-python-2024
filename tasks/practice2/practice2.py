@@ -1,4 +1,6 @@
+import random
 from typing import Iterable
+import re
 
 UNCULTURED_WORDS = ('kotleta', 'pirog')
 
@@ -13,6 +15,7 @@ def greet_user(name: str) -> str:
     """
 
     # пиши код здесь
+    greeting = "Hello " + name
     return greeting
 
 
@@ -29,6 +32,7 @@ def get_amount() -> float:
     """
 
     # пиши код здесь
+    amount = round(random.uniform(100, 1000000), 2)
     return amount
 
 
@@ -43,7 +47,14 @@ def is_phone_correct(phone_number: str) -> bool:
     """
 
     # пиши код здесь
-    return result
+    if phone_number[:2] == '+7' and len(phone_number) == 12:
+        for i in range(2, 12):
+            if not phone_number[i].isdigit():
+                return False
+    else:
+        return False
+
+    return True
 
 
 def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
@@ -57,9 +68,11 @@ def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
     :return: буленовское значение - bool: True - если перевод возможен,
                                           False - если денег недостаточно
     """
-
     # пиши код здесь
-    return result
+    if current_amount >= float(transfer_amount):
+        return True
+
+    return False
 
 
 def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
@@ -78,7 +91,15 @@ def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
     """
 
     # пиши код здесь
-    return result
+    text = text.strip()
+    text = text.capitalize()
+    text = re.sub(' +', ' ', text)
+    text = text.replace("'", '')
+    text = text.replace('"', '')
+    for word in UNCULTURED_WORDS:
+        text = text.replace(word, '#'*len(word))
+
+    return text
 
 
 def create_request_for_loan(user_info: str) -> str:
@@ -101,4 +122,12 @@ def create_request_for_loan(user_info: str) -> str:
     """
 
     # пиши код здесь
+    info = user_info.split(',')
+    surname = 'Фамилия: ' + info[0] + '\n'
+    name = 'Имя: ' + info[1] + '\n'
+    patronimyc = 'Отчество: ' + info[2] + '\n'
+    birthday = 'Дата рождения: ' + info[3] + '\n'
+    sum = 'Запрошенная сумма: ' + info[4]
+
+    result = surname + name + patronimyc + birthday + sum
     return result
