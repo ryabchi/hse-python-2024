@@ -1,3 +1,5 @@
+import csv
+import re
 from pathlib import Path
 from typing import Dict, Any, List, Optional
 
@@ -27,8 +29,36 @@ def count_words(text: str) -> Dict[str, int]:
     """
 
     # пиши свой код здесь
-
-    return {}
+    splited_text = text.split(' ')
+    res = {}
+    for word in splited_text:
+        if len(word) > 1:
+            flag = True
+            for i in range(len(word)):
+                if word[i].isdigit():
+                    flag = False
+                    break
+            if flag:
+                start, end = 0, 0
+                while start < len(word) and not word[start].isalpha():
+                    start += 1
+                if start == len(word):
+                    continue
+                end = start
+                while end < len(word) and word[end].isalpha():
+                    end += 1
+                if end == len(word):
+                    res[word[start:end].lower()] = res.get(word[start:end].lower(), 0) + 1
+                    continue
+                is_alpha = False
+                for i in range(end, len(word)):
+                    if word[i].isalpha():
+                        is_alpha = True
+                        break
+                if is_alpha:
+                    continue
+                res[word[start:end].lower()] = res.get(word[start:end].lower(), 0) + 1
+    return res
 
 
 def exp_list(numbers: List[int], exp: int) -> List[int]:
@@ -41,8 +71,8 @@ def exp_list(numbers: List[int], exp: int) -> List[int]:
     """
 
     # пиши свой код здесь
-
-    return []
+    res = [i ** exp for i in numbers]
+    return res
 
 
 def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) -> float:
@@ -57,6 +87,14 @@ def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) 
     :param special_category: список категорий повышенного кешбека
     :return: размер кешбека
     """
+
+    # пиши свой код здесь
+    result = 0
+    for op in operations:
+        if op['category'] in special_category:
+            result += op['amount'] * 0.05
+        else:
+            result += op['amount'] * 0.01
 
     return result
 
@@ -100,5 +138,10 @@ def csv_reader(header: str) -> int:
     """
 
     # пиши свой код здесь
-
-    return 0
+    path_to_file = get_path_to_file()
+    total_unique = set()
+    with open(path_to_file, 'r') as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            total_unique.add(row[header])
+    return len(total_unique)
