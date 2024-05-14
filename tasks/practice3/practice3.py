@@ -115,7 +115,7 @@ def csv_reader(header: str) -> int:
 
     # пиши свой код здесь
     import csv
-    with open(get_path_to_file()) as csvfile:
+    with open(get_path_to_file(), "r", newline="") as csvfile:
         data = csv.reader(csvfile)
         headers = next(data)
         column = headers.index(header)
