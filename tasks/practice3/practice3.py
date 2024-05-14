@@ -28,7 +28,15 @@ def count_words(text: str) -> Dict[str, int]:
 
     # пиши свой код здесь
 
-    return {}
+    import re
+    dict_words = dict()
+    text = re.sub(r'[^\w\s]', " ", text)
+    for s in text.lower().split(" "):
+        if s.isalpha():
+            if dict_words.get(s) is None:
+                dict_words[s] = 0
+            dict_words[s] += 1
+    return dict_words
 
 
 def exp_list(numbers: List[int], exp: int) -> List[int]:
@@ -42,7 +50,7 @@ def exp_list(numbers: List[int], exp: int) -> List[int]:
 
     # пиши свой код здесь
 
-    return []
+    return [i**exp for i in numbers]
 
 
 def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) -> float:
@@ -58,6 +66,12 @@ def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) 
     :return: размер кешбека
     """
 
+    result = 0
+    for operation in operations:
+        mul = 0.01
+        if operation["category"] in special_category:
+            mul = 0.05
+        result += operation["amount"] * mul
     return result
 
 
@@ -100,5 +114,9 @@ def csv_reader(header: str) -> int:
     """
 
     # пиши свой код здесь
-
-    return 0
+    import csv
+    with open(get_path_to_file()) as csvfile:
+        data = csv.reader(csvfile)
+        headers = next(data)
+        column = headers.index(header)
+        return len(set([row[column] for row in data]))
