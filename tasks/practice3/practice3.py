@@ -27,8 +27,20 @@ def count_words(text: str) -> Dict[str, int]:
     """
 
     # пиши свой код здесь
-
-    return {}
+    result = {}
+    text = text.replace('.', '').replace(',', '').replace('!', '').replace(';', '').replace('?', '')
+    for word in text.split(' '):
+        if len(word) <= 1:
+            continue
+        for letter in word.lower():
+            if letter.isdigit():
+                break
+        else:
+            if word.lower() in result.keys():
+                result[word.lower()] += 1
+            else:
+                result[word.lower()] = 1
+    return result
 
 
 def exp_list(numbers: List[int], exp: int) -> List[int]:
@@ -41,8 +53,8 @@ def exp_list(numbers: List[int], exp: int) -> List[int]:
     """
 
     # пиши свой код здесь
-
-    return []
+    result = [number ** exp for number in numbers]
+    return result
 
 
 def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) -> float:
@@ -57,7 +69,12 @@ def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) 
     :param special_category: список категорий повышенного кешбека
     :return: размер кешбека
     """
-
+    result = 0
+    for item in operations:
+        if item['category'] in special_category:
+            result += item['amount'] * 0.05
+        else:
+            result += item['amount'] * 0.01
     return result
 
 
