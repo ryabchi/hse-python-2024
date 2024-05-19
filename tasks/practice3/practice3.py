@@ -138,4 +138,3 @@ def csv_reader(header: str) -> int:
             unique_elements.add(row[header])
 
     return len(unique_elements)
-    return 0
