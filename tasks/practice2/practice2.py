@@ -89,10 +89,11 @@ def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
     :return: текст, соответсвующий правилам
     """
     # пиши код здесь
-    text = text.translate({ord(i): None for i in '"\''})
+    text = text.translate(str.maketrans('', '', '"\''))
     for i in uncultured_words:
         text = text.replace(i, len(i) * "#")
-    result = ' '.join((text[0].upper() + text[1:].lower()).split())
+    text = text.strip()
+    result = ' '.join(text.split()).capitalize()
           
     return result
 
