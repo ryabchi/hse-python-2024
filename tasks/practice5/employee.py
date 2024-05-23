@@ -39,6 +39,11 @@ class Employee:
         """
 
         # пиши свой код здесь
+        if not isinstance(salary, int):
+            raise ValueError("Salary must be an integer")
+        self.name = name
+        self.position = position
+        self._salary = salary
 
     def get_salary(self) -> int:
         """
@@ -46,7 +51,7 @@ class Employee:
         """
 
         # пиши свой код здесь
-
+        return self._salary
     def __eq__(self, other: object) -> bool:
         """
         Задача: реализовать метод сравнение двух сотрудников, чтобы все тесты проходили.
@@ -56,6 +61,13 @@ class Employee:
         """
 
         # пиши свой код здесь
+        if not isinstance(other, Employee):
+            raise TypeError("Comparison must be with another Employee object")
+
+        position1_level = get_position_level(self.position)
+        position2_level = get_position_level(other.position)
+
+        return position1_level == position2_level
 
     def __str__(self):
         """
@@ -64,6 +76,7 @@ class Employee:
         """
 
         # пиши свой код здесь
+        return f'name: {self.name} position: {self.position}'
 
     def __hash__(self):
         return id(self)
@@ -83,7 +96,8 @@ class Developer(Employee):
         """
 
         # пиши свой код здесь
-
+        super().__init__(name, self.position, salary)
+        self.language = language
 
 class Manager(Employee):
     """
@@ -98,3 +112,4 @@ class Manager(Employee):
         """
 
         # пиши свой код здесь
+        super().__init__(name, self.position, salary)
