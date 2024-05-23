@@ -30,8 +30,7 @@ def get_amount() -> float:
     :return: случайную сумму на счете
     """
 
-    amount = uniform(100,1000000)
-    amount = float("{:.2f}".format(amount))
+    amount = round(uniform(100,1000000), 2)
 
     return amount
 
@@ -48,12 +47,10 @@ def is_phone_correct(phone_number: str) -> bool:
 
     nums = '1234567890'
 
-    if(phone_number[0] != '+' or phone_number[1] != '7' or len(phone_number) != 12):
+    if(phone_number[:2] != '+7'
+       or not phone_number[2:].isnumeric()
+       or len(phone_number) != 12):
         return False
-    
-    for num in phone_number[2:]:
-        if num not in nums:
-            return False
 
     return True
 
@@ -92,8 +89,7 @@ def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
     """
 
     result = re.sub(r' +', ' ', text)
-    result = result.replace('"', '')
-    result = result.replace("'", '')
+    result = result.replace('"', '').replace("'", '')
 
     result = result.strip().capitalize()
     

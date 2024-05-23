@@ -31,22 +31,15 @@ def count_words(text: str) -> Dict[str, int]:
     text = re.sub(r'[,.!-]+', '', text)
     text = text.split(' ')
 
-    d = dict()
+    result = dict()
 
     for word in text:
-        if len(word) <= 1:
+        if len(word) <= 1 or not word.isalpha():
             continue
 
-        for i in range(10):
-            if str(i) in word:
-                break
-        else:
-            if(d.get(word.lower()) == None):
-                d[word.lower()] = 1
-            else:
-                d.update( { word.lower(): d[word.lower()] + 1 } )
+        result[word.lower()] = result.get(word.lower(), 0) + 1
 
-    return d
+    return result
 
 
 def exp_list(numbers: List[int], exp: int) -> List[int]:
@@ -127,7 +120,7 @@ def csv_reader(header: str) -> int:
     with open(PATH) as csvfile:
         reader = csv.reader(csvfile)
         headers = next(reader)
-        column_idx = headers.index(header)
-        elems = {row[column_idx] for row in reader}
+        col_id = headers.index(header)
+        elems = {row[col_id] for row in reader}
 
     return len(elems)
