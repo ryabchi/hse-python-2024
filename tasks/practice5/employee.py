@@ -39,6 +39,12 @@ class Employee:
         """
 
         # пиши свой код здесь
+        if not isinstance(salary, int):
+            raise ValueError
+
+        self.name     = name
+        self.position = position
+        self._salary  = salary
 
     def get_salary(self) -> int:
         """
@@ -46,6 +52,7 @@ class Employee:
         """
 
         # пиши свой код здесь
+        return self._salary
 
     def __eq__(self, other: object) -> bool:
         """
@@ -54,8 +61,15 @@ class Employee:
         Сравнение происходит по уровню позиции см. `get_position_level`.
         Если что-то идет не так - бросаются исключения. Смотрим что происходит в тестах.
         """
-
         # пиши свой код здесь
+        if not isinstance(other, Employee):
+            raise TypeError
+
+        if self.position not in POSITIONS or other.position not in POSITIONS:
+            raise ValueError
+
+        return self.position == other.position
+
 
     def __str__(self):
         """
@@ -64,6 +78,7 @@ class Employee:
         """
 
         # пиши свой код здесь
+        return f'name: {self.name} position: {self.position}'
 
     def __hash__(self):
         return id(self)
@@ -83,6 +98,8 @@ class Developer(Employee):
         """
 
         # пиши свой код здесь
+        super().__init__(name, self.position, salary)
+        self.language = language
 
 
 class Manager(Employee):
@@ -98,3 +115,4 @@ class Manager(Employee):
         """
 
         # пиши свой код здесь
+        super().__init__(name, self.position, salary)

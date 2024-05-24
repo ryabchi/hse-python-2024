@@ -1,6 +1,8 @@
 from pathlib import Path
 from typing import Dict, Any, List, Optional
 
+import re
+
 
 def count_words(text: str) -> Dict[str, int]:
     """
@@ -27,8 +29,12 @@ def count_words(text: str) -> Dict[str, int]:
     """
 
     # пиши свой код здесь
-
-    return {}
+    pattern = r'\b[a-zA-Z]+\b'
+    counter = {}
+    for word in re.findall(pattern, text):
+        word = word.lower()
+        counter[word] = counter.get(word, 0) + 1
+    return counter
 
 
 def exp_list(numbers: List[int], exp: int) -> List[int]:
@@ -41,8 +47,8 @@ def exp_list(numbers: List[int], exp: int) -> List[int]:
     """
 
     # пиши свой код здесь
-
-    return []
+    result = list(map(lambda x: x ** exp, numbers))
+    return result
 
 
 def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) -> float:
@@ -57,7 +63,10 @@ def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) 
     :param special_category: список категорий повышенного кешбека
     :return: размер кешбека
     """
-
+    result = 0
+    for operation in operations:
+        k = 0.05 if operation['category'] in special_category else 0.01
+        result += operation['amount'] * k
     return result
 
 
@@ -100,5 +109,21 @@ def csv_reader(header: str) -> int:
     """
 
     # пиши свой код здесь
+    # ^ А лучше на расте:
+    # P.S. Главный Фанат Раста
+    def remove_brackets(word: str) -> str:
+        if word.startswith('"') and word.endswith('"') or word.startswith("'") and word.endswith("'"):
+            word = word[1:-1]
+        return word
 
-    return 0
+    def read_csv_row(row: str):
+        return list(map(remove_brackets, row.strip().split(',')))
+
+    counter = {}
+    with open(get_path_to_file(), 'r') as file:
+        columns      = read_csv_row(file.readline())
+        column_index = columns.index(header)
+        for data in file.readlines():
+            value          = read_csv_row(data)[column_index]
+            counter[value] = counter.get(value, 0) + 1
+    return len(counter)
