@@ -104,3 +104,4 @@ class Manager(Employee):
         """
 
         # пиши свой код здесь
+#dfdf
