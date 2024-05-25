@@ -54,10 +54,11 @@ class Team:
         if not isinstance(member, Employee):
             raise TypeError("Member must be an instance of Employee")
 
-        if member in self.__members:
-            self.__members.remove(member)
-        else:
-            raise NoSuchMemberError("The specified participant is not a team member")
+        if member not in self.__members:
+            raise NoSuchMemberError(self.name, member.name)
+
+        self.__members.remove(member)
+
 
     def get_members(self) -> Set[Employee]:
         """

@@ -64,10 +64,10 @@ class Employee:
         if not isinstance(other, Employee):
             raise TypeError("Comparison must be with another Employee object")
 
-        position1_level = get_position_level(self.position)
-        position2_level = get_position_level(other.position)
+        if self.position not in POSITIONS or other.position not in POSITIONS:
+            raise ValueError("Not in positions")
 
-        return position1_level == position2_level
+        return self.position == other.position
 
     def __str__(self):
         """
