@@ -28,6 +28,9 @@ class Team:
         """
 
         # пиши свой код здесь
+        self.name=name
+        self.manager=manager
+        self.__members=set()
 
     def add_member(self, member: Employee) -> None:
         """
@@ -36,6 +39,7 @@ class Team:
         """
 
         # пиши свой код здесь
+        self.__members.add(member)
 
     def remove_member(self, member: Employee) -> None:
         """
@@ -44,6 +48,10 @@ class Team:
         """
 
         # пиши свой код здесь
+        if member in self.__members:
+            self.__members.remove(member)
+        else:
+            raise Exception('NoSuchMemberError')
 
     def get_members(self) -> Set[Employee]:
         """
@@ -52,6 +60,7 @@ class Team:
         """
 
         # пиши свой код здесь
+        return self.__members
 
     def show(self) -> None:
         """

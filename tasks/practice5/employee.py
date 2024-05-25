@@ -39,6 +39,9 @@ class Employee:
         """
 
         # пиши свой код здесь
+        self.name = name
+        self.position = position
+        self._salary = salary
 
     def get_salary(self) -> int:
         """
@@ -46,6 +49,7 @@ class Employee:
         """
 
         # пиши свой код здесь
+        return self._salary
 
     def __eq__(self, other: object) -> bool:
         """
@@ -56,6 +60,7 @@ class Employee:
         """
 
         # пиши свой код здесь
+        return get_position_level(other[0])==get_position_level(other[1])
 
     def __str__(self):
         """
@@ -64,6 +69,7 @@ class Employee:
         """
 
         # пиши свой код здесь
+        return f'name: {self.name} position: {self.position}'
 
     def __hash__(self):
         return id(self)
