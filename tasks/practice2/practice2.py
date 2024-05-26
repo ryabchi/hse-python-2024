@@ -12,7 +12,7 @@ def greet_user(name: str) -> str:
     :return: приветствие
     """
 
-    # пиши код здесь
+    greeting = f"Привет, {name}! Рад тебя видеть."
     return greeting
 
 
@@ -28,7 +28,9 @@ def get_amount() -> float:
     :return: случайную сумму на счете
     """
 
-    # пиши код здесь
+    random = __import__('random')
+    amount = random.uniform(100, 1000000)
+    amount = round(amount, 2)
     return amount
 
 
@@ -42,7 +44,10 @@ def is_phone_correct(phone_number: str) -> bool:
                                           False - если номер некорректный
     """
 
-    # пиши код здесь
+    result = False
+    if phone_number.startswith('+7') and len(phone_number) == 12:
+        if phone_number[2:].isdigit():
+            result = True
     return result
 
 
@@ -58,7 +63,8 @@ def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
                                           False - если денег недостаточно
     """
 
-    # пиши код здесь
+    transfer_amount_float = float(transfer_amount)
+    result = current_amount >= transfer_amount_float
     return result
 
 
@@ -76,8 +82,15 @@ def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
     :param uncultured_words: список запрещенных слов
     :return: текст, соответсвующий правилам
     """
-
-    # пиши код здесь
+    from typing import Iterable
+    text = ' '.join(text.split())
+    text = text.lower().capitalize()
+    dangers = ["\"", "\'"]
+    for symbol in dangers:
+        text = text.replace(symbol, '')
+    for word in uncultured_words:
+        text = text.replace(word, '#' * len(word))
+    result = text
     return result
 
 
@@ -100,5 +113,10 @@ def create_request_for_loan(user_info: str) -> str:
     :return: текст кредитной заявки
     """
 
-    # пиши код здесь
+    user = user_info.split(',')
+    result = f"Фамилия: {user[0]}\n" \
+             f"Имя: {user[1]}\n" \
+             f"Отчество: {user[2]}\n" \
+             f"Дата рождения: {user[3]}\n" \
+             f"Запрошенная сумма: {user[4]}"
     return result
