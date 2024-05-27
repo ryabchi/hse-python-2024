@@ -1,5 +1,7 @@
 from pathlib import Path
 from typing import Dict, Any, List, Optional
+import string
+import csv
 
 
 def count_words(text: str) -> Dict[str, int]:
@@ -26,9 +28,16 @@ def count_words(text: str) -> Dict[str, int]:
              значение - количество вхождений слов в текст
     """
 
-    # пиши свой код здесь
+    text = text.translate(str.maketrans('', '', string.punctuation)).lower()
+    words_dict = dict()
+    for word in text.split():
+        if word.isalpha():
+            if word not in words_dict:
+                words_dict[word] = 1
+            else:
+                words_dict[word] += 1
 
-    return {}
+    return words_dict
 
 
 def exp_list(numbers: List[int], exp: int) -> List[int]:
@@ -40,9 +49,7 @@ def exp_list(numbers: List[int], exp: int) -> List[int]:
     :return: список натуральных чисел
     """
 
-    # пиши свой код здесь
-
-    return []
+    return [number ** exp for number in numbers]
 
 
 def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) -> float:
@@ -57,7 +64,13 @@ def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) 
     :param special_category: список категорий повышенного кешбека
     :return: размер кешбека
     """
-
+    result = 0
+    for operation in operations:
+        amount = operation['amount']
+        if operation['category'] in special_category:
+            result += amount * 0.05
+        else:
+            result += amount * 0.01
     return result
 
 
@@ -99,6 +112,15 @@ def csv_reader(header: str) -> int:
     :return: количество уникальных элементов в столбце
     """
 
-    # пиши свой код здесь
-
-    return 0
+    with open(get_path_to_file(), encoding='utf-8') as file:
+        file_reader = csv.reader(file)
+        count = 0
+        header_index = None
+        value_set = set()
+        for row in file_reader:
+            if count == 0:
+                header_index = row.index(header)
+            else:
+                value_set.add(row[header_index])
+            count += 1
+    return len(value_set)
