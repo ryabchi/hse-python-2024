@@ -27,31 +27,43 @@ class Team:
         и инициализировать контейнер `__members`
         """
 
-        # пиши свой код здесь
+        self.name = name
+        self.manager = manager
+        self.__members = set()
 
     def add_member(self, member: Employee) -> None:
         """
         Задача: реализовать метод добавления участника в команду.
         Добавить можно только работника.
         """
+        if not isinstance(member, Employee):
+            raise TypeError("Member must be an instance of Employee")
 
-        # пиши свой код здесь
+        self.__members.add(member)
 
     def remove_member(self, member: Employee) -> None:
         """
         Задача: реализовать метод удаления участника из команды.
         Если в команде нет такого участника поднимается исключение `NoSuchMemberError`
         """
-
-        # пиши свой код здесь
+        if not isinstance(member, Employee):
+            raise TypeError("Member must be an instance of Employee")
+        if member not in self.__members:
+            raise NoSuchMemberError(self.name, member)
+        self.__members.remove(member)
 
     def get_members(self) -> Set[Employee]:
         """
         Задача: реализовать метод возвращения списка участков команды та,
         чтобы из вне нельзя было поменять список участников внутри класса
         """
+        return self.__members.copy()
 
-        # пиши свой код здесь
+    def __str__(self):
+        """
+        Реализовать строковое представление объекта.
+        """
+        return f"team: {self.name} manager: {self.manager.name} number of members: {len(self.__members)}"
 
     def show(self) -> None:
         """
