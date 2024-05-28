@@ -40,4 +40,20 @@ def search_phone(content: Any, name: str) -> Optional[str]:
 
     # пиши свой код здесь
 
-    return None
+    def temp_func(struct, key):
+        if isinstance(struct, dict):
+            if 'name' and 'phone' in struct and struct['name'] == key:
+                return struct['phone']
+            else:
+                for value in struct.values():
+                    res = temp_func(value, key)
+                    if  res is not None:	
+                        return res
+        elif isinstance(struct, list):
+            for elem in struct:
+                    res = temp_func(elem, key)
+                    if res is not None:
+                        return res
+        return None
+
+    return temp_func(content, name)
