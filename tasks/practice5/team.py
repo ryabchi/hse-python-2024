@@ -28,6 +28,9 @@ class Team:
         """
 
         # пиши свой код здесь
+        Team.name = name
+        Team.manager = manager
+        Team.__members = set()
 
     def add_member(self, member: Employee) -> None:
         """
@@ -36,6 +39,9 @@ class Team:
         """
 
         # пиши свой код здесь
+        if not isinstance(member, Employee):
+            raise TypeError
+        Team.__members.add(member)
 
     def remove_member(self, member: Employee) -> None:
         """
@@ -44,6 +50,13 @@ class Team:
         """
 
         # пиши свой код здесь
+        if not isinstance(member, Employee):
+            raise TypeError
+
+        if member not in Team.__members:
+            raise NoSuchMemberError(Team.name, member)
+
+        Team.__members.remove(member)
 
     def get_members(self) -> Set[Employee]:
         """
@@ -52,7 +65,8 @@ class Team:
         """
 
         # пиши свой код здесь
-
+        return Team.__members.copy()
+    
     def show(self) -> None:
         """
         DO NOT EDIT!
@@ -65,3 +79,7 @@ class Team:
         этого метода
         """
         print(self)
+
+    # для show(self)
+    def __str__(self):
+        return f'team: {Team.name} manager: {Team.manager.name} number of members: {len(self.get_members())}'
