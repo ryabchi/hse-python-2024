@@ -39,6 +39,15 @@ class Employee:
         """
 
         # пиши свой код здесь
+        self.name = name
+        if not isinstance(name, str):
+            raise ValueError('name must be a string')
+        self.position = position
+        if not isinstance(position, str):
+            raise ValueError('position must be a string')
+        self._salary = salary
+        if not isinstance(salary, int):
+            raise ValueError('salary must be int')
 
     def get_salary(self) -> int:
         """
@@ -46,6 +55,7 @@ class Employee:
         """
 
         # пиши свой код здесь
+        return self._salary
 
     def __eq__(self, other: object) -> bool:
         """
@@ -56,6 +66,12 @@ class Employee:
         """
 
         # пиши свой код здесь
+        if not isinstance(other, Employee):
+            raise TypeError("Cannot compare Employee with non-Employee object")
+        try:
+            return get_position_level(self.position) == get_position_level(other.position)
+        except NoSuchPositionError:
+            raise ValueError("Cannot compare Employee objects with undefined positions")
 
     def __str__(self):
         """
@@ -64,6 +80,7 @@ class Employee:
         """
 
         # пиши свой код здесь
+        return f'name: {self.name} position: {self.position}'
 
     def __hash__(self):
         return id(self)
@@ -83,6 +100,8 @@ class Developer(Employee):
         """
 
         # пиши свой код здесь
+        super().__init__(name, self.position, salary)
+        self.language = language
 
 
 class Manager(Employee):
@@ -98,3 +117,4 @@ class Manager(Employee):
         """
 
         # пиши свой код здесь
+        super().__init__(name, self.position, salary)
