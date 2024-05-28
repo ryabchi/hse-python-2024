@@ -28,6 +28,12 @@ class Team:
         """
 
         # пиши свой код здесь
+        self.name = name
+        self.manager = manager
+        self.__members = set()
+
+    def __str__(self):
+        return 'team: ' + self.name + ' manager: ' + self.manager.name + ' number of members: ' + str(len(self.__members))
 
     def add_member(self, member: Employee) -> None:
         """
@@ -36,7 +42,11 @@ class Team:
         """
 
         # пиши свой код здесь
-
+        is_employee = isinstance(member, Employee)
+        if is_employee:
+            self.__members.add(member)
+        else:
+            raise TypeError
     def remove_member(self, member: Employee) -> None:
         """
         Задача: реализовать метод удаления участника из команды.
@@ -44,6 +54,14 @@ class Team:
         """
 
         # пиши свой код здесь
+        is_employee = isinstance(member, Employee)
+        if is_employee:
+            if member in self.__members:
+                self.__members.remove(member)
+            else:
+                raise NoSuchMemberError(self.name, member)
+        else:
+            raise TypeError
 
     def get_members(self) -> Set[Employee]:
         """
@@ -52,6 +70,8 @@ class Team:
         """
 
         # пиши свой код здесь
+        temp_set = set(self.__members)
+        return temp_set
 
     def show(self) -> None:
         """

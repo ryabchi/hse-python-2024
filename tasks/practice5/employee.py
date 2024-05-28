@@ -39,6 +39,12 @@ class Employee:
         """
 
         # пиши свой код здесь
+        if (not type(salary) is int) or (not type(name) is str) or (not type(name) is str):
+            raise ValueError
+
+        self.name = name
+        self.position = position
+        self._salary = salary
 
     def get_salary(self) -> int:
         """
@@ -46,6 +52,7 @@ class Employee:
         """
 
         # пиши свой код здесь
+        return self._salary
 
     def __eq__(self, other: object) -> bool:
         """
@@ -56,6 +63,14 @@ class Employee:
         """
 
         # пиши свой код здесь
+        if type(other) is not Employee:
+            raise TypeError
+        try:
+            return get_position_level(self.position) == get_position_level(other.position)
+        except NoSuchPositionError as ns:
+            raise ValueError
+
+
 
     def __str__(self):
         """
@@ -64,6 +79,7 @@ class Employee:
         """
 
         # пиши свой код здесь
+        return 'name: ' + self.name + ' position: ' + self.position
 
     def __hash__(self):
         return id(self)
@@ -83,6 +99,8 @@ class Developer(Employee):
         """
 
         # пиши свой код здесь
+        super().__init__(name, self.position, salary)
+        self.language = language
 
 
 class Manager(Employee):
@@ -98,3 +116,4 @@ class Manager(Employee):
         """
 
         # пиши свой код здесь
+        super().__init__(name, self.position, salary)
