@@ -1,6 +1,6 @@
 from typing import Dict
 
-from .exception import NoSuchPositionError
+from tasks.practice5.exception import NoSuchPositionError, EmployeeError
 
 POSITIONS: Dict[str, int] = {
     'CEO': 0,
@@ -39,6 +39,11 @@ class Employee:
         """
 
         # пиши свой код здесь
+        if not isinstance(salary, int):
+            raise ValueError("Зарплата должна быть целым числом")
+        self.name = name
+        self.position = position
+        self._salary = salary
 
     def get_salary(self) -> int:
         """
@@ -46,6 +51,7 @@ class Employee:
         """
 
         # пиши свой код здесь
+        return self._salary
 
     def __eq__(self, other: object) -> bool:
         """
@@ -56,6 +62,12 @@ class Employee:
         """
 
         # пиши свой код здесь
+        if not isinstance(other, Employee):
+            raise TypeError("Сравнение может быть только между работниками")
+        try:
+            return get_position_level(self.position) == get_position_level(other.position)
+        except NoSuchPositionError as e:
+            raise ValueError(f"Ошибка сравнения позиции: {e}")
 
     def __str__(self):
         """
@@ -64,6 +76,7 @@ class Employee:
         """
 
         # пиши свой код здесь
+        return f'name: {self.name} position: {self.position}'
 
     def __hash__(self):
         return id(self)
@@ -83,6 +96,8 @@ class Developer(Employee):
         """
 
         # пиши свой код здесь
+        super().__init__(name, self.position, salary)
+        self.language = language
 
 
 class Manager(Employee):
@@ -98,3 +113,4 @@ class Manager(Employee):
         """
 
         # пиши свой код здесь
+        super().__init__(name, self.position, salary)
