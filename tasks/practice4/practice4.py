@@ -1,6 +1,7 @@
 from typing import Any, Optional
 
 
+
 def search_phone(content: Any, name: str) -> Optional[str]:
     """
     Функция поиска номера телефона пользователя в структуре данных.
@@ -39,5 +40,21 @@ def search_phone(content: Any, name: str) -> Optional[str]:
     """
 
     # пиши свой код здесь
+    if isinstance(content, dict):
+        if ('name' in content and 'phone' in content):
+            if content.get('name') == name:
+                return content.get('phone')
+
+        for i in content:
+            if not isinstance(content.get(i),str):
+                res = search_phone(content.get(i), name)
+                if res:
+                    return res
+    elif isinstance(content, list):
+        for i in content:
+            if not isinstance(i,str):
+                res = search_phone(i, name)
+                if res:
+                    return res
 
     return None
