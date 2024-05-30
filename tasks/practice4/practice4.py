@@ -40,4 +40,20 @@ def search_phone(content: Any, name: str) -> Optional[str]:
 
     # пиши свой код здесь
 
+    if isinstance(content, dict) and 'name' in content and content['name'] == name:
+        return content['phone']
+
+    for data_structure in content:
+        curr_data = data_structure
+
+        if isinstance(content, dict):
+            curr_data = content[data_structure]
+
+        if not (isinstance(curr_data, dict) or isinstance(curr_data, list)):
+            continue
+
+        is_found = search_phone(curr_data, name)
+        if is_found is not None:
+            return is_found
+
     return None
