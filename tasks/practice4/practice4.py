@@ -1,6 +1,5 @@
 from typing import Any, Optional
 
-ans = None
 def search_phone(content: Any, name: str) -> Optional[str]:
     """
     Функция поиска номера телефона пользователя в структуре данных.
