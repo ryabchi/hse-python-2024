@@ -1,6 +1,7 @@
+import csv
+import string
 from pathlib import Path
 from typing import Dict, Any, List, Optional
-
 
 def count_words(text: str) -> Dict[str, int]:
     """
@@ -25,10 +26,23 @@ def count_words(text: str) -> Dict[str, int]:
              ключ - слово в нижнем регистре
              значение - количество вхождений слов в текст
     """
-
-    # пиши свой код здесь
-
-    return {}
+    text = text.translate(str.maketrans('', '', string.punctuation))
+    text = text.lower()
+    result = {}
+    for word in text.split(" "):
+        isWord = True
+        if (len(word)<2):
+            isWord = False
+        for i in range(len(word)):
+            letter = ord(word[i])
+            if (letter<65 or letter>122 or (letter<97 and letter>90)):
+                isWord = False
+        if isWord:
+            if word in result:
+                result[word] += 1
+            else:
+                result[word] = 1
+    return result
 
 
 def exp_list(numbers: List[int], exp: int) -> List[int]:
@@ -40,9 +54,9 @@ def exp_list(numbers: List[int], exp: int) -> List[int]:
     :return: список натуральных чисел
     """
 
-    # пиши свой код здесь
+    result = [num**exp for num in numbers]
 
-    return []
+    return result
 
 
 def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) -> float:
@@ -57,8 +71,13 @@ def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) 
     :param special_category: список категорий повышенного кешбека
     :return: размер кешбека
     """
-
-    return result
+    sum = 0
+    for operation in operations:
+        if operation["category"] in special_category:
+            sum += operation["amount"]*0.05
+        else:
+            sum += operation["amount"]*0.01
+    return sum
 
 
 def get_path_to_file() -> Optional[Path]:
@@ -98,7 +117,15 @@ def csv_reader(header: str) -> int:
     :param header: название заголовка
     :return: количество уникальных элементов в столбце
     """
+    with open(get_path_to_file()) as f:
+        check_file = csv.DictReader(f)
+        text = ""
+        check = False
+        for row in check_file:
+            if not(check):
+                check = True
+                continue
+            text += row[header] + " "
+        dict = count_words(text)
 
-    # пиши свой код здесь
-
-    return 0
+    return len(dict)
