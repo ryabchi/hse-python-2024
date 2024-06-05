@@ -39,5 +39,22 @@ def search_phone(content: Any, name: str) -> Optional[str]:
     """
 
     # пиши свой код здесь
+    result = None
 
-    return None
+    if isinstance(content, list):
+        for struct in content:
+            ans = search_phone(struct, name)
+            if ans is not None:
+                result = ans
+                return result
+
+    elif isinstance(content, dict):
+        if 'name' in content and 'phone' in content and content['name'] == name:
+            return content['phone']
+
+        for struct in content.values():
+            ans = search_phone(struct, name)
+            if ans is not None:
+                result = ans
+                return result
+
