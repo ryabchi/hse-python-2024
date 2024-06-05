@@ -90,7 +90,7 @@ def get_path_to_file() -> Optional[Path]:
         base_path = Path().resolve().parent
     else:
         base_path = Path().resolve()
-    return base_path / 'PyHw' / 'hse-python-2024' / 'tasks' / 'practice3' / 'tasks.csv'
+    return base_path / 'tasks' / 'practice3' / 'tasks.csv'
 
 
 def csv_reader(header: str) -> int:
