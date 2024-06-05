@@ -72,8 +72,8 @@ def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) 
     :param special_category: список категорий повышенного кешбека
     :return: размер кешбека
     """
-    is_cashback = lambda x: x['amount'] * 0.05 if x['category'] in special_category else x['amount'] * 0.01
-    result = sum(is_cashback(i) for i in operations)
+
+    result = sum(list(map(lambda x: x['amount'] * 0.05 if x['category'] in special_category else x['amount'] * 0.01, operations)))
     return result
 
 
