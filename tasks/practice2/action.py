@@ -112,21 +112,19 @@ def enter_message_state(update: Update, context: CallbackContext):
 
 
 def enter_amount_state(update: Update, context: CallbackContext):
-    user_state = USER_DATABASE[update.message.from_user.id]["state"]
+    user_id = update.message.from_user.id
+    user_state = USER_DATABASE[user_id]["state"]
+
     if user_state == "enter_message":
-        USER_DATABASE[update.message.from_user.id]["state"] = "enter_amount"
+        USER_DATABASE[user_id]["state"] = "enter_amount"
         text = "Введите сумму фантиков, которую хотите перевести:"
         context.bot.send_message(
-            update.message.from_user.id,
+            user_id,
             text,
         )
 
-    if is_amount_correct(
-        USER_DATABASE[update.message.from_user.id]["amount"], update.message.text
-    ):
-        USER_DATABASE[update.message.from_user.id]["to_amount"] = float(
-            update.message.text
-        )
+    if is_amount_correct(USER_DATABASE[user_id]["amount"], update.message.text):
+        USER_DATABASE[user_id]["to_amount"] = float(update.message.text)
         return send_money_state(update, context)
     else:
         return get_loan_state(update, context)
