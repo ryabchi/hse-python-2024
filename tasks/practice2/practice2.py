@@ -45,8 +45,6 @@ def is_phone_correct(phone_number: str) -> bool:
                                           False - если номер некорректный
     """
 
-    nums = '1234567890'
-
     if(phone_number[:2] != '+7'
        or not phone_number[2:].isnumeric()
        or len(phone_number) != 12):

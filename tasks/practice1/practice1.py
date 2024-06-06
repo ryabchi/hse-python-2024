@@ -19,5 +19,5 @@ def calculate_salary(total_compensation: int) -> float:
     :param total_compensation: сумма зарплаты до вычета налога
     :return: сумма заплаты после вычета налога
     """
-
-    return total_compensation * 0.87
+    taxes = total_compensation * 0.13
+    return total_compensation - taxes
