@@ -23,8 +23,17 @@ def register_user(user_id: int, force: bool = False):
         USER_DATABASE[user_id] = {"amount": get_amount(), "state": UserState.WELCOME}
 
 
+def get_user_state(user_id: int) -> UserState:
+    return USER_DATABASE[user_id]["state"]
+
+
+def set_user_state(user_id: int, state: UserState):
+    USER_DATABASE[user_id]["state"] = state
+
+
 def welcome_state(update: Update, context: CallbackContext):
-    USER_DATABASE[update.message.from_user.id]["state"] = UserState.WELCOME
+    user_id = update.message.from_user.id
+    set_user_state(user_id, UserState.WELCOME)
     if update.message.text == START_DEMO_BUTTON:
         return main_menu_state(update, context)
 
@@ -41,20 +50,21 @@ def welcome_state(update: Update, context: CallbackContext):
     )
 
     context.bot.send_message(
-        update.message.from_user.id,
+        user_id,
         text,
         reply_markup=keyboard,
     )
 
 
 def main_menu_state(update: Update, context: CallbackContext):
-    USER_DATABASE[update.message.from_user.id]["state"] = UserState.MAIN_MENU
+    user_id = update.message.from_user.id
+    set_user_state(user_id, UserState.MAIN_MENU)
 
     if update.message.text == SEND_MONEY_BUTTON:
         return choose_recipient_state(update, context)
 
     greeting = greet_user(update.message.from_user.name)
-    amount = USER_DATABASE[update.message.from_user.id]["amount"]
+    amount = USER_DATABASE[user_id]["amount"]
     text = (
         f"{greeting}\n\n"
         f"Баланс твоего счета: {amount} фантиков\n\n"
@@ -68,17 +78,18 @@ def main_menu_state(update: Update, context: CallbackContext):
     )
 
     context.bot.send_message(
-        update.message.from_user.id,
+        user_id,
         text,
         reply_markup=keyboard,
     )
 
 
 def choose_recipient_state(update: Update, context: CallbackContext):
-    USER_DATABASE[update.message.from_user.id]["state"] = UserState.CHOOSE_RECIPIENT
+    user_id = update.message.from_user.id
+    set_user_state(user_id, UserState.CHOOSE_RECIPIENT)
 
     if is_phone_correct(update.message.text):
-        USER_DATABASE[update.message.from_user.id]["to_phone"] = update.message.text
+        USER_DATABASE[user_id]["to_phone"] = update.message.text
         return enter_message_state(update, context)
 
     if update.message.text == SEND_MONEY_BUTTON:
@@ -87,23 +98,22 @@ def choose_recipient_state(update: Update, context: CallbackContext):
         text = "Ошибка! Введите корректный номер получателя:"
 
     context.bot.send_message(
-        update.message.from_user.id,
+        user_id,
         text,
     )
 
 
 def enter_message_state(update: Update, context: CallbackContext):
-    user_state = USER_DATABASE[update.message.from_user.id]["state"]
-    if user_state == UserState.CHOOSE_RECIPIENT:
-        USER_DATABASE[update.message.from_user.id]["state"] = UserState.ENTER_MESSAGE
+    user_id = update.message.from_user.id
+    if get_user_state(user_id) == UserState.CHOOSE_RECIPIENT:
+        set_user_state(user_id, UserState.ENTER_MESSAGE)
         text = "Введите сообщение получателю:"
         context.bot.send_message(
-            update.message.from_user.id,
+            user_id,
             text,
         )
-
     else:
-        USER_DATABASE[update.message.from_user.id]["to_message"] = moderate_text(
+        USER_DATABASE[user_id]["to_message"] = moderate_text(
             update.message.text, UNCULTURED_WORDS
         )
         return enter_amount_state(update, context)
@@ -111,47 +121,47 @@ def enter_message_state(update: Update, context: CallbackContext):
 
 def enter_amount_state(update: Update, context: CallbackContext):
     user_id = update.message.from_user.id
-    user_state = USER_DATABASE[user_id]["state"]
 
-    if user_state == UserState.ENTER_MESSAGE:
-        USER_DATABASE[user_id]["state"] = UserState.ENTER_AMOUNT
+    if get_user_state(user_id) == UserState.ENTER_MESSAGE:
+        set_user_state(user_id, UserState.ENTER_AMOUNT)
         text = "Введите сумму фантиков, которую хотите перевести:"
         context.bot.send_message(
             user_id,
             text,
         )
-
-    if is_amount_correct(USER_DATABASE[user_id]["amount"], update.message.text):
-        USER_DATABASE[user_id]["to_amount"] = float(update.message.text)
-        return send_money_state(update, context)
     else:
-        return get_loan_state(update, context)
+        if is_amount_correct(USER_DATABASE[user_id]["amount"], update.message.text):
+            USER_DATABASE[user_id]["to_amount"] = float(update.message.text)
+            return send_money_state(update, context)
+        else:
+            return get_loan_state(update, context)
 
 
 def send_money_state(update: Update, context: CallbackContext):
-    user_data = USER_DATABASE[update.message.from_user.id]
-    user_data["state"] = UserState.WELCOME
+    user_id = update.message.from_user.id
+    user_data = USER_DATABASE[user_id]
+    set_user_state(user_id, UserState.WELCOME)
     text = (
         f'Перевод для {user_data["to_phone"]} в размере {user_data["to_amount"]} успешно отправлен!\n\n'
         f'Сообщение к переводу:\n{user_data["to_message"]}'
     )
     context.bot.send_message(
-        update.message.from_user.id,
+        user_id,
         text,
     )
 
 
 def get_loan_state(update: Update, context: CallbackContext):
-    user_state = USER_DATABASE[update.message.from_user.id]["state"]
-    if user_state == UserState.ENTER_AMOUNT:
-        USER_DATABASE[update.message.from_user.id]["state"] = UserState.GET_LOAN
+    user_id = update.message.from_user.id
+    if get_user_state(user_id) == UserState.ENTER_AMOUNT:
+        set_user_state(user_id, UserState.GET_LOAN)
         text = (
             "У вас недостаточно денег!\n\nОтправьте заявку на кредит!\n"
             "Для этого отправьте строку по примеру ниже:\n"
             "Иванов,Петр,Сергеевич,01.01.1991,10000"
         )
         context.bot.send_message(
-            update.message.from_user.id,
+            user_id,
             text,
         )
         return None
@@ -165,14 +175,14 @@ def get_loan_state(update: Update, context: CallbackContext):
             "Иванов,Петр,Сергеевич,01.01.1991,10000"
         )
         context.bot.send_message(
-            update.message.from_user.id,
+            user_id,
             text,
         )
         return
 
-    USER_DATABASE[update.message.from_user.id]["state"] = UserState.WELCOME
+    set_user_state(user_id, UserState.WELCOME)
     text = f"Заявка:\n\n{loan_request}\n\nОтправлена!"
     context.bot.send_message(
-        update.message.from_user.id,
+        user_id,
         text,
     )
