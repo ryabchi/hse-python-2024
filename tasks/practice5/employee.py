@@ -38,11 +38,12 @@ class Employee:
         Задача: реализовать конструктор класса, чтобы все тесты проходили
         """
 
-        if isinstance(name, str) and isinstance(position, str) and isinstance(salary, str):
+        if isinstance(name, str) and isinstance(position, str) and isinstance(salary, int):
+            self.name = name
+            self.position = position
+            self._salary = salary
+        else:
             raise ValueError
-        self.name = name
-        self.position = position
-        self._salary = salary
 
     def get_salary(self) -> int:
         """
