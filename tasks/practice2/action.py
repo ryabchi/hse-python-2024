@@ -1,3 +1,4 @@
+from userstate import UserState
 from telegram import Update, ReplyKeyboardMarkup
 from telegram.ext import CallbackContext
 
@@ -19,14 +20,11 @@ USER_DATABASE = {}
 
 def register_user(user_id: int, force: bool = False):
     if user_id not in USER_DATABASE or force:
-        USER_DATABASE[user_id] = {
-            "amount": get_amount(),
-            "state": "welcome",
-        }
+        USER_DATABASE[user_id] = {"amount": get_amount(), "state": UserState.WELCOME}
 
 
 def welcome_state(update: Update, context: CallbackContext):
-    USER_DATABASE[update.message.from_user.id]["state"] = "welcome"
+    USER_DATABASE[update.message.from_user.id]["state"] = UserState.WELCOME
     if update.message.text == START_DEMO_BUTTON:
         return main_menu_state(update, context)
 
@@ -50,7 +48,7 @@ def welcome_state(update: Update, context: CallbackContext):
 
 
 def main_menu_state(update: Update, context: CallbackContext):
-    USER_DATABASE[update.message.from_user.id]["state"] = "main_menu"
+    USER_DATABASE[update.message.from_user.id]["state"] = UserState.MAIN_MENU
 
     if update.message.text == SEND_MONEY_BUTTON:
         return choose_recipient_state(update, context)
@@ -77,7 +75,7 @@ def main_menu_state(update: Update, context: CallbackContext):
 
 
 def choose_recipient_state(update: Update, context: CallbackContext):
-    USER_DATABASE[update.message.from_user.id]["state"] = "choose_recipient"
+    USER_DATABASE[update.message.from_user.id]["state"] = UserState.CHOOSE_RECIPIENT
 
     if is_phone_correct(update.message.text):
         USER_DATABASE[update.message.from_user.id]["to_phone"] = update.message.text
@@ -96,8 +94,8 @@ def choose_recipient_state(update: Update, context: CallbackContext):
 
 def enter_message_state(update: Update, context: CallbackContext):
     user_state = USER_DATABASE[update.message.from_user.id]["state"]
-    if user_state == "choose_recipient":
-        USER_DATABASE[update.message.from_user.id]["state"] = "enter_message"
+    if user_state == UserState.CHOOSE_RECIPIENT:
+        USER_DATABASE[update.message.from_user.id]["state"] = UserState.ENTER_MESSAGE
         text = "Введите сообщение получателю:"
         context.bot.send_message(
             update.message.from_user.id,
@@ -115,8 +113,8 @@ def enter_amount_state(update: Update, context: CallbackContext):
     user_id = update.message.from_user.id
     user_state = USER_DATABASE[user_id]["state"]
 
-    if user_state == "enter_message":
-        USER_DATABASE[user_id]["state"] = "enter_amount"
+    if user_state == UserState.ENTER_MESSAGE:
+        USER_DATABASE[user_id]["state"] = UserState.ENTER_AMOUNT
         text = "Введите сумму фантиков, которую хотите перевести:"
         context.bot.send_message(
             user_id,
@@ -132,7 +130,7 @@ def enter_amount_state(update: Update, context: CallbackContext):
 
 def send_money_state(update: Update, context: CallbackContext):
     user_data = USER_DATABASE[update.message.from_user.id]
-    user_data["state"] = "welcome"
+    user_data["state"] = UserState.WELCOME
     text = (
         f'Перевод для {user_data["to_phone"]} в размере {user_data["to_amount"]} успешно отправлен!\n\n'
         f'Сообщение к переводу:\n{user_data["to_message"]}'
@@ -145,8 +143,8 @@ def send_money_state(update: Update, context: CallbackContext):
 
 def get_loan_state(update: Update, context: CallbackContext):
     user_state = USER_DATABASE[update.message.from_user.id]["state"]
-    if user_state == "enter_amount":
-        USER_DATABASE[update.message.from_user.id]["state"] = "get_loan"
+    if user_state == UserState.ENTER_AMOUNT:
+        USER_DATABASE[update.message.from_user.id]["state"] = UserState.GET_LOAN
         text = (
             "У вас недостаточно денег!\n\nОтправьте заявку на кредит!\n"
             "Для этого отправьте строку по примеру ниже:\n"
@@ -172,7 +170,7 @@ def get_loan_state(update: Update, context: CallbackContext):
         )
         return
 
-    USER_DATABASE[update.message.from_user.id]["state"] = "welcome"
+    USER_DATABASE[update.message.from_user.id]["state"] = UserState.WELCOME
     text = f"Заявка:\n\n{loan_request}\n\nОтправлена!"
     context.bot.send_message(
         update.message.from_user.id,
