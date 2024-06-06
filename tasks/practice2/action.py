@@ -83,11 +83,10 @@ def choose_recipient_state(update: Update, context: CallbackContext):
         USER_DATABASE[update.message.from_user.id]["to_phone"] = update.message.text
         return enter_message_state(update, context)
 
-    text = (
-        "Введите номер получателя:"
-        if update.message.text == SEND_MONEY_BUTTON
-        else "Ошибка! Введите корректный номер получателя:"
-    )
+    if update.message.text == SEND_MONEY_BUTTON:
+        text = "Введите номер получателя:"
+    else:
+        text = "Ошибка! Введите корректный номер получателя:"
 
     context.bot.send_message(
         update.message.from_user.id,
