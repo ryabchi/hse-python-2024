@@ -131,11 +131,11 @@ def enter_amount_state(update: Update, context: CallbackContext):
 
 
 def send_money_state(update: Update, context: CallbackContext):
-    user = USER_DATABASE[update.message.from_user.id]
-    user["state"] = "welcome"
+    user_data = USER_DATABASE[update.message.from_user.id]
+    user_data["state"] = "welcome"
     text = (
-        f'Перевод для {user["to_phone"]} в размере {user["to_amount"]} успешно отправлен!\n\n'
-        f'Сообщение к переводу:\n{user["to_message"]}'
+        f'Перевод для {user_data["to_phone"]} в размере {user_data["to_amount"]} успешно отправлен!\n\n'
+        f'Сообщение к переводу:\n{user_data["to_message"]}'
     )
     context.bot.send_message(
         update.message.from_user.id,
