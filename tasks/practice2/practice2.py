@@ -46,7 +46,7 @@ def is_phone_correct(phone_number: str) -> bool:
                                           False - если номер некорректный
     """
 
-    result = re.match(r"^\+7\d{10}$", phone_number) is not None
+    result = bool(re.match(r"^\+7\d{10}$", phone_number))
 
     return result
 
