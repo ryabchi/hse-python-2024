@@ -1,3 +1,4 @@
+import random
 from typing import Iterable
 
 UNCULTURED_WORDS = ('kotleta', 'pirog')
@@ -13,6 +14,7 @@ def greet_user(name: str) -> str:
     """
 
     # пиши код здесь
+    greeting = "Hello, dear" + name + "!"
     return greeting
 
 
@@ -29,6 +31,7 @@ def get_amount() -> float:
     """
 
     # пиши код здесь
+    amount = round(random.uniform(100, 1000000), 2)
     return amount
 
 
@@ -43,6 +46,7 @@ def is_phone_correct(phone_number: str) -> bool:
     """
 
     # пиши код здесь
+    result = phone_number[:2]=="+7" and len(phone_number)==12 and phone_number[1:].isdigit()
     return result
 
 
@@ -59,6 +63,7 @@ def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
     """
 
     # пиши код здесь
+    result = current_amount>=float(transfer_amount)
     return result
 
 
@@ -78,6 +83,12 @@ def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
     """
 
     # пиши код здесь
+    text = text.replace("'","")
+    text = text.replace('"', '')
+    for i in uncultured_words:
+        text = text.replace(i,len(i)*"#")
+    text = ' '.join(list(map(lambda x: x.strip(), text.split())))
+    result = text[0].upper()+text[1:].lower()
     return result
 
 
@@ -101,4 +112,10 @@ def create_request_for_loan(user_info: str) -> str:
     """
 
     # пиши код здесь
+    splited_info = user_info.split(',')
+    result = ("Фамилия: "+splited_info[0]+
+              "\nИмя: "+splited_info[1]+
+              "\nОтчество: "+splited_info[2]+
+              "\nДата рождения: "+splited_info[3]+
+              "\nЗапрошенная сумма: "+splited_info[4])
     return result
