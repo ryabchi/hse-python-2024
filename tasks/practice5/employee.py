@@ -67,9 +67,10 @@ class Employee:
         try:
             position_level_self = get_position_level(self.position)
             position_level_other = get_position_level(other.position)
-            return position_level_self == position_level_other
         except NoSuchPositionError as e:
             raise ValueError()
+
+        return position_level_self == position_level_other
 
     def __str__(self):
         """
