@@ -1,3 +1,6 @@
+TAX_RATE = 0.87
+
+
 def concatenate_strings(a: str, b: str) -> str:
     """
     Функция для сложения двух строк.
@@ -22,6 +25,6 @@ def calculate_salary(total_compensation: int) -> float:
     :return: сумма заплаты после вычета налога
     """
 
-    result = 0.87 * total_compensation
+    result = TAX_RATE * total_compensation
 
     return result
