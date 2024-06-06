@@ -83,24 +83,13 @@ def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
     :return: текст, соответсвующий правилам
     """
 
-    words = text.split()
-    moderated_words = []
+    text = text.replace('"', "").replace("'", "")
+    text = " ".join(text.split()).lower()
 
-    for i, word in enumerate(words):
-        if word in uncultured_words:
-            moderated_words.append("#" * len(word))
-        elif word[-1] == "!" and word[:-1] in uncultured_words:
-            moderated_words.append("#" * (len(word) - 1) + "!")
-        else:
-            if i == 0:
-                moderated_words.append(word[0].upper() + word[1:].lower())
-            else:
-                moderated_words.append(word.lower())
+    for word in uncultured_words:
+        text = text.replace(word.lower(), "#" * len(word))
 
-    moderated_text = " ".join(moderated_words)
-    result = moderated_text.replace('"', "").replace("'", "")
-
-    return result
+    return text.capitalize()
 
 
 def create_request_for_loan(user_info: str) -> str:
