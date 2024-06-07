@@ -53,7 +53,7 @@ class Team:
         try:
             self.__members.remove(member)
         except:
-            raise NoSuchMemberError
+            raise NoSuchMemberError(self.name, member)
 
     def get_members(self) -> Set[Employee]:
         """
