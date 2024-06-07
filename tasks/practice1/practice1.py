@@ -4,12 +4,12 @@ def concatenate_strings(a: str, b: str) -> str:
     Результат сложения запишите в переменную result.
 
     :param a: число
-    :param b: число
+    :param b: числоpy
     :return: результат сложения
     """
 
     # пиши свой код здесь
-
+    result = a + b
     return result
 
 
@@ -23,5 +23,5 @@ def calculate_salary(total_compensation: int) -> float:
     """
 
     # пиши свой код здесь
-
+    result = 0.87 * total_compensation
     return result
