@@ -40,7 +40,10 @@ class Employee:
 
         self.name = name
         self.position = position
-        self._salary = salary
+        if isinstance(salary, int) or isinstance(salary, float):
+              self._salary = salary
+        else:
+              raise ValueError
 
     def get_salary(self) -> int:
         """
