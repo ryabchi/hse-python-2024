@@ -28,16 +28,11 @@ def count_words(text: str) -> Dict[str, int]:
              значение - количество вхождений слов в текст
     """
 
-    text = re.sub(r'[,.!-]+', '', text)
-    text = text.split(' ')
+    words = re.findall(r'\b[a-zA-Z]+\b', text.lower())
 
     result = dict()
-
-    for word in text:
-        if len(word) <= 1 or not word.isalpha():
-            continue
-
-        result[word.lower()] = result.get(word.lower(), 0) + 1
+    for word in words:
+        result[word] = result.get(word, 0) + 1
 
     return result
 
@@ -67,7 +62,7 @@ def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) 
     :return: размер кешбека
     """
 
-    result = 0
+    result: float = 0
 
     for elem in operations:
         if(elem['category'] in special_category):
@@ -121,6 +116,6 @@ def csv_reader(header: str) -> int:
         reader = csv.reader(csvfile)
         headers = next(reader)
         col_id = headers.index(header)
-        elems = {row[col_id] for row in reader}
+        result = {row[col_id] for row in reader}
 
-    return len(elems)
+    return len(result)

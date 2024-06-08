@@ -45,12 +45,9 @@ def is_phone_correct(phone_number: str) -> bool:
                                           False - если номер некорректный
     """
 
-    if(phone_number[:2] != '+7'
-       or not phone_number[2:].isnumeric()
-       or len(phone_number) != 12):
-        return False
+    result = re.match(r"^\+7\d{10}$", phone_number) is not None
 
-    return True
+    return result
 
 
 def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
@@ -65,7 +62,7 @@ def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
                                           False - если денег недостаточно
     """
 
-    if(current_amount >= float(transfer_amount)):
+    if current_amount >= float(transfer_amount):
         return True
     
     return False
@@ -87,9 +84,10 @@ def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
     """
 
     result = re.sub(r' +', ' ', text)
-    result = result.replace('"', '').replace("'", '')
-
-    result = result.strip().capitalize()
+    result = result.replace('"', '')   \
+                   .replace("'", '')   \
+                   .strip()            \
+                   .capitalize()
     
     for word in uncultured_words:
         result = result.replace(word, '#' * len(word))
