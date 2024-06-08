@@ -1,4 +1,6 @@
 from typing import Iterable
+from random import uniform
+import re
 
 UNCULTURED_WORDS = ('kotleta', 'pirog')
 
@@ -11,8 +13,8 @@ def greet_user(name: str) -> str:
     :param name: имя пользователя
     :return: приветствие
     """
+    greeting = "Hi " + name
 
-    # пиши код здесь
     return greeting
 
 
@@ -28,7 +30,8 @@ def get_amount() -> float:
     :return: случайную сумму на счете
     """
 
-    # пиши код здесь
+    amount = round(uniform(100,1000000), 2)
+
     return amount
 
 
@@ -42,7 +45,8 @@ def is_phone_correct(phone_number: str) -> bool:
                                           False - если номер некорректный
     """
 
-    # пиши код здесь
+    result = re.match(r"^\+7\d{10}$", phone_number) is not None
+
     return result
 
 
@@ -58,8 +62,10 @@ def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
                                           False - если денег недостаточно
     """
 
-    # пиши код здесь
-    return result
+    if current_amount >= float(transfer_amount):
+        return True
+    
+    return False
 
 
 def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
@@ -77,7 +83,15 @@ def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
     :return: текст, соответсвующий правилам
     """
 
-    # пиши код здесь
+    result = re.sub(r' +', ' ', text)
+    result = result.replace('"', '')   \
+                   .replace("'", '')   \
+                   .strip()            \
+                   .capitalize()
+    
+    for word in uncultured_words:
+        result = result.replace(word, '#' * len(word))
+
     return result
 
 
@@ -100,5 +114,11 @@ def create_request_for_loan(user_info: str) -> str:
     :return: текст кредитной заявки
     """
 
-    # пиши код здесь
+    info = user_info.split(',')
+    result = 'Фамилия: ' + info[0] + '\n' + \
+             'Имя: ' + info[1] + '\n' + \
+             'Отчество: ' + info[2] + '\n' + \
+             'Дата рождения: ' + info[3] + '\n' + \
+             'Запрошенная сумма: ' + info[4]
+
     return result
