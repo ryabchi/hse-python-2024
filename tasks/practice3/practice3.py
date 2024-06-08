@@ -25,10 +25,22 @@ def count_words(text: str) -> Dict[str, int]:
              ключ - слово в нижнем регистре
              значение - количество вхождений слов в текст
     """
+    from typing import Dict
 
-    # пиши свой код здесь
-
-    return {}
+    znaki = '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'
+    for char in znaki:
+        text = text.replace(char, '')
+    words = text.split()
+    result = {}
+    for word in words:
+        word = word.lower()
+        if any(char.isdigit() for char in word) or len(word) <= 1:
+            continue
+        if word in result:
+           result[word] += 1
+        else:
+            result[word] = 1
+    return result
 
 
 def exp_list(numbers: List[int], exp: int) -> List[int]:
@@ -39,10 +51,12 @@ def exp_list(numbers: List[int], exp: int) -> List[int]:
     :param exp: в какую степень возвести числа в списке
     :return: список натуральных чисел
     """
+    from typing import List
 
-    # пиши свой код здесь
-
-    return []
+    result = []
+    for number in numbers:
+        result.append(number ** exp)
+    return result
 
 
 def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) -> float:
@@ -57,7 +71,16 @@ def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) 
     :param special_category: список категорий повышенного кешбека
     :return: размер кешбека
     """
+    from typing import List, Dict, Any
 
+    result = 0.0
+    for operation in operations:
+        amount = operation['amount']
+        category = operation['category']
+        if category in special_category:
+            result += amount * 0.05
+        else:
+            result += amount * 0.01
     return result
 
 
@@ -99,6 +122,15 @@ def csv_reader(header: str) -> int:
     :return: количество уникальных элементов в столбце
     """
 
-    # пиши свой код здесь
+    from typing import Optional
+    from pathlib import Path
+    import csv
 
-    return 0
+    file_path = get_path_to_file()
+    with open(file_path, 'r', newline='', encoding='utf-8') as csvfile:
+        reader = csv.DictReader(csvfile)
+        values = [row[header] for row in reader]
+        unique_count = len(set(values))
+
+    return unique_count
+
