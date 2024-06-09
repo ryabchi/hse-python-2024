@@ -36,7 +36,7 @@ STATE_TO_FUNCTION = {
     'get_loan': get_loan_state,
 }
 
-BOT_TOKEN = os.environ['BOT_TOKEN']
+BOT_TOKEN = os.environ['7241892165:AAGv4ieD5XBTSsdl991A57-ca03GZaUHJBs']
 
 
 def start(update: Update, context: CallbackContext) -> None:

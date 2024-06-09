@@ -1,5 +1,6 @@
 from pathlib import Path
 from typing import Dict, Any, List, Optional
+import csv
 
 
 def count_words(text: str) -> Dict[str, int]:
@@ -26,9 +27,22 @@ def count_words(text: str) -> Dict[str, int]:
              значение - количество вхождений слов в текст
     """
 
-    # пиши свой код здесь
+    text = text.lower()
+    punctuation_marks = [',', '.', '?', '!', ':', ';', '-']
+    text_without_marks = ""
+    for i in range(len(text)):
+        if text[i] in punctuation_marks:
+            continue
+        text_without_marks += text[i]
+    words = text_without_marks.split()
 
-    return {}
+    dictionary = {}
+    for item in words:
+        if len(item) > 1 and item.isalpha():
+            if item not in dictionary:
+                dictionary[item] = 0
+            dictionary[item] += 1
+    return dictionary
 
 
 def exp_list(numbers: List[int], exp: int) -> List[int]:
@@ -40,9 +54,9 @@ def exp_list(numbers: List[int], exp: int) -> List[int]:
     :return: список натуральных чисел
     """
 
-    # пиши свой код здесь
+    result = [i**exp for i in numbers]
 
-    return []
+    return result
 
 
 def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) -> float:
@@ -58,6 +72,12 @@ def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) 
     :return: размер кешбека
     """
 
+    result = 0
+    for purchase in operations:
+        if purchase['category'] in special_category:
+            result += purchase['amount'] * 0.05
+        else:
+            result += purchase['amount'] * 0.01
     return result
 
 
@@ -99,6 +119,15 @@ def csv_reader(header: str) -> int:
     :return: количество уникальных элементов в столбце
     """
 
-    # пиши свой код здесь
+    PATH = get_path_to_file()
+    s = set()
+    with open(PATH, 'r') as f:
+        reader = csv.reader(f)
+        headers = next(reader)
+        i = headers.index(header)
 
-    return 0
+        for row in reader:
+            if row[i] not in s:
+                s.add(row[i])
+    result = len(s)
+    return result
