@@ -56,13 +56,14 @@ class Employee:
         Сравнение происходит по уровню позиции см. `get_position_level`.
         Если что-то идет не так - бросаются исключения. Смотрим что происходит в тестах.
         """
-        if isinstance(self, Employee):
-            return get_position_level(self.position) == get_position_level(other.position)
-        elif not isinstance(self, Employee):
-            raise NotImplemented
-        elif not isinstance(other, Employee):
-            raise NoSuchMemberError
-
+        if not isinstance(self, Employee):
+            raise TypeError
+        else:
+            try:
+                return get_position_level(self.position) == get_position_level(other.position)
+            except NoSuchPositionError:
+                raise ValueError
+        
 
     def __str__(self):
         """
@@ -70,7 +71,7 @@ class Employee:
         Пример вывода: 'name: Ivan position manager'
         """
 
-        return 'name: ' + str(self.name) + ' position ' + str(self.position)
+        return 'name: ' + str(self.name) + ' position: ' + str(self.position)
 
     def __hash__(self):
         return id(self)
