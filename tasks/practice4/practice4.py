@@ -40,4 +40,24 @@ def search_phone(content: Any, name: str) -> Optional[str]:
 
     # пиши свой код здесь
 
+    if (isinstance(content, list)):
+        for i in content:
+            result = search_phone(i, name)
+            if result:
+                return result
+
+    if(isinstance(content, dict)):
+        if 'name' in content and 'phone' in content and content['name']==name:
+            return content['phone']
+
+        else:
+            for i in content:
+                result = search_phone(content[i], name)
+                if result:
+                    return result
+
+    if (len(name) == 12 and name[1:11].isdigit()):
+        return name
     return None
+
+
