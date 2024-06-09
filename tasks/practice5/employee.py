@@ -37,15 +37,19 @@ class Employee:
         """
         Задача: реализовать конструктор класса, чтобы все тесты проходили
         """
+        if not isinstance(name, str) or not isinstance(position, str) or not isinstance(salary, int):
+            raise ValueError
+        self.name = name
+        self.position = position
+        self._salary = salary
 
-        # пиши свой код здесь
 
     def get_salary(self) -> int:
         """
         Метод возвращает зарплату сотрудника.
         """
+        return self._salary
 
-        # пиши свой код здесь
 
     def __eq__(self, other: object) -> bool:
         """
@@ -54,8 +58,22 @@ class Employee:
         Сравнение происходит по уровню позиции см. `get_position_level`.
         Если что-то идет не так - бросаются исключения. Смотрим что происходит в тестах.
         """
+        if not isinstance(other, Employee):
+            raise TypeError
 
-        # пиши свой код здесь
+        try:
+            get_position_level(self.position)
+        except NoSuchPositionError:
+            raise ValueError
+        try:
+            get_position_level(other.position)
+        except NoSuchPositionError:
+            raise ValueError
+
+
+
+        return get_position_level(self.position) == get_position_level(other.position)
+
 
     def __str__(self):
         """
@@ -63,7 +81,7 @@ class Employee:
         Пример вывода: 'name: Ivan position manager'
         """
 
-        # пиши свой код здесь
+        return f'name: {self.name} position: {self.position}'
 
     def __hash__(self):
         return id(self)
@@ -81,8 +99,8 @@ class Developer(Employee):
         """
         Задача: реализовать конструктор класса, используя конструктор родителя
         """
-
-        # пиши свой код здесь
+        super().__init__(name, self.position, salary)
+        self.language = language
 
 
 class Manager(Employee):
@@ -96,5 +114,4 @@ class Manager(Employee):
         """
         Задача: реализовать конструктор класса, используя конструктор родителя
         """
-
-        # пиши свой код здесь
+        super().__init__(name, self.position, salary)
