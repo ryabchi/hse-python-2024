@@ -1,6 +1,7 @@
 from typing import Dict
 
-from .exception import NoSuchPositionError
+
+from .exception import NoSuchPositionError, EmployeeError
 
 POSITIONS: Dict[str, int] = {
     'CEO': 0,
@@ -39,6 +40,12 @@ class Employee:
         """
 
         # пиши свой код здесь
+        self.salary = None
+        if int(salary) < 0:
+            raise ValueError()
+        self.name = name
+        self.position = position
+        self._salary = salary
 
     def get_salary(self) -> int:
         """
@@ -46,6 +53,7 @@ class Employee:
         """
 
         # пиши свой код здесь
+        return self._salary
 
     def __eq__(self, other: object) -> bool:
         """
@@ -56,6 +64,17 @@ class Employee:
         """
 
         # пиши свой код здесь
+        if not isinstance(other, Employee):
+            raise TypeError
+        if isinstance(other, Employee):
+            try:
+                return get_position_level(self.position) == get_position_level(other.position)
+            except NoSuchPositionError:
+                raise ValueError
+
+
+
+
 
     def __str__(self):
         """
@@ -64,6 +83,12 @@ class Employee:
         """
 
         # пиши свой код здесь
+        try:
+            string = 'name: ' + self.name + ' position: ' + self.position
+
+            return string
+        except TypeError as exp:
+            raise EmployeeError(self.position) from exp
 
     def __hash__(self):
         return id(self)
@@ -83,6 +108,8 @@ class Developer(Employee):
         """
 
         # пиши свой код здесь
+        self.language = language
+        super().__init__(name, self.position, salary)
 
 
 class Manager(Employee):
@@ -98,3 +125,5 @@ class Manager(Employee):
         """
 
         # пиши свой код здесь
+        super().__init__(name, self.position, salary)
+

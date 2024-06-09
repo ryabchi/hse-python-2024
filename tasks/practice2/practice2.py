@@ -13,6 +13,7 @@ def greet_user(name: str) -> str:
     """
 
     # пиши код здесь
+    greeting = "Привет, " + name
     return greeting
 
 
@@ -29,6 +30,8 @@ def get_amount() -> float:
     """
 
     # пиши код здесь
+    import random
+    amount = round(random.uniform(100, 1000000),2)
     return amount
 
 
@@ -43,6 +46,17 @@ def is_phone_correct(phone_number: str) -> bool:
     """
 
     # пиши код здесь
+    result = True
+    if (len(phone_number)!=12):
+        result = False
+    if (phone_number[0]!='+'):
+        result = False
+    if ( phone_number[1]!='7'):
+        result = False
+    for s in phone_number[2:]:
+        if not(s.isdigit()):
+            result = False
+
     return result
 
 
@@ -59,6 +73,9 @@ def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
     """
 
     # пиши код здесь
+    result=True
+    if (current_amount< float(transfer_amount)):
+        result=False
     return result
 
 
@@ -78,6 +95,15 @@ def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
     """
 
     # пиши код здесь
+    text=text.strip()
+    text=text[0].upper()+text[1:].lower()
+    text=text.replace('  ',' ')
+    text=text.replace("'",'')
+    text=text.replace('"', '')
+    for s in uncultured_words:
+        word=len(s)*'#'
+        text=text.replace(s,word)
+    result=text
     return result
 
 
@@ -101,4 +127,8 @@ def create_request_for_loan(user_info: str) -> str:
     """
 
     # пиши код здесь
+    input_list=list(user_info.split(','))
+    result='Фамилия: '+input_list[0]+'\n'+'Имя: '+input_list[1]+'\n'+'Отчество: '+input_list[2]+'\n'+'Дата рождения: '+input_list[3]+'\n'+'Запрошенная сумма: '+input_list[4]
     return result
+
+
