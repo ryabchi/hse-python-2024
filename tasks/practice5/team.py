@@ -1,7 +1,7 @@
 from typing import Set
 from .employee import Employee, Manager
 from .exception import NoSuchMemberError
-
+import builtins
 
 class Team:
     """
@@ -19,6 +19,10 @@ class Team:
     manager: Manager
     __members: Set[Employee]
 
+
+
+
+
     def __init__(self, name: str, manager: Manager):
         """
         Задача:
@@ -28,6 +32,16 @@ class Team:
         """
 
         # пиши свой код здесь
+        self.name=name
+        self.manager=manager
+        self.__members = set()
+
+
+
+    def __str__(self):
+        string = 'team: ' +self.name+ ' manager: ' + self.manager.name + ' number of members: ' + str(len(self.__members))
+        return string
+
 
     def add_member(self, member: Employee) -> None:
         """
@@ -37,6 +51,17 @@ class Team:
 
         # пиши свой код здесь
 
+        if isinstance(member, int) or isinstance(member, str):
+            raise TypeError()
+
+        try:
+            self.__members.add(member)
+        except Exception as exp:
+            raise NoSuchMemberError(self.name, member) from exp
+
+
+
+
     def remove_member(self, member: Employee) -> None:
         """
         Задача: реализовать метод удаления участника из команды.
@@ -45,6 +70,14 @@ class Team:
 
         # пиши свой код здесь
 
+        if isinstance(member, int) or isinstance(member, str):
+            raise TypeError()
+
+        if member in self.__members:
+            self.__members.remove(member)
+
+        else: raise NoSuchMemberError(self.name,member)
+
     def get_members(self) -> Set[Employee]:
         """
         Задача: реализовать метод возвращения списка участков команды та,
@@ -52,6 +85,11 @@ class Team:
         """
 
         # пиши свой код здесь
+        if self.__members==set():
+            return set()
+        new_set=self.__members
+        return new_set
+
 
     def show(self) -> None:
         """

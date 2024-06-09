@@ -1,3 +1,6 @@
+
+
+
 class EmployeeError(Exception):
     """
     Исключение связанное с должностью
