@@ -4,7 +4,7 @@ def concatenate_strings(a: str, b: str) -> str:
     Результат сложения запишите в переменную result.
 
     :param a: число
-    :param b: числоpy
+    :param b: число
     :return: результат сложения
     """
 
