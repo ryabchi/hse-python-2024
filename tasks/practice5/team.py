@@ -27,31 +27,41 @@ class Team:
         и инициализировать контейнер `__members`
         """
 
-        # пиши свой код здесь
+        self.name = name
+        self.manager = manager
+        self.__members = set()
 
     def add_member(self, member: Employee) -> None:
         """
         Задача: реализовать метод добавления участника в команду.
         Добавить можно только работника.
         """
-
-        # пиши свой код здесь
+        if isinstance(member, Employee):
+            self.__members.add(member)
+        else:
+            raise TypeError
 
     def remove_member(self, member: Employee) -> None:
         """
         Задача: реализовать метод удаления участника из команды.
         Если в команде нет такого участника поднимается исключение `NoSuchMemberError`
         """
+        if not isinstance(member, Employee):
+            raise TypeError
+        else:
+            try:
+                self.__members.remove(member)
+            except:
+                raise NoSuchMemberError(self.name, member)
 
-        # пиши свой код здесь
 
     def get_members(self) -> Set[Employee]:
         """
-        Задача: реализовать метод возвращения списка участков команды та,
-        чтобы из вне нельзя было поменять список участников внутри класса
+        Задача: реализовать метод возвращения списка участков команды так,
+        чтобы извне нельзя было поменять список участников внутри класса
         """
-
-        # пиши свой код здесь
+        copy = set(self.__members)
+        return copy
 
     def show(self) -> None:
         """
@@ -65,3 +75,7 @@ class Team:
         этого метода
         """
         print(self)
+
+    def __str__(self):
+        return 'team: ' + str(self.name) + ' manager: ' + str(self.manager.name) + ' number of members: ' + str(len(self.__members))
+
