@@ -1,3 +1,4 @@
+import csv
 from pathlib import Path
 from typing import Dict, Any, List, Optional
 
@@ -27,8 +28,15 @@ def count_words(text: str) -> Dict[str, int]:
     """
 
     # пиши свой код здесь
-
-    return {}
+    counts: Dict[str, int] = {}
+    for word in text.split(' '):
+        word = word.removesuffix(',').removesuffix('...').removesuffix('.').removesuffix('!').removesuffix('?')
+        if len(word) >= 1 and word.isalpha():
+            if counts.get(word.lower()):
+                counts[word.lower()] += 1
+            else:
+                counts.setdefault(word.lower(), 1)
+    return counts
 
 
 def exp_list(numbers: List[int], exp: int) -> List[int]:
@@ -42,7 +50,7 @@ def exp_list(numbers: List[int], exp: int) -> List[int]:
 
     # пиши свой код здесь
 
-    return []
+    return [x ** exp for x in numbers]
 
 
 def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) -> float:
@@ -57,7 +65,12 @@ def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) 
     :param special_category: список категорий повышенного кешбека
     :return: размер кешбека
     """
-
+    result = 0
+    for operation in operations:
+        if operation['category'] in special_category:
+            result += operation['amount'] * 0.05
+        else:
+            result += operation['amount'] * 0.01
     return result
 
 
@@ -100,5 +113,18 @@ def csv_reader(header: str) -> int:
     """
 
     # пиши свой код здесь
-
-    return 0
+    count_columns = ()
+    with open(get_path_to_file(), newline='') as file:
+        reader = csv.reader(file, delimiter=',', quotechar='|')
+        i = True
+        index = 0
+        for row in reader:
+            print(row)
+            if i:
+                for j in range(len(row)):
+                    if row[j].replace('"', '') == header:
+                        index = j
+                i = False
+            else:
+                count_columns += (row[index], )
+    return len(set(count_columns))

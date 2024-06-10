@@ -39,5 +39,29 @@ def search_phone(content: Any, name: str) -> Optional[str]:
     """
 
     # пиши свой код здесь
-
-    return None
+    def search_phone2(c: Any, n: str):
+        if isinstance(c, dict):
+            for key, value in c.items():
+                if key == 'name':
+                    if n == value:
+                        return c['phone']
+                    else:
+                        return
+                elif isinstance(value, list):
+                    phone_number = None
+                    for item in value:
+                        t = search_phone2(item, n)
+                        if t:
+                            phone_number = t
+                    return phone_number
+                elif isinstance(value, dict):
+                    return search_phone2(value, n)
+        elif isinstance(c, list):
+            phone_number = None
+            for item in c:
+                t = search_phone2(item, n)
+                if t:
+                    phone_number = t
+            return phone_number
+        return None
+    return search_phone2(content, name)
