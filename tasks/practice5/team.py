@@ -28,7 +28,9 @@ class Team:
         """
 
         # пиши свой код здесь
-
+        self.name = name
+        self.manager = manager
+        self.__members = set()
     def add_member(self, member: Employee) -> None:
         """
         Задача: реализовать метод добавления участника в команду.
@@ -36,7 +38,10 @@ class Team:
         """
 
         # пиши свой код здесь
-
+        if isinstance(member, Employee):
+            self.__members.add(member)
+        else:
+            raise TypeError
     def remove_member(self, member: Employee) -> None:
         """
         Задача: реализовать метод удаления участника из команды.
@@ -44,6 +49,13 @@ class Team:
         """
 
         # пиши свой код здесь
+        if isinstance(member, Employee):
+            if member in self.__members:
+                self.__members.remove(member)
+            else:
+                raise NoSuchMemberError(self.name, member)
+        else:
+            raise TypeError
 
     def get_members(self) -> Set[Employee]:
         """
@@ -52,6 +64,7 @@ class Team:
         """
 
         # пиши свой код здесь
+        return self.__members.copy()
 
     def show(self) -> None:
         """
@@ -65,3 +78,5 @@ class Team:
         этого метода
         """
         print(self)
+    def __str__(self):
+        return "team: " + self.name + " manager: " + self.manager.name + " number of members: " + str(len(self.__members))
