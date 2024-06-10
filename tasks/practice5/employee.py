@@ -56,7 +56,7 @@ class Employee:
         Сравнение происходит по уровню позиции см. `get_position_level`.
         Если что-то идет не так - бросаются исключения. Смотрим что происходит в тестах.
         """
-        if not isinstance(self, Employee):
+        if not isinstance(other, Employee):
             raise TypeError
         else:
             try:
