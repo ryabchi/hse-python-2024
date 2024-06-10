@@ -1,3 +1,4 @@
+import csv
 from pathlib import Path
 from typing import Dict, Any, List, Optional
 
@@ -113,12 +114,19 @@ def csv_reader(header: str) -> int:
     """
 
     file = open(get_path_to_file())
-    lines = [line.strip().split(",") for line in file.readlines()]
-
-    column_number = [item.replace('"', "") for item in lines[0]].index(header)
+    lines = csv.reader(file)
     unique_items = set()
+    first = True
+    i = 0
 
-    for i in range(1, len(lines)):
-        unique_items.add(lines[i][column_number])
+    for line in lines:
+        if first:
+            for j in range(len(line)):
+                if line[j] == header:
+                    i = j
+                    break
+            first = False
+            continue
+        unique_items.add(line[i])
 
     return len(unique_items)
