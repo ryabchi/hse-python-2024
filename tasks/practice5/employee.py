@@ -37,7 +37,8 @@ class Employee:
         """
         Задача: реализовать конструктор класса, чтобы все тесты проходили
         """
-
+        if not (isinstance(name, str) and isinstance(position, str) and isinstance(salary, int)):
+            raise ValueError
         self.name = name
         self.position = position
         self._salary = salary
