@@ -1,4 +1,5 @@
 from typing import Set
+
 from .employee import Employee, Manager
 from .exception import NoSuchMemberError
 
@@ -27,15 +28,22 @@ class Team:
         и инициализировать контейнер `__members`
         """
 
-        # пиши свой код здесь
+        self.name = name
+        self.manager = manager
+        self.__members = set()
+
+    def __str__(self):
+        return f'team: {self.name} manager: {self.manager.name} number of members: {len(self.__members)}'
 
     def add_member(self, member: Employee) -> None:
         """
         Задача: реализовать метод добавления участника в команду.
         Добавить можно только работника.
         """
+        if not isinstance(member, Employee):
+            raise TypeError()
 
-        # пиши свой код здесь
+        self.__members.add(member)
 
     def remove_member(self, member: Employee) -> None:
         """
@@ -43,7 +51,12 @@ class Team:
         Если в команде нет такого участника поднимается исключение `NoSuchMemberError`
         """
 
-        # пиши свой код здесь
+        if not isinstance(member, Employee):
+            raise TypeError()
+        if member in self.__members:
+            self.__members.remove(member)
+        else:
+            raise NoSuchMemberError(self.name, member)
 
     def get_members(self) -> Set[Employee]:
         """
@@ -51,7 +64,7 @@ class Team:
         чтобы из вне нельзя было поменять список участников внутри класса
         """
 
-        # пиши свой код здесь
+        return self.__members.copy()
 
     def show(self) -> None:
         """
