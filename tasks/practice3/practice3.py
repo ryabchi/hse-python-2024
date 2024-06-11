@@ -1,6 +1,6 @@
 from pathlib import Path
 from typing import Dict, Any, List, Optional
-
+import csv
 
 def count_words(text: str) -> Dict[str, int]:
     """
@@ -28,7 +28,31 @@ def count_words(text: str) -> Dict[str, int]:
 
     # пиши свой код здесь
 
-    return {}
+    text = text.lower()
+    numbers = "0123456789"
+    sybmols = "!@#№$;%:^&?()-_=+/|.,"
+    new_text = ""
+    for i in range(len(text)):
+        if text[i] in sybmols:
+            new_text += ' '
+        else:
+            new_text += text[i]
+    line = new_text.split()
+    d = {}
+    for i in range(len(line)):
+        if len(line[i]) > 1:
+            flag_numbers = 0
+            for j in range(len(line[i])):
+                if line[i][j] in numbers:
+                    flag_numbers = 1
+                    break
+            if flag_numbers == 0:
+                if line[i] not in d:
+                    d[line[i]] = 1
+                else:
+                    d[line[i]] += 1
+
+    return d
 
 
 def exp_list(numbers: List[int], exp: int) -> List[int]:
@@ -41,8 +65,11 @@ def exp_list(numbers: List[int], exp: int) -> List[int]:
     """
 
     # пиши свой код здесь
+    list = []
+    for i in range(len(numbers)):
+        list.append(numbers[i]**exp)
 
-    return []
+    return list
 
 
 def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) -> float:
@@ -57,7 +84,12 @@ def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) 
     :param special_category: список категорий повышенного кешбека
     :return: размер кешбека
     """
-
+    result = 0
+    for i in range(len(operations)):
+        if operations[i]['category'] in special_category:
+            result += operations[i]['amount'] * 0.05
+        else:
+            result += operations[i]['amount'] * 0.01
     return result
 
 
@@ -100,5 +132,19 @@ def csv_reader(header: str) -> int:
     """
 
     # пиши свой код здесь
+    rows = []
+    d = {}
+    with open(get_path_to_file(), "r") as f:
+        reader = csv.reader(f)
+        file = list(reader)
+    number = 0
+    for i in range(len(file[0])):
+        if file[0][i] == header:
+            number = i
 
-    return 0
+    for i in range(1,len(file)):
+        d[file[i][number]] = 0
+
+    return len(d)
+
+#print(csv_reader('IssueType'))
