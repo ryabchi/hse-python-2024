@@ -39,5 +39,18 @@ def search_phone(content: Any, name: str) -> Optional[str]:
     """
 
     # пиши свой код здесь
-
-    return None
+    queue = [content]
+    result = None
+    while len(queue) != 0:
+        cur = queue.pop()
+        print(cur)
+        if isinstance(cur, list):
+            for elem in cur:
+                queue.append(elem)
+        elif isinstance(cur, dict):
+            if 'name' in cur and cur['name'] == name:
+                result = cur['phone']
+                break
+            for elem in cur.values():
+                queue.append(elem)
+    return result
