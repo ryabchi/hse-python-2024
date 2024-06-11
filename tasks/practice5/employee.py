@@ -40,12 +40,21 @@ class Employee:
 
         # пиши свой код здесь
 
+        if not isinstance(name, str) or not isinstance(position, str) or not isinstance(salary, int) or salary <= 0:
+            raise ValueError("There is an error in the data")
+
+        self.name = name
+        self.position = position
+        self._salary = salary
+
+
     def get_salary(self) -> int:
         """
         Метод возвращает зарплату сотрудника.
         """
 
         # пиши свой код здесь
+        return self._salary
 
     def __eq__(self, other: object) -> bool:
         """
@@ -56,14 +65,21 @@ class Employee:
         """
 
         # пиши свой код здесь
+        if not isinstance(other, Employee):
+            raise TypeError("Employee object is wrong")
+
+        try:
+            return get_position_level(self.position) == get_position_level(other.position)
+        except:
+            raise ValueError
 
     def __str__(self):
         """
         Задача: реализовать строковое представление объекта.
         Пример вывода: 'name: Ivan position manager'
         """
-
         # пиши свой код здесь
+        return str("name: " + str(self.name) + " position: " + str(self.position))
 
     def __hash__(self):
         return id(self)
@@ -83,6 +99,8 @@ class Developer(Employee):
         """
 
         # пиши свой код здесь
+        self.language = language
+        super().__init__(name, self.position, salary)
 
 
 class Manager(Employee):
@@ -98,3 +116,6 @@ class Manager(Employee):
         """
 
         # пиши свой код здесь
+        super().__init__(name, self.position, salary)
+
+

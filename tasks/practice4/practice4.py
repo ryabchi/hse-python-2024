@@ -1,6 +1,5 @@
 from typing import Any, Optional
 
-
 def search_phone(content: Any, name: str) -> Optional[str]:
     """
     Функция поиска номера телефона пользователя в структуре данных.
@@ -39,5 +38,55 @@ def search_phone(content: Any, name: str) -> Optional[str]:
     """
 
     # пиши свой код здесь
+    number = ""
+    if isinstance(content, list) or isinstance(content, tuple):
+        number = lists(content, name, number)
+    elif isinstance(content, dict):
+        number = dicts(content, name, number)
+    if number=="":
+        return None
+    else:
+        return number
 
-    return None
+def lists(l, name, number):
+    for i in range(0, len(l)):
+        if isinstance(l[i], list) or isinstance(l[i], tuple):
+            number = lists(l[i], name, number)
+            if number != "":
+                return number
+        elif isinstance(l[i], dict):
+            number = dicts(l[i], name, number)
+            if number != "":
+                return number
+    return number
+
+def search(d):
+    for key in d:
+        if key == "phone":
+            number = d[key]
+            return number
+        elif d[key] == "phone":
+            number = key
+            return number
+
+def dicts(d, name, number):
+    for key in d:
+        if isinstance(d[key], list):
+            number = lists(d[key], name, number)
+            if number != "":
+                return number
+        elif isinstance(d[key], dict):
+            number = dicts(d[key], name, number)
+            if number != "":
+                return number
+        elif key == name:
+            number = search(d)
+            if number != "":
+                return number
+        elif d[key] == name:
+            number = search(d)
+            if number != "":
+                return number
+    return number
+
+
