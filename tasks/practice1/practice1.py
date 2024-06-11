@@ -10,4 +10,4 @@ def calculate_salary(total_compensation: int) -> float:
     return net_salary
 
 
-# pytest tests/test_practice1.py
+# pytest tests/test_practice5.py
