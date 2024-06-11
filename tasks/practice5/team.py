@@ -81,5 +81,6 @@ class Team:
         """
         print(self)
 
+
     def __str__(self):
         return f"team: {self.name} manager: {self.manager.name} number of members: {len(self.get_members())}"
