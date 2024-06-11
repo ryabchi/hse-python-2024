@@ -1,6 +1,6 @@
 from pathlib import Path
 from typing import Dict, Any, List, Optional
-
+import csv
 
 def count_words(text: str) -> Dict[str, int]:
     """
@@ -27,8 +27,31 @@ def count_words(text: str) -> Dict[str, int]:
     """
 
     # пиши свой код здесь
-
-    return {}
+    result: Dict[str, int] = dict()
+    WordBuf = ''
+    WrongPref = False
+    for sym in text:
+        sym = sym.lower()
+        if sym.isalpha() and not WrongPref:
+            WordBuf += sym
+            WrongPref = False
+        elif sym in ' ,.!?-':
+            if len(WordBuf) > 0:
+                if WordBuf in result:
+                    result[WordBuf] += 1
+                else:
+                    result[WordBuf] = 1
+            WordBuf = ''
+            WrongPref = False
+        else:
+            WrongPref = True
+            WordBuf = ''
+    if len(WordBuf) > 0:
+        if WordBuf in result:
+            result[WordBuf] += 1
+        else:
+            result[WordBuf] = 1
+    return result
 
 
 def exp_list(numbers: List[int], exp: int) -> List[int]:
@@ -41,8 +64,7 @@ def exp_list(numbers: List[int], exp: int) -> List[int]:
     """
 
     # пиши свой код здесь
-
-    return []
+    return [elem**exp for elem in numbers]
 
 
 def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) -> float:
@@ -57,7 +79,12 @@ def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) 
     :param special_category: список категорий повышенного кешбека
     :return: размер кешбека
     """
-
+    result = 0
+    for i in operations:
+        if i['category'] in special_category:
+            result+=i['amount']*0.05
+        else:
+            result += i['amount'] * 0.01
     return result
 
 
@@ -100,5 +127,11 @@ def csv_reader(header: str) -> int:
     """
 
     # пиши свой код здесь
-
-    return 0
+    u = set()
+    with open(get_path_to_file(), "r") as c:
+        titles = c.readline().split(',')
+        titles = [''.join([sym for sym in t if sym.isalpha() or sym == ' ']) for t in titles]
+        col = titles.index(header)
+        for i in c.readlines():
+            u.add(i.split(',')[col].strip())
+    return len(u)
