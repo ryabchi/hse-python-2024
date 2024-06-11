@@ -26,9 +26,18 @@ def count_words(text: str) -> Dict[str, int]:
              значение - количество вхождений слов в текст
     """
 
-    # пиши свой код здесь
+    words = (text.replace('.', ' ').replace(',', ' ').
+             replace('?', ' ').replace('!', ' ').split())
+    d = {}
+    for word in words:
+        if len(word):
+            if all(ord('a') <= ord(c) <= ord('z') or
+                   ord('A') <= ord(c) <= ord('Z') for c in word):
+                if word.lower() not in d.keys():
+                    d[word.lower()] = 0
+                d[word.lower()] += 1
 
-    return {}
+    return d
 
 
 def exp_list(numbers: List[int], exp: int) -> List[int]:
@@ -40,9 +49,8 @@ def exp_list(numbers: List[int], exp: int) -> List[int]:
     :return: список натуральных чисел
     """
 
-    # пиши свой код здесь
-
-    return []
+    # result = list(map(lambda num: num ** exp, numbers))
+    return [n ** exp for n in numbers]
 
 
 def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) -> float:
@@ -58,7 +66,14 @@ def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) 
     :return: размер кешбека
     """
 
-    return result
+    cashback = 0.0
+    for operation in operations:
+        if operation["category"] in special_category:
+            cashback += operation["amount"] * 0.05
+        else:
+            cashback += operation["amount"] * 0.01
+
+    return cashback
 
 
 def get_path_to_file() -> Optional[Path]:
@@ -70,6 +85,7 @@ def get_path_to_file() -> Optional[Path]:
 
     :return: путь до тестового файла tasks.csv
     """
+
     if Path().resolve().name == 'tests':
         base_path = Path().resolve().parent
     else:
@@ -99,6 +115,20 @@ def csv_reader(header: str) -> int:
     :return: количество уникальных элементов в столбце
     """
 
-    # пиши свой код здесь
+    f = open(get_path_to_file(), 'r')
+    headers = f.readline().split(',')
+    pos = -1
+    for i in range(len(headers)):
+        tmp = headers[i].replace('"', '').strip()
+        if tmp == header:
+            pos = i
+            break
+    if pos == -1:
+        return 0
 
-    return 0
+    s = set()
+    for line in f:
+        word = line.split(',')[pos].strip()
+        s.add(word)
+
+    return len(s)
