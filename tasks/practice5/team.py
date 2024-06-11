@@ -1,37 +1,85 @@
-class EmployeeError(Exception):
+from typing import Set
+from .employee import Employee, Manager
+from .exception import NoSuchMemberError
+
+
+class Team:
     """
-    Исключение связанное с должностью
+    Класс - команда.
+    У каждой команды есть менеджер, название и участники.
+
+    Возможности:
+    - добавление участников
+    - удаление участника из команды
+    - просмотр базовой информации об участниках
+    - получение списка участников
     """
-    position: str
 
-    def __init__(self, position: str):
-        self.position = position
+    name: str
+    manager: Manager
+    __members: Set[Employee]
 
+    def __init__(self, name: str, manager: Manager):
+        """
+        Задача:
+        Реализовать конструктор класса.
+        Конструктор должен присвоить значения публичным атрибутам
+        и инициализировать контейнер `__members`
+        """
 
-class NoSuchPositionError(EmployeeError):
-    """ 
-    Исключение поднимается, когда нет позиции в бд
-    """
-    pass
-
-
-class TeamError(Exception):
-    """
-    Исключение связанное с командой
-    """
-    team_name: str
-
-    def __init__(self, team_name: str):
-        self.team_name = team_name
+        # пиши свой код здесь
+        self.name = name
+        self.manager = manager
+        self.__members = set()
 
 
-class NoSuchMemberError(TeamError):
-    """
-    Исключение поднимается, когда нет сотрудника в команде
-    """
-    member: 'Employee'
+    def add_member(self, member: Employee) -> None:
+        """
+        Задача: реализовать метод добавления участника в команду.
+        Добавить можно только работника.
+        """
 
-    def __init__(self, team_name: str, member: 'Employee'):
-        self.member = member
+        # пиши свой код здесь
 
-        super().__init__(team_name)
+        if not isinstance(member, Employee):
+            raise TypeError("member is not Employee")
+
+        self.__members.add(member)
+
+    def remove_member(self, member: Employee) -> None:
+        """
+        Задача: реализовать метод удаления участника из команды.
+        Если в команде нет такого участника поднимается исключение `NoSuchMemberError`
+        """
+
+        # пиши свой код здесь
+        if not isinstance(member, Employee):
+            raise TypeError("member is not Employee")
+        if member not in self.__members:
+            raise NoSuchMemberError(self.name, member)
+        self.__members.remove(member)
+
+    def get_members(self) -> Set[Employee]:
+        """
+        Задача: реализовать метод возвращения списка участков команды та,
+        чтобы из вне нельзя было поменять список участников внутри класса
+        """
+
+        # пиши свой код здесь
+        return set(self.__members)
+
+    def show(self) -> None:
+        """
+        DO NOT EDIT!
+        Данный метод нельзя редактировать!
+
+        Метод показывает информацию о команде в формате:
+        `'team: {team_name} manager: {manager_name} number of members: {members_count)}'`
+
+        Задача: доработать класс таким образом, чтобы метод выполнял свою функцию, не меняя содержимое
+        этого метода
+        """
+        print(self)
+
+    def __str__(self):
+        return ("team: " + str(self.name) + " manager: " + str(self.manager.name) + " number of members: " + str(len(self.__members)))
