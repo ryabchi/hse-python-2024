@@ -122,5 +122,6 @@ class Manager(Employee):
         """
 
         # пиши свой код здесь
+
         super().__init__(name, self.position, salary)
 
