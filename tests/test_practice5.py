@@ -1,4 +1,6 @@
+# DO NOT EDIT
 import pytest
+
 from tasks.practice5.employee import (
     Employee,
     Developer,
@@ -22,7 +24,7 @@ def test_employee_get_position_level_fail():
 @pytest.mark.parametrize(
     ('name', 'position', 'salary'),
     [
-        ('name', 'developer', 40),
+        ('name', 'position', 40),
         ('Alex', 'CEO', 100000),
     ],
 )
@@ -42,7 +44,7 @@ def test_init_employee_fail():
 def test_employee_get_salary():
     salary = 100
 
-    employee = Employee('name', 'developer', salary)
+    employee = Employee('name', 'position', salary)
 
     assert employee.get_salary() == salary
 
@@ -87,15 +89,15 @@ def test_employee_not_eq_success(position1, position2):
 
 
 def test_employee_eq_fail():
-    employee_1 = Employee('name1', 'developer', 10)
-    employee_2 = Employee('name2', 'tester', 30)
+    employee_1 = Employee('name1', 'position1', 10)
+    employee_2 = Employee('name2', 'position2', 30)
 
     with pytest.raises(TypeError):
         assert employee_1 == 1
+        assert 1 == employee_1
 
     with pytest.raises(ValueError):
-        employee_invalid = Employee('name3', 'invalid_position', 10)
-
+        assert employee_1 == employee_2
 
 
 @pytest.mark.parametrize(
@@ -167,10 +169,11 @@ def test_team_remove_member_success(team, developer):
 
 
 def test_team_remove_member_fail(team, developer):
-    with pytest.raises(NoSuchMemberError):
-        team.remove_member(developer)
-
     team.add_member(developer)
+
+    with pytest.raises(TypeError):
+        team.remove_member(1)
+
     team.remove_member(developer)
 
     with pytest.raises(NoSuchMemberError):
