@@ -33,4 +33,5 @@ class NoSuchMemberError(TeamError):
 
     def __init__(self, team_name: str, member: 'Employee'):
         self.member = member
+
         super().__init__(team_name)
