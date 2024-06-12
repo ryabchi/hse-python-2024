@@ -1,4 +1,6 @@
 from typing import Iterable
+import random
+import re
 
 UNCULTURED_WORDS = ('kotleta', 'pirog')
 
@@ -12,7 +14,9 @@ def greet_user(name: str) -> str:
     :return: приветствие
     """
 
-    # пиши код здесь
+    greeting = f"Привет, {name}! Как твои дела?"
+    return greeting
+
     return greeting
 
 
@@ -28,7 +32,8 @@ def get_amount() -> float:
     :return: случайную сумму на счете
     """
 
-    # пиши код здесь
+    amount = round(random.uniform(100, 1000000), 2)
+
     return amount
 
 
@@ -42,7 +47,9 @@ def is_phone_correct(phone_number: str) -> bool:
                                           False - если номер некорректный
     """
 
-    # пиши код здесь
+    pattern = r"^\+7\d{10}$"
+    result = bool(re.match(pattern, phone_number))
+
     return result
 
 
@@ -58,8 +65,12 @@ def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
                                           False - если денег недостаточно
     """
 
-    # пиши код здесь
-    return result
+    try:
+        transfer_amount_float = float(transfer_amount)
+        result = current_amount >= transfer_amount_float
+        return result
+    except ValueError:
+            return False
 
 
 def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
@@ -77,7 +88,17 @@ def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
     :return: текст, соответсвующий правилам
     """
 
-    # пиши код здесь
+    text = text.replace('"', '').replace("'", '')
+
+    text = ' '.join(text.split())
+
+    for word in uncultured_words:
+        text = text.replace(word, '#' * len(word))
+
+    text = text.capitalize()
+
+    result = text
+
     return result
 
 
@@ -100,5 +121,12 @@ def create_request_for_loan(user_info: str) -> str:
     :return: текст кредитной заявки
     """
 
-    # пиши код здесь
+    last_name, first_name, middle_name, birth_date, requested_amount = user_info.split(',')
+    
+    result = (f"Фамилия: {last_name}\n"
+              f"Имя: {first_name}\n"
+              f"Отчество: {middle_name}\n"
+              f"Дата рождения: {birth_date}\n"
+              f"Запрошенная сумма: {requested_amount}")
+    
     return result
