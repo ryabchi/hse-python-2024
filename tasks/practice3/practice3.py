@@ -119,6 +119,7 @@ def csv_reader(header: str) -> int:
 
     # пиши свой код здесь
     unique_elements = set()
+
     with open(get_path_to_file(), "r") as f:
         reader = csv.reader(f)
         header_row = next(reader)  # Get the header row
