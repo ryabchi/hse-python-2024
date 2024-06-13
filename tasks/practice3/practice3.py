@@ -1,5 +1,7 @@
 from pathlib import Path
 from typing import Dict, Any, List, Optional
+import re
+import csv
 
 
 def count_words(text: str) -> Dict[str, int]:
@@ -26,9 +28,22 @@ def count_words(text: str) -> Dict[str, int]:
              значение - количество вхождений слов в текст
     """
 
-    # пиши свой код здесь
+    dictionary = dict()
+    text = re.sub(r'[,.!-]+', '', text)
+    text = text.lower()
+    text = text.split(" ")
+    for i in text:
+        for j in range(len(i)):
+            if i[j] in '0123456789':
+                i = ' '
+                break
+        if len(i) > 1:
+            if i not in dictionary:
+                dictionary[i] = 1
+            else:
+                dictionary[i] += 1
 
-    return {}
+    return dictionary
 
 
 def exp_list(numbers: List[int], exp: int) -> List[int]:
@@ -40,9 +55,11 @@ def exp_list(numbers: List[int], exp: int) -> List[int]:
     :return: список натуральных чисел
     """
 
-    # пиши свой код здесь
+    result = []
+    for i in range(len(numbers)):
+        result.append(numbers[i] ** exp)
 
-    return []
+    return result
 
 
 def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) -> float:
@@ -57,6 +74,15 @@ def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) 
     :param special_category: список категорий повышенного кешбека
     :return: размер кешбека
     """
+    result = 0
+    for j in operations:
+        for i in special_category:
+            if i in j.values():
+                result += (j.get("amount") * 0.05)
+            else:
+                result += (j.get("amount") * 0.01)
+    if len(special_category) == 0:
+        result += j.get("amount") * 0.01
 
     return result
 
@@ -99,6 +125,11 @@ def csv_reader(header: str) -> int:
     :return: количество уникальных элементов в столбце
     """
 
-    # пиши свой код здесь
+    unique_words = []
 
-    return 0
+    with open(get_path_to_file(), 'r') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            unique_words.append(row[header])
+
+    return len(set(unique_words))
