@@ -1,5 +1,6 @@
 from pathlib import Path
 from typing import Dict, Any, List, Optional
+import csv
 
 
 def count_words(text: str) -> Dict[str, int]:
@@ -26,9 +27,17 @@ def count_words(text: str) -> Dict[str, int]:
              значение - количество вхождений слов в текст
     """
 
-    # пиши свой код здесь
-
-    return {}
+    array_words = text.split()
+    dictionary = {}
+    for word in array_words:
+        word = word.translate({ord(i): None for i in ',.-!?:;'}).lower()
+        have_number = any(character.isdigit() for character in word)
+        if (not have_number) and (word != ''):
+            if word in dictionary:
+                dictionary[word] += 1
+            else:
+                dictionary[word] = 1
+    return dict(sorted(dictionary.items()))
 
 
 def exp_list(numbers: List[int], exp: int) -> List[int]:
@@ -40,9 +49,11 @@ def exp_list(numbers: List[int], exp: int) -> List[int]:
     :return: список натуральных чисел
     """
 
-    # пиши свой код здесь
-
-    return []
+    new_list = []
+    for i in numbers:
+        new_number = i ** exp
+        new_list.append(new_number)
+    return new_list
 
 
 def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) -> float:
@@ -58,7 +69,13 @@ def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) 
     :return: размер кешбека
     """
 
-    return result
+    cashback = 0
+    for operation in operations:
+        if operation['category'] in special_category:
+            cashback += operation['amount'] * 0.05
+        else:
+            cashback += operation['amount'] * 0.01
+    return cashback
 
 
 def get_path_to_file() -> Optional[Path]:
@@ -99,6 +116,13 @@ def csv_reader(header: str) -> int:
     :return: количество уникальных элементов в столбце
     """
 
-    # пиши свой код здесь
-
-    return 0
+    file_path = get_path_to_file()
+    with open(file_path, newline='', encoding='utf-8') as csvfile:
+        reader = csv.DictReader(csvfile)
+        unique_values = set()
+        
+        for row in reader:
+            if header in row:
+                unique_values.add(row[header])
+    
+    return len(unique_values)
