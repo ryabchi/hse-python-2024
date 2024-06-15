@@ -1,3 +1,4 @@
+import random
 from typing import Iterable
 
 UNCULTURED_WORDS = ('kotleta', 'pirog')
@@ -13,7 +14,7 @@ def greet_user(name: str) -> str:
     """
 
     # пиши код здесь
-    return greeting
+    return "Привет, " + name
 
 
 def get_amount() -> float:
@@ -29,7 +30,7 @@ def get_amount() -> float:
     """
 
     # пиши код здесь
-    return amount
+    return random.randrange(10000, 100000000) / 100
 
 
 def is_phone_correct(phone_number: str) -> bool:
@@ -43,7 +44,7 @@ def is_phone_correct(phone_number: str) -> bool:
     """
 
     # пиши код здесь
-    return result
+    return phone_number.startswith('+7') and phone_number[2:].isdigit() and len(phone_number) == 12
 
 
 def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
@@ -59,7 +60,7 @@ def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
     """
 
     # пиши код здесь
-    return result
+    return current_amount >= float(transfer_amount)
 
 
 def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
@@ -76,9 +77,13 @@ def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
     :param uncultured_words: список запрещенных слов
     :return: текст, соответсвующий правилам
     """
-
     # пиши код здесь
-    return result
+    without_spaces = ' '.join(text.split())
+    capitalized = without_spaces[0].upper() + without_spaces[1:].lower()
+    dangerous_removed = capitalized.replace('"', '').replace("'", '')
+    for word in uncultured_words:
+        dangerous_removed = dangerous_removed.replace(word, '#' * len(word))
+    return dangerous_removed
 
 
 def create_request_for_loan(user_info: str) -> str:
@@ -99,6 +104,12 @@ def create_request_for_loan(user_info: str) -> str:
     :param user_info: строка с информацией о клиенте
     :return: текст кредитной заявки
     """
-
+    parts = user_info.split(',')
     # пиши код здесь
-    return result
+    return (
+        f'Фамилия: {parts[0]}\n'
+        f'Имя: {parts[1]}\n'
+        f'Отчество: {parts[2]}\n'
+        f'Дата рождения: {parts[3]}\n'
+        f'Запрошенная сумма: {parts[4]}'
+    )
