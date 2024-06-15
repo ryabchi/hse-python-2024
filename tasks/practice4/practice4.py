@@ -54,4 +54,4 @@ def search_phone(content: Any, name: str) -> Optional[str]:
             result = search_phone(elem, name)
             if result:
                 return result
-    return None
+    return result
