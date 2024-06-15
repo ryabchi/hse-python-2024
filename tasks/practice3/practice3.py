@@ -1,6 +1,7 @@
 from pathlib import Path
 from typing import Dict, Any, List, Optional
-
+import re
+import csv
 
 def count_words(text: str) -> Dict[str, int]:
     """
@@ -27,8 +28,14 @@ def count_words(text: str) -> Dict[str, int]:
     """
 
     # пиши свой код здесь
-
-    return {}
+    words = re.findall(r'\b[A-Za-z]{2,}\b', text)
+    word_counts = {}
+    for word in words:
+        word_lower = word.lower()
+        if word_lower.isalpha():  # Проверяем, что слово состоит только из букв
+            word_counts[word_lower] = word_counts.get(word_lower, 0) + 1
+    
+    return word_counts
 
 
 def exp_list(numbers: List[int], exp: int) -> List[int]:
@@ -41,8 +48,8 @@ def exp_list(numbers: List[int], exp: int) -> List[int]:
     """
 
     # пиши свой код здесь
-
-    return []
+    powered_numbers = [num ** exp for num in numbers]
+    return powered_numbers
 
 
 def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) -> float:
@@ -57,8 +64,22 @@ def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) 
     :param special_category: список категорий повышенного кешбека
     :return: размер кешбека
     """
-
-    return result
+    total_cashback = 0
+    
+    for operation in operations:
+        amount = operation['amount']
+        category = operation['category']
+        
+        if category in special_category:
+            # 5% кешбек для специальной категории
+            cashback = amount * 0.05
+        else:
+            # 1% кешбек для обычных категорий
+            cashback = amount * 0.01
+        
+        total_cashback += cashback
+    
+    return total_cashback
 
 
 def get_path_to_file() -> Optional[Path]:
@@ -100,5 +121,19 @@ def csv_reader(header: str) -> int:
     """
 
     # пиши свой код здесь
+    file_path = get_path_to_file()
+    unique_elements = set()
 
-    return 0
+    with open(file_path, mode='r', encoding='utf-8') as csv_file:
+        reader = csv.reader(csv_file)
+        headers = next(reader)  # Чтение первой строки как заголовков
+        column_index = headers.index(header)  # Нахождение индекса столбца по заголовку
+
+        for row in reader:
+            try:
+                value = row[column_index]
+                unique_elements.add(value)
+            except IndexError:
+                pass  # Пропускаем строки, которые не соответствуют ожидаемой структуре
+
+    return len(unique_elements)
