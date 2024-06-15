@@ -2,7 +2,6 @@ from pathlib import Path
 from typing import Dict, Any, List, Optional
 import re
 import csv
-import os
 
 def count_words(text: str) -> Dict[str, int]:
     """
@@ -122,7 +121,7 @@ def csv_reader(header: str) -> int:
     """
 
     # пиши свой код здесь
-    file_path = get_path_to_file('tasks.csv')
+    file_path = get_path_to_file()
     unique_elements = set()
 
     with open(file_path, mode='r', encoding='utf-8') as csv_file:
