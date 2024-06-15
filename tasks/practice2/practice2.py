@@ -1,4 +1,6 @@
 from typing import Iterable
+from random import randint
+import re
 
 UNCULTURED_WORDS = ('kotleta', 'pirog')
 
@@ -12,8 +14,7 @@ def greet_user(name: str) -> str:
     :return: приветствие
     """
 
-    # пиши код здесь
-    return greeting
+    return f"Добро пожаловать, {name}!"
 
 
 def get_amount() -> float:
@@ -28,8 +29,7 @@ def get_amount() -> float:
     :return: случайную сумму на счете
     """
 
-    # пиши код здесь
-    return amount
+    return randint(10000, 100000000) / 100
 
 
 def is_phone_correct(phone_number: str) -> bool:
@@ -42,8 +42,7 @@ def is_phone_correct(phone_number: str) -> bool:
                                           False - если номер некорректный
     """
 
-    # пиши код здесь
-    return result
+    return re.fullmatch(r"\+7[0-9]{10}", phone_number) is not None
 
 
 def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
@@ -58,8 +57,7 @@ def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
                                           False - если денег недостаточно
     """
 
-    # пиши код здесь
-    return result
+    return current_amount >= float(transfer_amount)
 
 
 def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
@@ -77,8 +75,10 @@ def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
     :return: текст, соответсвующий правилам
     """
 
-    # пиши код здесь
-    return result
+    result = ' '.join(re.sub(r"[\"']", '', text).split())
+    for word in uncultured_words:
+        result = result.replace(word, '#' * len(word))
+    return result.capitalize()
 
 
 def create_request_for_loan(user_info: str) -> str:
@@ -100,5 +100,9 @@ def create_request_for_loan(user_info: str) -> str:
     :return: текст кредитной заявки
     """
 
-    # пиши код здесь
-    return result
+    user_info = user_info.split(',')
+    return (f"Фамилия: {user_info[0]}\n"
+            f"Имя: {user_info[1]}\n"
+            f"Отчество: {user_info[2]}\n"
+            f"Дата рождения: {user_info[3]}\n"
+            f"Запрошенная сумма: {user_info[4]}")
