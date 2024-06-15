@@ -71,7 +71,11 @@ class Team:
         return self.__members.copy()
 
     def __str__(self) -> str:
-        return f'team: {self.name} manager: {self.manager.name} number of members: {len(self.__members)}'
+        return (
+            f'team: {self.name} '
+            f'manager: {self.manager.name} '
+            f'number of members: {len(self.__members)}'
+        )
 
     def show(self) -> None:
         """
