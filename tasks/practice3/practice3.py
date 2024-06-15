@@ -117,5 +117,23 @@ def csv_reader(header: str) -> int:
     """
 
     # пиши свой код здесь
+    import csv
+    
+    with open(get_path_to_file()) as f:
+        reader = csv.reader(f, delimiter = ",")
+        count = 0
+        result = {}
+        k = -1
+        for row in reader:
+            if count == 0:
+                for i in range(len(row)):
+                    if row[i] == header:
+                        k = i
+                count += 1
+            else:
+                if row[k] in result.keys():
+                    continue
+                else:
+                    result[row[k]] = 1
 
-    return 0
+    return len(result.keys())
