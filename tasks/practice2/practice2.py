@@ -71,7 +71,7 @@ def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
     """
 
     # пиши код здесь
-        if current_amount >= float(transfer_amount):
+    if current_amount >= float(transfer_amount):
         result = True
     else:
         result = False
