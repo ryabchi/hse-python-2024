@@ -82,14 +82,11 @@ def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
     :return: текст, соответсвующий правилам
     """
 
-    words = text.lower().strip().split()
-    moderated_words = []
-    for word in words:
-        word = word.replace("'", "").replace('"', "")
-        if word in uncultured_words:
-            word = '#' * len(word)
-        moderated_words.append(word)
-    result = ' '.join(moderated_words).capitalize()
+    result = ' '.join(text.lower().strip().split())
+    result = result.replace('"', '').replace("'", '')
+    for word in uncultured_words:
+        result = result.replace(word, '#' * len(word))
+    result = result.capitalize()
 
     return result
 
