@@ -1,5 +1,6 @@
 from typing import Iterable
 import re
+import random
 
 UNCULTURED_WORDS = ('kotleta', 'pirog')
 
@@ -68,7 +69,7 @@ def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
     """
 
     # пиши код здесь
-    if current_amount >= transfer_amount:
+    if float(current_amount) >= float(transfer_amount):
         result = True
     else:
         result = False
@@ -104,33 +105,28 @@ def create_request_for_loan(user_info: str) -> str:
     """
     Генерирует заявку на кредит на основе входящей строки.
     Формат входящий строки:
-    
+
     Иванов,Петр,Сергеевич,01.01.1991,10000
-    
+
     Что должны вернуть на ее основе:
-    
+
     Фамилия: Иванов
     Имя: Петр
     Отчество: Сергеевич
     Дата рождения: 01.01.1991
     Запрошенная сумма: 10000
-    
+
     :param user_info: строка с информацией о клиенте
     :return: текст кредитной заявки
     """
 
     # пиши код здесь
-     last_name = parts[0]
+    parts = user_info.split(',')
+    last_name = parts[0]
     first_name = parts[1]
     patronymic = parts[2]
     birth_date = parts[3]
     amount_requested = parts[4]
-    application_text = f"""
-    Фамилия: {last_name}
-    Имя: {first_name}
-    Отчество: {patronymic}
-    Дата рождения: {birth_date}
-    Запрошенная сумма: {amount_requested}
-    """
+    application_text = f"""Фамилия: {last_name}\nИмя: {first_name}\nОтчество: {patronymic}\nДата рождения: {birth_date}\nЗапрошенная сумма: {amount_requested}"""
     result = application_text
     return result
