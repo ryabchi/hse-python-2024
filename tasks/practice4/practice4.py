@@ -39,5 +39,17 @@ def search_phone(content: Any, name: str) -> Optional[str]:
     """
 
     # пиши свой код здесь
-
+    if isinstance(content, dict):
+        if 'name' in content and content['name'] == name:
+            return content['phone']
+        else:
+            for obj in content.values():
+                result = search_phone(obj, name)
+                if result:
+                    return result
+    elif isinstance(content, list):
+        for obj in content:
+            result = search_phone(obj, name)
+            if result:
+                return result
     return None

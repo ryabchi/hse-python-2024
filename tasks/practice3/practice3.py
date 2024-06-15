@@ -1,7 +1,8 @@
 from pathlib import Path
 from typing import Dict, Any, List, Optional
-
-
+from string import punctuation
+from string import ascii_lowercase
+import csv
 def count_words(text: str) -> Dict[str, int]:
     """
     Функция для подсчета слов в тексте.
@@ -25,11 +26,19 @@ def count_words(text: str) -> Dict[str, int]:
              ключ - слово в нижнем регистре
              значение - количество вхождений слов в текст
     """
+    words_dict = {}
+    for symbol in punctuation:
+        text = text.replace(symbol, '')
+    possible_words = text.split()
+    for word in possible_words:
+        word = word.lower()
+        if word not in words_dict:
+            if all([symbol in ascii_lowercase for symbol in word]) and len(word) > 1:
+                words_dict[word] = 1
+        else:
+            words_dict[word] += 1
 
-    # пиши свой код здесь
-
-    return {}
-
+    return words_dict
 
 def exp_list(numbers: List[int], exp: int) -> List[int]:
     """
@@ -39,10 +48,7 @@ def exp_list(numbers: List[int], exp: int) -> List[int]:
     :param exp: в какую степень возвести числа в списке
     :return: список натуральных чисел
     """
-
-    # пиши свой код здесь
-
-    return []
+    return [x**exp for x in numbers]
 
 
 def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) -> float:
@@ -57,7 +63,12 @@ def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) 
     :param special_category: список категорий повышенного кешбека
     :return: размер кешбека
     """
-
+    result = 0
+    for operation in operations:
+        if operation['category'] in special_category:
+            result += operation['amount'] * 0.05
+        else:
+            result += operation['amount'] * 0.01
     return result
 
 
@@ -100,5 +111,17 @@ def csv_reader(header: str) -> int:
     """
 
     # пиши свой код здесь
+    unique_elements = set()
+    with open(get_path_to_file()) as new_file:
+        file = csv.reader(new_file)
+        for row_num, row in enumerate(file):
+            if row_num == 0:
+                for curr_header_num, curr_header in enumerate(row):
+                    if curr_header == header:
+                        header_ind = curr_header_num
+            else:
+                for x_num, x in enumerate(row):
+                    if x_num == header_ind:
+                        unique_elements.add(x)
 
-    return 0
+    return len(unique_elements)
