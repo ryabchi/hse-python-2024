@@ -39,6 +39,12 @@ class Employee:
         """
 
         # пиши свой код здесь
+        if isinstance(name, str) and isinstance(position, str) and isinstance(salary, int):
+            self.name = name
+            self.position = position
+            self._salary = salary
+        else:
+            raise ValueError
 
     def get_salary(self) -> int:
         """
@@ -46,6 +52,7 @@ class Employee:
         """
 
         # пиши свой код здесь
+        return self._salary
 
     def __eq__(self, other: object) -> bool:
         """
@@ -56,6 +63,12 @@ class Employee:
         """
 
         # пиши свой код здесь
+        if isinstance(other, Employee) == False:
+            raise TypeError
+        try:
+            return get_position_level(other.position) == get_position_level(self.position)
+        except NoSuchPositionError:
+            raise ValueError
 
     def __str__(self):
         """
@@ -63,7 +76,7 @@ class Employee:
         Пример вывода: 'name: Ivan position manager'
         """
 
-        # пиши свой код здесь
+        return f'name: {self.name} position: {self.position}'
 
     def __hash__(self):
         return id(self)
@@ -83,6 +96,12 @@ class Developer(Employee):
         """
 
         # пиши свой код здесь
+        super().__init__(name, 'developer', salary)
+        if isinstance(language, str):
+            self.language = language
+        else:
+            raise ValueError
+            
 
 
 class Manager(Employee):
@@ -96,5 +115,5 @@ class Manager(Employee):
         """
         Задача: реализовать конструктор класса, используя конструктор родителя
         """
-
+        super().__init__(name, 'manager', salary)
         # пиши свой код здесь
