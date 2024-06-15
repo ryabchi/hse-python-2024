@@ -27,8 +27,19 @@ def count_words(text: str) -> Dict[str, int]:
     """
 
     # пиши свой код здесь
+    import re
+    from collections import defaultdict
 
-    return {}
+    count = defaultdict(int)
+    words = re.findall(r'\b[A-Za-z]+\b', text)
+    
+    for word in words:
+        word = word.lower()
+        count[word] += 1
+        
+    return dict(count)
+    
+    
 
 
 def exp_list(numbers: List[int], exp: int) -> List[int]:
@@ -41,8 +52,7 @@ def exp_list(numbers: List[int], exp: int) -> List[int]:
     """
 
     # пиши свой код здесь
-
-    return []
+    return [n ** exp for n in numbers]
 
 
 def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) -> float:
@@ -57,8 +67,17 @@ def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) 
     :param special_category: список категорий повышенного кешбека
     :return: размер кешбека
     """
-
-    return result
+    
+    # пиши свой код здесь
+    total_cashback = 0.0
+    
+    for operation in operations:
+        if operation["category"] in special_category:
+            total_cashback += operation["amount"] * 0.05
+        else:
+            total_cashback += operation["amount"] * 0.01
+    
+    return total_cashback
 
 
 def get_path_to_file() -> Optional[Path]:
@@ -100,5 +119,13 @@ def csv_reader(header: str) -> int:
     """
 
     # пиши свой код здесь
+    import csv
 
-    return 0
+    s = set() 
+    
+    with open(get_path_to_file(), 'r') as file:
+        for row in csv.DictReader(file):
+            if header in row:
+                s.add(row[header])
+    
+    return len(s)

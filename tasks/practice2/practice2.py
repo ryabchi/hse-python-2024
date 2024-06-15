@@ -13,6 +13,8 @@ def greet_user(name: str) -> str:
     """
 
     # пиши код здесь
+    greeting = f'Hello, dear {name}! How are you?'
+    
     return greeting
 
 
@@ -29,6 +31,9 @@ def get_amount() -> float:
     """
 
     # пиши код здесь
+    import random
+    amount = round(random.uniform(100, 1_000_000), 2)
+    
     return amount
 
 
@@ -43,7 +48,11 @@ def is_phone_correct(phone_number: str) -> bool:
     """
 
     # пиши код здесь
-    return result
+    import re
+    pattern = r'^\+7\d{10}$'
+    
+    return bool(re.match(pattern, phone_number))
+     
 
 
 def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
@@ -59,7 +68,11 @@ def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
     """
 
     # пиши код здесь
-    return result
+    try:
+        transfer_amount_float = float(transfer_amount)
+        return current_amount >= transfer_amount_float
+    except ValueError:
+        return False
 
 
 def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
@@ -78,9 +91,14 @@ def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
     """
 
     # пиши код здесь
+    s = text.strip()
+    result = s[0].upper() + s[1:].lower().replace('\'', '').replace('"', '')
+    for i in uncultured_words:
+        result = result.replace(i, '#' * len(i))
+
     return result
-
-
+    
+    
 def create_request_for_loan(user_info: str) -> str:
     """
     Генерирует заявку на кредит на основе входящей строки.
@@ -101,4 +119,11 @@ def create_request_for_loan(user_info: str) -> str:
     """
 
     # пиши код здесь
+    user_info = user_info.split(',')
+    result = (f'Фамилия: {user_info[0]}\n'
+              f'Имя: {user_info[1]}\n'
+              f'Отчество: {user_info[2]}\n'
+              f'Дата рождения: {user_info[3]}\n'
+              f'Запрошенная сумма: {user_info[4]}')
     return result
+
