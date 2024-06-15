@@ -1,4 +1,5 @@
 from typing import Iterable
+import random
 
 UNCULTURED_WORDS = ('kotleta', 'pirog')
 
@@ -13,6 +14,9 @@ def greet_user(name: str) -> str:
     """
 
     # пиши код здесь
+
+    greeting = 'Hello, ' + name + '!'
+
     return greeting
 
 
@@ -29,6 +33,9 @@ def get_amount() -> float:
     """
 
     # пиши код здесь
+
+    amount = random.randint(10000, 100000000) / 100
+
     return amount
 
 
@@ -43,7 +50,16 @@ def is_phone_correct(phone_number: str) -> bool:
     """
 
     # пиши код здесь
-    return result
+
+    if not len(phone_number) == 12:
+        return False
+    if not (phone_number[0] == '+' and phone_number[1] == '7'):
+        return False
+    for i in range(2, len(phone_number)):
+        if not phone_number[i].isdigit():
+            return False
+
+    return True
 
 
 def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
@@ -59,7 +75,8 @@ def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
     """
 
     # пиши код здесь
-    return result
+
+    return current_amount >= float(transfer_amount)
 
 
 def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
@@ -78,7 +95,15 @@ def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
     """
 
     # пиши код здесь
-    return result
+
+    text = text.replace('"', '').replace("'", '')
+    text = ' '.join(text.split())
+    for word in uncultured_words:
+        text = text.replace(word, '#' * len(word))
+    text = text.lower()
+    text = text[0].upper() + text[1:]
+
+    return text
 
 
 def create_request_for_loan(user_info: str) -> str:
@@ -101,4 +126,11 @@ def create_request_for_loan(user_info: str) -> str:
     """
 
     # пиши код здесь
+
+    data_list = [data for data in user_info.split(',')]
+    result = 'Фамилия: ' + data_list[0] +\
+             '\nИмя: ' + data_list[1] +\
+             '\nОтчество: ' + data_list[2] +\
+             '\nДата рождения: ' + data_list[3] +\
+             '\nЗапрошенная сумма: ' + data_list[4]
     return result
