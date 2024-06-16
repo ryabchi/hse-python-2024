@@ -1,5 +1,8 @@
 from pathlib import Path
 from typing import Dict, Any, List, Optional
+import csv
+
+import tasks
 
 
 def count_words(text: str) -> Dict[str, int]:
@@ -26,9 +29,30 @@ def count_words(text: str) -> Dict[str, int]:
              значение - количество вхождений слов в текст
     """
 
-    # пиши свой код здесь
-
-    return {}
+    punctuation_symbols = (".", "?", ",", "!", ":", ";", "-", "—")
+    counter = 0
+    for i in text:
+        if i in punctuation_symbols:
+            text = text.replace(i, "")
+    text = text.lower().split()
+    processed_text = ""
+    dictionary = dict()
+    for word in range(len(text)):
+        counter = 0
+        if any(character.isdigit() for character in text[word]):
+            counter = 0
+        else:
+            counter = counter + 1
+            if text[word] in processed_text:
+                counter = counter + 1
+            else:
+                processed_text = processed_text + " " + text[word]
+        if counter > 0:
+            dictionary[text[word]] = counter
+    dictionary = sorted(dictionary.items())
+    dictionary = dict(dictionary)
+    print(dictionary)
+    return dictionary
 
 
 def exp_list(numbers: List[int], exp: int) -> List[int]:
@@ -40,9 +64,9 @@ def exp_list(numbers: List[int], exp: int) -> List[int]:
     :return: список натуральных чисел
     """
 
-    # пиши свой код здесь
-
-    return []
+    for i in range(len(numbers)):  # пиши свой код здесь
+        numbers[i] = int(numbers[i]) ** int(exp)
+    return numbers
 
 
 def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) -> float:
@@ -58,7 +82,15 @@ def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) 
     :return: размер кешбека
     """
 
-    return result
+    cashback = 0
+    cat = [i['category'] for i in operations]
+    am = [i['amount'] for i in operations]
+    for i in range(len(cat)):
+        if cat[i] in special_category:
+            cashback = cashback + 0.05 * float(am[i])
+        else:
+            cashback = cashback + 0.01 * float(am[i])
+    return cashback
 
 
 def get_path_to_file() -> Optional[Path]:
@@ -99,6 +131,13 @@ def csv_reader(header: str) -> int:
     :return: количество уникальных элементов в столбце
     """
 
-    # пиши свой код здесь
+    file_path = get_path_to_file()
+    unique_elements = set()
+    with open(file_path, 'r', newline='') as csvfile:
+        reader = csv.reader(csvfile)
+        header_row = next(reader)
+        column_index = header_row.index(header)
+        for row in reader:
+            unique_elements.add(row[column_index])
+    return len(unique_elements)
 
-    return 0
