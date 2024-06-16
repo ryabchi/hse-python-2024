@@ -12,7 +12,7 @@ POSITIONS: Dict[str, int] = {
 
 def get_position_level(position_name: str) -> int:
     """
-    Функция возвращает уровень позиции по ее названию. 
+    Функция возвращает уровень позиции по ее названию.
     Если должности нет в базе поднимается исключение `NoSuchPositionError(position_name)`
     """
     try:
@@ -38,6 +38,8 @@ class Employee:
         Задача: реализовать конструктор класса, чтобы все тесты проходили
         """
 
+        if not isinstance(salary, int):
+            raise ValueError("Error!")
         self.name = name
         self.position = position
         self._salary = salary
@@ -57,6 +59,10 @@ class Employee:
         Сравнение происходит по уровню позиции см. `get_position_level`.
         Если что-то идет не так - бросаются исключения. Смотрим что происходит в тестах.
         """
+        if not isinstance(other, Employee):
+            raise TypeError("Error!")
+        if self.position not in POSITIONS or other.position not in POSITIONS:
+            raise ValueError(f"{self.position} {other.position}")
 
         return get_position_level(self.position) == get_position_level(other.position)
 
