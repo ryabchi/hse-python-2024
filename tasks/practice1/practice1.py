@@ -10,7 +10,7 @@ def concatenate_strings(a: str, b: str) -> str:
 
     result = a + b  # пиши свой код здесь
 
-    return result
+    return result 
 
 
 def calculate_salary(total_compensation: int) -> float:
