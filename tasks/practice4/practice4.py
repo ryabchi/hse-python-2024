@@ -38,6 +38,13 @@ def search_phone(content: Any, name: str) -> Optional[str]:
     :return: номер телефона пользователя или None
     """
 
-    # пиши свой код здесь
-
+    stack=[content]
+    while stack:
+        now=stack.pop()
+        if(isinstance(now,list)):
+            stack.extend(now)
+        elif(isinstance(now,dict)):
+            if now.get('name')==name:
+                return now.get('phone')
+            stack.extend(now.values())
     return None
