@@ -9,7 +9,7 @@ class EmployeeError(Exception):
 
 
 class NoSuchPositionError(EmployeeError):
-    """ 
+    """
     Исключение поднимается, когда нет позиции в бд
     """
     pass
