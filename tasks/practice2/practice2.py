@@ -30,7 +30,14 @@ def get_amount() -> float:
     """
 
     # пиши код здесь
+    import random
 
+    while True:
+        amount = random.uniform(100, 1000000)
+        amount = round(amount, 2)
+
+        if len(str(amount).split(".")[1]) <= 2:
+            break
     return amount
 
 
@@ -45,17 +52,17 @@ def is_phone_correct(phone_number: str) -> bool:
     """
 
     # пиши код здесь
-    if phone_number[0] == '+':
-        return True
+    if len(phone_number) != 12:
+        return False
 
-    if phone_number[1] == '7':
-        return True
+    if phone_number[:2] != "+7":
+        return False
 
-    for x in phone_number[1:]:
-        if 0 <= x <= 9:
-            return True
-    return result
 
+    for sym in phone_number[2:]:
+        if not sym.isdigit():
+            return False
+    return True
 
 def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
     """
@@ -70,9 +77,9 @@ def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
     """
 
     # пиши код здесь
-    if int(current_amount) >= int(transfer_amount):
+    if int(current_amount) >= float(transfer_amount):
         return True
-    return result
+    return False
 
 
 def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
@@ -91,6 +98,15 @@ def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
     """
 
     # пиши код здесь
+    text = text.lower().strip()
+
+    text = text.replace('"', '').replace("'", '')
+
+    for word in uncultured_words:
+        text = text.replace(word, "#" * len(word))
+
+    result = text[0].upper() + text[1:]
+
     return result
 
 
@@ -114,8 +130,15 @@ def create_request_for_loan(user_info: str) -> str:
     """
 
     # пиши код здесь
-    user_info = user_info.split(',')
-    result = ('Фамилия: ' + user_info[0] + "/n" + 'Имя: ' + 'user_info[1]/n' + 'Отчество: ' + 'user_info[2]/n' + 'Дата рождения: ' + 'user_info[3]/n' + 'Запрошенная сумма: ' + 'user_info[4]')
+    user_info = user_info.split(",")
+    last_name, first_name, middle_name, date_of_birth, requested_amount = user_info
+    result = (
+        f"Фамилия: {last_name}\n"
+        f"Имя: {first_name}\n"
+        f"Отчество: {middle_name}\n"
+        f"Дата рождения: {date_of_birth}\n"
+        f"Запрошенная сумма: {requested_amount}"
+    )
     return result
 
 
