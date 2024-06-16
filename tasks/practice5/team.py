@@ -28,6 +28,9 @@ class Team:
         """
 
         # пиши свой код здесь
+        self.name = name
+        self.manager = manager
+        self.__members = set()
 
     def add_member(self, member: Employee) -> None:
         """
@@ -36,6 +39,10 @@ class Team:
         """
 
         # пиши свой код здесь
+        if not isinstance(member, Employee):
+            raise TypeError("Only instances of Employee can be added to the team")
+
+        self.__members.add(member)
 
     def remove_member(self, member: Employee) -> None:
         """
@@ -44,6 +51,13 @@ class Team:
         """
 
         # пиши свой код здесь
+        if not isinstance(member, Employee):
+            raise TypeError("Only instances of Employee can be removed from the team")
+
+        if member not in self.__members:
+            raise NoSuchMemberError(self.name, member)
+
+        self.__members.remove(member)
 
     def get_members(self) -> Set[Employee]:
         """
@@ -52,6 +66,16 @@ class Team:
         """
 
         # пиши свой код здесь
+        try:
+            return self.__members.copy()
+        except Exception as e:
+            print(f"Error getting members: {e}")
+
+    def __str__(self):
+        """
+        Задача: реализовать строковое представление объекта.
+        """
+        return f'team: {self.name} manager: {self.manager.name} number of members: {len(self.__members)}'
 
     def show(self) -> None:
         """
