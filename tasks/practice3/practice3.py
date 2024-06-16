@@ -1,6 +1,6 @@
 from pathlib import Path
 from typing import Dict, Any, List, Optional
-
+import csv
 
 def count_words(text: str) -> Dict[str, int]:
     """
@@ -26,10 +26,16 @@ def count_words(text: str) -> Dict[str, int]:
              значение - количество вхождений слов в текст
     """
 
-    # пиши свой код здесь
-
-    return {}
-
+    words = {}
+    for word in text.split():
+        word = word.strip(".,!?;:'-")
+        if word.isalpha() and len(word) > 1:
+            word = word.lower()
+            if word in words:
+                words[word] += 1
+            else:
+                words[word] = 1
+    return words
 
 def exp_list(numbers: List[int], exp: int) -> List[int]:
     """
@@ -40,9 +46,7 @@ def exp_list(numbers: List[int], exp: int) -> List[int]:
     :return: список натуральных чисел
     """
 
-    # пиши свой код здесь
-
-    return []
+    return [number ** exp for number in numbers]
 
 
 def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) -> float:
@@ -58,7 +62,13 @@ def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) 
     :return: размер кешбека
     """
 
-    return result
+    cashback = 0
+    for operation in operations:
+        if operation['category'] in special_category:
+            cashback += operation['amount'] * 0.05
+        else:
+            cashback += operation['amount'] * 0.01
+    return cashback
 
 
 def get_path_to_file() -> Optional[Path]:
@@ -99,6 +109,12 @@ def csv_reader(header: str) -> int:
     :return: количество уникальных элементов в столбце
     """
 
-    # пиши свой код здесь
+    unique_elements = set()
+    with open(get_path_to_file(), 'r', encoding='utf-8') as file:
+        reader = csv.reader(file)
+        headers = next(reader)
+        index = headers.index(header)
+        for row in reader:
+            unique_elements.add(row[index])
+    return len(unique_elements)
 
-    return 0
