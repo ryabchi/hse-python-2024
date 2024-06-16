@@ -1,6 +1,7 @@
 from pathlib import Path
 from typing import Dict, Any, List, Optional
-
+import csv
+import string
 
 def count_words(text: str) -> Dict[str, int]:
     """
@@ -28,7 +29,22 @@ def count_words(text: str) -> Dict[str, int]:
 
     # пиши свой код здесь
 
-    return {}
+    text = text.translate(str.maketrans('', '', string.punctuation))
+    text = text.lower()
+    words = text.split()
+    d = {}
+    for word in words:
+        flag = 1
+        for c in word:
+            if c < 'a' or c > 'z':
+                flag = 0
+                break
+        if flag == 1:
+            if word in d:
+                d[word] += 1
+            else:
+                d[word] = 1
+    return d
 
 
 def exp_list(numbers: List[int], exp: int) -> List[int]:
@@ -42,7 +58,8 @@ def exp_list(numbers: List[int], exp: int) -> List[int]:
 
     # пиши свой код здесь
 
-    return []
+    new_numbers = [x ** exp for x in numbers]
+    return new_numbers
 
 
 def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) -> float:
@@ -57,7 +74,14 @@ def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) 
     :param special_category: список категорий повышенного кешбека
     :return: размер кешбека
     """
+    #а где надпись пиши свой код здесь :(
 
+    result = 0
+    for d in operations:
+        if d['category'] in special_category:
+            result += float(d['amount']) * 0.05
+        else:
+            result += float(d['amount']) * 0.01
     return result
 
 
@@ -101,4 +125,16 @@ def csv_reader(header: str) -> int:
 
     # пиши свой код здесь
 
-    return 0
+    file_path = get_path_to_file()
+    elements = []
+    flag, index = 1, -1
+    with open(file_path, newline='') as csvfile:
+        reader = csv.reader(csvfile)
+        for row in reader:
+            if flag == 1:
+                index = row.index(header)
+                flag = 0
+            else:
+                if row[index] not in elements:
+                    elements.append(row[index])
+    return len(elements)
