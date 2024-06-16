@@ -63,6 +63,7 @@ def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) 
     :param special_category: список категорий повышенного кешбека
     :return: размер кешбека
     """
+
     result = 0
     for operation in operations:
         if operation['category'] in special_category:
@@ -111,6 +112,7 @@ def csv_reader(header: str) -> int:
     """
 
     # пиши свой код здесь
+
     import csv
     unique_elements = set()
 

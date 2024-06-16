@@ -12,7 +12,7 @@ def greet_user(name: str) -> str:
     :return: приветствие
     """
 
-    # пиши свой код здесь
+    # пиши код здесь
     greeting = f"Привет, {name}! Рад тебя видеть."
     return greeting
 
@@ -29,7 +29,7 @@ def get_amount() -> float:
     :return: случайную сумму на счете
     """
 
-    # пиши свой код здесь
+    # пиши код здесь
     import random
     amount = round(random.uniform(100, 1000000), 2)
     return amount
@@ -45,7 +45,7 @@ def is_phone_correct(phone_number: str) -> bool:
                                           False - если номер некорректный
     """
 
-    # пиши свой код здесь
+    # пиши код здесь
     result = phone_number.startswith("+7") and len(phone_number) == 12 and phone_number[2:].isdigit()
 
     return result
@@ -63,7 +63,7 @@ def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
                                           False - если денег недостаточно
     """
 
-    # пиши свой код здесь
+    # пиши код здесь
     result = current_amount >= float(transfer_amount)
 
     return result
@@ -84,7 +84,7 @@ def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
     :return: текст, соответсвующий правилам
     """
 
-    # пиши свой код здесь
+    # пиши код здесь
     text = text.replace('"', '').replace("'", '')
     text = text.strip().capitalize()
 
@@ -114,7 +114,7 @@ def create_request_for_loan(user_info: str) -> str:
     :return: текст кредитной заявки
     """
 
-    # пиши свой код здесь
+    # пиши код здесь
     user_info = user_info.split(',')
     result = f"Фамилия: {user_info[0]}\nИмя: {user_info[1]}\nОтчество: {user_info[2]}\nДата рождения: {user_info[3]}\nЗапрошенная сумма: {user_info[4]}"
 

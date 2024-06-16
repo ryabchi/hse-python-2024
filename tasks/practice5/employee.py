@@ -51,6 +51,7 @@ class Employee:
         Метод возвращает зарплату сотрудника.
         """
 
+        # пиши свой код здесь
         return self._salary
 
     def __eq__(self, other: object) -> bool:
