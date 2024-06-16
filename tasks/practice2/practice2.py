@@ -30,7 +30,7 @@ def get_amount() -> float:
     """
 
     amount = round(random.random() * (1000 - 100) + 100, 2)
-    print(amount)
+    return amount
 
 
 def is_phone_correct(phone_number: str) -> bool:
@@ -61,10 +61,7 @@ def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
                                           False - если денег недостаточно
     """
 
-    result = True
-    if current_amount >= float(transfer_amount):
-        result = False
-    return result
+    return current_amount >= float(transfer_amount)
 
 
 def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
@@ -82,13 +79,11 @@ def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
     :return: текст, соответсвующий правилам
     """
 
-    text = text.strip()
-    text = text.replace('"', '').replace("'", '')
-    text = text.lower()
-    text = text.capitalize()
+    result = ' '.join(text.lower().strip().split())
+    result = result.replace('"', '').replace("'", '')
     for word in uncultured_words:
-        text = text.replace(word, '#' * len(word))
-    return text
+        result = result.replace(word, '#' * len(word))
+    result = result.capitalize()
 
     return result
 
@@ -113,5 +108,5 @@ def create_request_for_loan(user_info: str) -> str:
     """
 
     surname, name, patronymic, birthday, sum = user_info.split(',')
-    result = f'Фамилия: {surname}\nИмя: {name}\nОтчество:{patronymic}\nДата рождения: {birthday}\nЗапрошенная сумма: {sum}'
+    result = f'Фамилия: {surname}\nИмя: {name}\nОтчество: {patronymic}\nДата рождения: {birthday}\nЗапрошенная сумма: {sum}'
     return result
