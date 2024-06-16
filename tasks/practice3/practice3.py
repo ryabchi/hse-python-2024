@@ -1,3 +1,6 @@
+import csv
+import re
+from collections import defaultdict
 from pathlib import Path
 from typing import Dict, Any, List, Optional
 
@@ -28,6 +31,17 @@ def count_words(text: str) -> Dict[str, int]:
 
     # пиши свой код здесь
 
+    word_counts = defaultdict(int)
+
+    # Находим все слова в тексте с помощью регулярного выражения
+    words = re.findall(r'\b[A-Za-z]+\b', text.lower())
+
+    # Подсчитываем количество вхождений каждого слова
+    for word in words:
+        word_counts[word] += 1
+
+    return dict(word_counts)
+
     return {}
 
 
@@ -41,8 +55,8 @@ def exp_list(numbers: List[int], exp: int) -> List[int]:
     """
 
     # пиши свой код здесь
-
-    return []
+    result = [num ** exp for num in numbers]
+    return result
 
 
 def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) -> float:
@@ -57,8 +71,22 @@ def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) 
     :param special_category: список категорий повышенного кешбека
     :return: размер кешбека
     """
+    cashback_percent_normal = 0.01  # 1%
+    cashback_percent_special = 0.05  # 5%
 
-    return result
+    total_cashback = 0.0
+
+    for operation in operations:
+        amount = operation.get('amount', 0)
+        category = operation.get('category', '')
+
+        if category in special_category:
+            total_cashback += amount * cashback_percent_special
+        else:
+            total_cashback += amount * cashback_percent_normal
+
+    return total_cashback
+
 
 
 def get_path_to_file() -> Optional[Path]:
@@ -100,5 +128,13 @@ def csv_reader(header: str) -> int:
     """
 
     # пиши свой код здесь
+    path_to_file = get_path_to_file()  # получаем путь до CSV файла
 
-    return 0
+    unique_elements = set()  # множество для хранения уникальных элементов
+
+    with open(path_to_file, newline='') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            unique_elements.add(row[header])
+
+    return len(unique_elements)
