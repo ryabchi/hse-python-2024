@@ -27,7 +27,11 @@ class Team:
         и инициализировать контейнер `__members`
         """
 
-        # пиши свой код здесь
+        if not isinstance(name, str) or not isinstance(manager, Manager):
+            raise ValueError
+        self.name = name
+        self.manager = manager
+        self.__members = set()
 
     def add_member(self, member: Employee) -> None:
         """
@@ -35,7 +39,9 @@ class Team:
         Добавить можно только работника.
         """
 
-        # пиши свой код здесь
+        if not isinstance(member, Employee):
+            raise TypeError
+        self.__members.add(member)
 
     def remove_member(self, member: Employee) -> None:
         """
@@ -43,7 +49,13 @@ class Team:
         Если в команде нет такого участника поднимается исключение `NoSuchMemberError`
         """
 
-        # пиши свой код здесь
+        if not isinstance(member, Employee):
+            raise TypeError
+
+        if self.__members.__contains__(member):
+            self.__members.remove(member)
+        else:
+            raise NoSuchMemberError(self.name, member)
 
     def get_members(self) -> Set[Employee]:
         """
@@ -51,7 +63,11 @@ class Team:
         чтобы из вне нельзя было поменять список участников внутри класса
         """
 
-        # пиши свой код здесь
+        set_deep_copy = self.__members.copy()
+        return set_deep_copy
+
+    def __str__(self) -> str:
+        return f'team: {self.name} manager: {self.manager.name} number of members: {len(self.__members)}'
 
     def show(self) -> None:
         """

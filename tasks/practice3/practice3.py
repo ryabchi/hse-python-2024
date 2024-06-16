@@ -26,9 +26,31 @@ def count_words(text: str) -> Dict[str, int]:
              значение - количество вхождений слов в текст
     """
 
-    # пиши свой код здесь
+    text += ' '
+    result = dict()
+    current_word = ''
+    flag = True
 
-    return {}
+    punctuation_marks = [',', '.', '?', '!', ';', ':']
+
+    for character in text:
+        if character in punctuation_marks:
+            continue
+        if character == ' ':
+            current_word = current_word.lower()
+            if flag and len(current_word) > 0:
+                if result.get(current_word):
+                    result[current_word] += 1
+                else:
+                    result[current_word] = 1
+            current_word = ''
+            flag = True
+        else:
+            if not ('a' <= character <= 'z' or 'A' <= character <= 'Z'):
+                flag = False
+            current_word += character
+
+    return result
 
 
 def exp_list(numbers: List[int], exp: int) -> List[int]:
@@ -40,9 +62,7 @@ def exp_list(numbers: List[int], exp: int) -> List[int]:
     :return: список натуральных чисел
     """
 
-    # пиши свой код здесь
-
-    return []
+    return list(map(lambda x: x ** exp, numbers))
 
 
 def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) -> float:
@@ -57,6 +77,14 @@ def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) 
     :param special_category: список категорий повышенного кешбека
     :return: размер кешбека
     """
+
+    result = 0.0
+
+    for operation in operations:
+        if operation["category"] in special_category:
+            result += float(operation["amount"]) * 0.05
+        else:
+            result += float(operation["amount"]) * 0.01
 
     return result
 
@@ -99,6 +127,20 @@ def csv_reader(header: str) -> int:
     :return: количество уникальных элементов в столбце
     """
 
-    # пиши свой код здесь
+    # Это некрасиво, красивее через pd.read_csv)) (предыдущий коммит - 2 строки)
+    file = open(get_path_to_file(), 'r')
+    data = file.readlines()
+    headers = data[0].replace('\n', '').replace('\"', '').split(',')
+    header_index = 0
+    while header_index < len(headers):
+        if headers[header_index] == header:
+            break
+        header_index += 1
 
-    return 0
+    distinct_values = set()
+    for index in range(1, len(data)):
+        distinct_values.add(data[index].replace('\n', '').split(',')[header_index])
+
+    return len(distinct_values)
+
+print(csv_reader('Project Key')) # 3
