@@ -1,6 +1,7 @@
 from pathlib import Path
 from typing import Dict, Any, List, Optional
-
+import re
+import csv
 
 def count_words(text: str) -> Dict[str, int]:
     """
@@ -27,8 +28,8 @@ def count_words(text: str) -> Dict[str, int]:
     """
 
     # пиши свой код здесь
-
-    return {}
+    words = [x.lower() for x in re.split(";|,| |\.|\n|-|!", text) if len(x) > 0 and not any(i for i in range(10) if str(i) in x)]
+    return {x: words.count(x) for x in words}
 
 
 def exp_list(numbers: List[int], exp: int) -> List[int]:
@@ -42,7 +43,7 @@ def exp_list(numbers: List[int], exp: int) -> List[int]:
 
     # пиши свой код здесь
 
-    return []
+    return [x**exp for x in numbers]
 
 
 def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) -> float:
@@ -57,7 +58,12 @@ def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) 
     :param special_category: список категорий повышенного кешбека
     :return: размер кешбека
     """
-
+    result = 0
+    for op in operations:
+        if op.get("category") in special_category:
+            result += op.get("amount") * 0.05
+        else:
+            result += op.get("amount") * 0.01
     return result
 
 
@@ -100,5 +106,9 @@ def csv_reader(header: str) -> int:
     """
 
     # пиши свой код здесь
-
-    return 0
+    freqs = set()
+    with open(get_path_to_file()) as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            freqs.add(row[header])
+    return len(freqs)
