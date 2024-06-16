@@ -1,6 +1,5 @@
 import csv
 import re
-from collections import defaultdict
 from pathlib import Path
 from typing import Dict, Any, List, Optional
 
@@ -29,7 +28,7 @@ def count_words(text: str) -> Dict[str, int]:
              значение - количество вхождений слов в текст
     """
 
-    words = re.findall(r'\b[a-zA-Z{2,}\b]', text)
+    words = re.findall(r'\b[a-zA-Z]+\b', text)
     word_count = {}
     for word in words:
         word = word.lower()
