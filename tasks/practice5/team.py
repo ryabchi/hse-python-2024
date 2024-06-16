@@ -27,7 +27,13 @@ class Team:
         и инициализировать контейнер `__members`
         """
 
-        # пиши свой код здесь
+        if not isinstance(name, str):
+            raise TypeError("Team name must be a string")
+        if not isinstance(manager, Manager):
+            raise TypeError("Manager must be a Manager object")
+        self.name = name
+        self.manager = manager
+        self.__members: Set[Employee] = set()
 
     def add_member(self, member: Employee) -> None:
         """
@@ -35,7 +41,9 @@ class Team:
         Добавить можно только работника.
         """
 
-        # пиши свой код здесь
+        if not isinstance(member, Employee):
+            raise TypeError("Member must be an Employee object")
+        self.__members.add(member)
 
     def remove_member(self, member: Employee) -> None:
         """
@@ -43,7 +51,11 @@ class Team:
         Если в команде нет такого участника поднимается исключение `NoSuchMemberError`
         """
 
-        # пиши свой код здесь
+        if not isinstance(member, Employee):
+            raise TypeError("Member must be an Employee object")
+        if member not in self.__members:
+            raise NoSuchMemberError(self.name, member)
+        self.__members.remove(member)
 
     def get_members(self) -> Set[Employee]:
         """
@@ -51,7 +63,15 @@ class Team:
         чтобы из вне нельзя было поменять список участников внутри класса
         """
 
-        # пиши свой код здесь
+        return self.__members.copy()
+
+    def __str__(self):
+        """
+        функция реализует строковое представление объекта.
+        Пример вывода: 'team: {team_name} manager: {manager_name} number of members: {members_count)}'
+        """
+        return f'team: {self.name} manager: {self.manager.name} number of members: {len(self.get_members())}'
+
 
     def show(self) -> None:
         """
