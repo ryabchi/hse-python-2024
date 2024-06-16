@@ -37,6 +37,8 @@ class Team:
         Добавить можно только работника.
         """
 
+        if not isinstance(member, Employee):
+            raise TypeError("Error!")
         self.__members.add(member)
 
     def remove_member(self, member: Employee) -> None:
@@ -45,6 +47,10 @@ class Team:
         Если в команде нет такого участника поднимается исключение `NoSuchMemberError`
         """
 
+        if not isinstance(member, Employee):
+            raise TypeError("Error!")
+        if member not in self.__members:
+            raise NoSuchMemberError(self.name, member)
         self.__members.remove(member)
 
     def get_members(self) -> Set[Employee]:
