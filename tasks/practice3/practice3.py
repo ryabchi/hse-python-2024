@@ -1,3 +1,5 @@
+import csv
+import re
 from pathlib import Path
 from typing import Dict, Any, List, Optional
 
@@ -26,9 +28,11 @@ def count_words(text: str) -> Dict[str, int]:
              значение - количество вхождений слов в текст
     """
 
-    # пиши свой код здесь
-
-    return {}
+    words = re.findall(r'\b[a-zA-Z]+\b', text.lower())
+    result = {}
+    for word in words:
+        result[word] = result.get(word, 0) + 1
+    return result
 
 
 def exp_list(numbers: List[int], exp: int) -> List[int]:
@@ -40,9 +44,11 @@ def exp_list(numbers: List[int], exp: int) -> List[int]:
     :return: список натуральных чисел
     """
 
-    # пиши свой код здесь
+    result = []
+    for number in numbers:
+        result.append(number ** exp)
 
-    return []
+    return result
 
 
 def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) -> float:
@@ -58,6 +64,12 @@ def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) 
     :return: размер кешбека
     """
 
+    result = 0
+    for operation in operations:
+        if operation['category'] in special_category:
+            result += operation['amount'] * 0.05
+        else:
+            result += operation['amount'] * 0.01
     return result
 
 
@@ -98,7 +110,10 @@ def csv_reader(header: str) -> int:
     :param header: название заголовка
     :return: количество уникальных элементов в столбце
     """
-
-    # пиши свой код здесь
-
-    return 0
+    unique_elements = set()
+    with open(get_path_to_file(), 'r') as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            unique_elements.add(row[header])
+    result = len(unique_elements)
+    return result
