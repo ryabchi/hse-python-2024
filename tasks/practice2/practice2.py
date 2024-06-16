@@ -1,4 +1,5 @@
 from typing import Iterable
+import random
 
 UNCULTURED_WORDS = ('kotleta', 'pirog')
 
@@ -13,6 +14,7 @@ def greet_user(name: str) -> str:
     """
 
     # пиши код здесь
+    greeting = f"Привет, {name}! Добро пожаловать в наш бот."
     return greeting
 
 
@@ -29,6 +31,7 @@ def get_amount() -> float:
     """
 
     # пиши код здесь
+    amount = round(random.uniform(100, 1000000), 2)
     return amount
 
 
@@ -43,7 +46,9 @@ def is_phone_correct(phone_number: str) -> bool:
     """
 
     # пиши код здесь
-    return result
+    if len(phone_number) == 12 and phone_number.startswith('+7') and phone_number[2:].isdigit():
+        return True
+    return False
 
 
 def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
@@ -59,7 +64,13 @@ def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
     """
 
     # пиши код здесь
-    return result
+    try:
+        transfer_amount_float = float(transfer_amount)
+        if current_amount >= transfer_amount_float:
+            return True
+    except ValueError:
+        pass
+    return False
 
 
 def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
@@ -78,7 +89,11 @@ def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
     """
 
     # пиши код здесь
-    return result
+    text = text.strip().capitalize()
+    text = text.replace('"', '').replace("'", "")
+    for word in uncultured_words:
+        text = text.replace(word, '#' * len(word))
+    return text
 
 
 def create_request_for_loan(user_info: str) -> str:
@@ -101,4 +116,13 @@ def create_request_for_loan(user_info: str) -> str:
     """
 
     # пиши код здесь
-    return result
+    try:
+        last_name, first_name, middle_name, birth_date, loan_amount = user_info.split(',')
+        result = (f"Фамилия: {last_name}\n"
+                  f"Имя: {first_name}\n"
+                  f"Отчество: {middle_name}\n"
+                  f"Дата рождения: {birth_date}\n"
+                  f"Запрошенная сумма: {loan_amount}")
+        return result
+    except ValueError:
+        raise ValueError
