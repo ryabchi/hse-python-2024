@@ -43,13 +43,13 @@ def is_phone_correct(phone_number: str) -> bool:
                                           False - если номер некорректный
     """
 
-    if phone_number[0] != "+":
+    if not phone_number.startswith("+7") or len(phone_number) != 12:
         return False
-    if phone_number[1] != "7":
-        return False
-    for i in range(2, len(phone_number)):
+
+    for i in range(2, 12):
         if not phone_number[i].isdigit():
             return False
+
     return True
 
 
@@ -66,7 +66,7 @@ def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
     """
 
     
-    return current_amount >= transfer_amount
+    return current_amount >= float(transfer_amount)
 
 
 def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
@@ -83,13 +83,15 @@ def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
     :param uncultured_words: список запрещенных слов
     :return: текст, соответсвующий правилам
     """
-    result = text.strip()
-    result = result.lower()
-    result = result[0].upper() + result[1:]
+    text = " ".join(text.split())
+    text = text.capitalize()
+    text = text.replace("\"", "")
+    text = text.replace("\'", "")
 
-    for word in UNCULTURED_WORDS:
-        result.replace(word, '*' * len(word))
-    return result
+    for i in uncultured_words:
+        text = text.replace(i, len(i) * "#")
+
+    return text
 
 
 def create_request_for_loan(user_info: str) -> str:
@@ -111,6 +113,12 @@ def create_request_for_loan(user_info: str) -> str:
     :return: текст кредитной заявки
     """
 
-    info = list(user_info.split(","))
-    result = "Фамилия:" + info[0] + "Имя:" + info[1]
+    info = user_info.split(",")
+    result = ""
+    result += "Фамилия: " + info[0]
+    result += "\nИмя: " + info[1]
+    result += "\nОтчество: " + info[2]
+    result += "\nДата рождения: " + info[3]
+    result += "\nЗапрошенная сумма: " + info[4]
+
     return result
