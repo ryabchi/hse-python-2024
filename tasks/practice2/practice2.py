@@ -1,4 +1,6 @@
 from typing import Iterable
+import random
+import re
 
 UNCULTURED_WORDS = ('kotleta', 'pirog')
 
@@ -12,7 +14,8 @@ def greet_user(name: str) -> str:
     :return: приветствие
     """
 
-    # пиши код здесь
+    greeting = "Welcome, " + name
+
     return greeting
 
 
@@ -28,7 +31,8 @@ def get_amount() -> float:
     :return: случайную сумму на счете
     """
 
-    # пиши код здесь
+    amount = round(random.uniform(100, 1000000), 2)
+
     return amount
 
 
@@ -42,8 +46,8 @@ def is_phone_correct(phone_number: str) -> bool:
                                           False - если номер некорректный
     """
 
-    # пиши код здесь
-    return result
+    number = r'\+7\d{10}'
+    return bool(re.match(number, phone_number))
 
 
 def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
@@ -58,8 +62,8 @@ def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
                                           False - если денег недостаточно
     """
 
-    # пиши код здесь
-    return result
+
+    return float(transfer_amount) <= current_amount
 
 
 def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
@@ -77,8 +81,13 @@ def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
     :return: текст, соответсвующий правилам
     """
 
-    # пиши код здесь
-    return result
+    text = ' '.join(text.split())
+    text = text.capitalize()
+    text = text.replace('"', '')
+    text = text.replace("'", "")
+    for i in uncultured_words:
+        text = text.replace(i, "#" * len(i))
+    return text
 
 
 def create_request_for_loan(user_info: str) -> str:
@@ -100,5 +109,9 @@ def create_request_for_loan(user_info: str) -> str:
     :return: текст кредитной заявки
     """
 
-    # пиши код здесь
-    return result
+    info = user_info.split(',')
+    return (f"Фамилия: {info[0]}\n" +
+            f"Имя: {info[1]}\n" +
+            f"Отчество: {info[2]}\n" +
+            f"Дата рождения: {info[3]}\n" +
+            f"Запрошенная сумма: {info[4]}")
