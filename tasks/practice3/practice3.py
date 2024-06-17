@@ -1,3 +1,5 @@
+import csv
+import string
 from pathlib import Path
 from typing import Dict, Any, List, Optional
 
@@ -27,9 +29,24 @@ def count_words(text: str) -> Dict[str, int]:
     """
 
     # пиши свой код здесь
+    dictionary = {}
+    new_text = ''
+    for letter in text:
+        if letter not in string.punctuation:
+            new_text += letter
+        else:
+            new_text += ' '
 
-    return {}
+    res = [i.strip(string.punctuation).lower() for i in new_text.split()]
+    print(res)
+    for word in res:
+        if word.isalpha():
+            if word in dictionary:
+                dictionary[word] += 1
+            else:
+                dictionary[word] = 1
 
+    return dictionary
 
 def exp_list(numbers: List[int], exp: int) -> List[int]:
     """
@@ -41,8 +58,8 @@ def exp_list(numbers: List[int], exp: int) -> List[int]:
     """
 
     # пиши свой код здесь
-
-    return []
+    numbers = [pow(x, exp) for x in numbers]
+    return numbers
 
 
 def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) -> float:
@@ -57,8 +74,14 @@ def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) 
     :param special_category: список категорий повышенного кешбека
     :return: размер кешбека
     """
+    total_cashback = 0
+    for dictionary in operations:
+        if dictionary["category"] in special_category:
+            total_cashback += dictionary["amount"] * 0.05
+        else:
+            total_cashback += dictionary["amount"] * 0.01
 
-    return result
+    return total_cashback
 
 
 def get_path_to_file() -> Optional[Path]:
@@ -81,7 +104,7 @@ def csv_reader(header: str) -> int:
     """
     Функция считывает csv файл и подсчитывает количество
     уникальных элементов в столбце.
-    Столбец выбирается на основе имени заголовка,
+    Столбец выбирается на оснаааааааааааааове имени заголовка,
     переданного в переменной header.
 
     Обратите внимание на структуру файла!
@@ -100,5 +123,16 @@ def csv_reader(header: str) -> int:
     """
 
     # пиши свой код здесь
+    data = []
+    path_to_csv = get_path_to_file()
+    with open(path_to_csv, 'r') as csvfile:
+        csvreader = csv.reader(csvfile)
+        for row in csvreader:
+            data.append(row)
 
-    return 0
+    words = []
+    index = data[0].index(header)
+    for i in range(1, len(data)):
+        if data[i][index] not in words:
+            words.append(data[i][index])
+    return len(words)
