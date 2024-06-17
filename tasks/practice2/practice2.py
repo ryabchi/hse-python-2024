@@ -1,9 +1,12 @@
+import re
 from typing import Iterable
+import random
 
 UNCULTURED_WORDS = ('kotleta', 'pirog')
 
 
 def greet_user(name: str) -> str:
+    greeting = "Hello " + name
     """
     Генерирует приветственную фразу.
     Приветствие не может состоять только из одного имени пользователя.
@@ -17,6 +20,7 @@ def greet_user(name: str) -> str:
 
 
 def get_amount() -> float:
+
     """
     Генерируем случайную сумму на счете.
 
@@ -27,8 +31,7 @@ def get_amount() -> float:
 
     :return: случайную сумму на счете
     """
-
-    # пиши код здесь
+    amount = round(random.uniform(100, 1000000), 2)
     return amount
 
 
@@ -42,8 +45,9 @@ def is_phone_correct(phone_number: str) -> bool:
                                           False - если номер некорректный
     """
 
-    # пиши код здесь
-    return result
+    pattern = r'\+7\d{10}'  # Паттерн для поиска номера в формате +7xxxxxxxxxx
+    match = re.fullmatch(pattern, phone_number)
+    return bool(match)
 
 
 def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
@@ -59,46 +63,33 @@ def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
     """
 
     # пиши код здесь
-    return result
+    return current_amount >= float(transfer_amount)
 
 
 def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
-    """
-    Модерирует текст по следующим правилам.
+    text = text.lower()
+    text = ' '.join(text.split())
 
-    Требования к тексту:
-    - Первая буква заглавная, остальные буквы только в нижнем регистре
-    - отсутствую лишние пробелы
-    - фильтруются 'опасные' символы: " ' (двойные и одинарные кавычки)
-    - слова, перечисленные в переменной uncultured_words заменяются на аналогичное количество знаков #
+    text = text.replace('pirog', '#####').replace("kotleta", '#######')
+    text = text.replace('"', '').replace("'", '')
 
-    :param text: исходный текст
-    :param uncultured_words: список запрещенных слов
-    :return: текст, соответсвующий правилам
-    """
+    text = text.capitalize()
 
-    # пиши код здесь
-    return result
+    return text
 
 
 def create_request_for_loan(user_info: str) -> str:
-    """
-    Генерирует заявку на кредит на основе входящей строки.
-    Формат входящий строки:
-    
-    Иванов,Петр,Сергеевич,01.01.1991,10000
-    
-    Что должны вернуть на ее основе:
-    
-    Фамилия: Иванов
-    Имя: Петр
-    Отчество: Сергеевич
-    Дата рождения: 01.01.1991
-    Запрошенная сумма: 10000
-    
-    :param user_info: строка с информацией о клиенте
-    :return: текст кредитной заявки
-    """
+    info_list = user_info.split(',')
 
-    # пиши код здесь
-    return result
+    if len(info_list) != 5:
+        return "Некорректный формат информации о клиенте"
+
+    last_name = info_list[0]
+    first_name = info_list[1]
+    middle_name = info_list[2]
+    dob = info_list[3]
+    loan_amount = info_list[4]
+
+    request_text = f"Фамилия: {last_name}\nИмя: {first_name}\nОтчество: {middle_name}\nДата рождения: {dob}\nЗапрошенная сумма: {loan_amount}"
+
+    return request_text
