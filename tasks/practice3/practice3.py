@@ -1,3 +1,4 @@
+import csv
 from pathlib import Path
 from typing import Dict, Any, List, Optional
 
@@ -121,5 +122,10 @@ def csv_reader(header: str) -> int:
     """
 
     # пиши свой код здесь
-
-    return 0
+    with open(get_path_to_file()) as file:
+        r = csv.DictReader(file)
+        unique_elements = set()
+        for c in r:
+            unique_elements.add(c[header])
+        result = len(unique_elements)
+    return result
