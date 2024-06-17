@@ -2,6 +2,21 @@ from typing import Any, Optional
 
 
 def search_phone(content: Any, name: str) -> Optional[str]:
+    if type(content) == dict:
+        if "name" in content and "phone" in content and content["name"] == name:
+            return content["phone"]
+        for cont in content.values():
+            res = search_phone(cont, name)
+            if res is not None:
+                return res
+
+    elif type(content) == list:
+        for cont in content:
+            res = search_phone(cont, name)
+            if res is not None:
+                return res
+    return None
+
     """
     Функция поиска номера телефона пользователя в структуре данных.
 

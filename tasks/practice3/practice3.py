@@ -1,6 +1,6 @@
 from pathlib import Path
 from typing import Dict, Any, List, Optional
-
+import csv
 
 def count_words(text: str) -> Dict[str, int]:
     """
@@ -28,7 +28,16 @@ def count_words(text: str) -> Dict[str, int]:
 
     # пиши свой код здесь
 
-    return {}
+    result = dict()
+    for w in text.split():
+        word = w.lower()
+        word = word.replace(",", '').replace(".", '').replace("!", "").replace("?", '')
+        if word.isalpha():
+            if word in result:
+                result[word] += 1
+            else:
+                result[word] = 1
+    return result
 
 
 def exp_list(numbers: List[int], exp: int) -> List[int]:
@@ -39,13 +48,21 @@ def exp_list(numbers: List[int], exp: int) -> List[int]:
     :param exp: в какую степень возвести числа в списке
     :return: список натуральных чисел
     """
-
+    arr = []
+    for i in numbers:
+        arr.append(i ** exp)
     # пиши свой код здесь
 
-    return []
+    return arr
 
 
 def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) -> float:
+    res = 0
+    for d in operations:
+        if d["category"] in special_category:
+            res += d["amount"] * 0.05
+        else:
+            res += d["amount"] * 0.01
     """
     Функция для расчета кешбека по операциям.
     За покупки в обычных категориях возвращается 1% от стоимости покупки
@@ -58,7 +75,7 @@ def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) 
     :return: размер кешбека
     """
 
-    return result
+    return res
 
 
 def get_path_to_file() -> Optional[Path]:
@@ -98,7 +115,10 @@ def csv_reader(header: str) -> int:
     :param header: название заголовка
     :return: количество уникальных элементов в столбце
     """
+    result = set()  # Создаем пустое множество для хранения уникальных элементов
+    with open(get_path_to_file(), newline='') as file:
+        f = csv.DictReader(file)
+        for row in f:
+            result.add(row[header])
 
-    # пиши свой код здесь
-
-    return 0
+    return len(result)

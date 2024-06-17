@@ -1,4 +1,5 @@
 def concatenate_strings(a: str, b: str) -> str:
+    result = a + b
     """
     Функция для сложения двух строк.
     Результат сложения запишите в переменную result.
@@ -21,7 +22,7 @@ def calculate_salary(total_compensation: int) -> float:
     :param total_compensation: сумма зарплаты до вычета налога
     :return: сумма заплаты после вычета налога
     """
-
+    result = total_compensation * 0.87
     # пиши свой код здесь
 
     return result
