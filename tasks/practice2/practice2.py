@@ -109,5 +109,9 @@ def create_request_for_loan(user_info: str) -> str:
     :return: текст кредитной заявки
     """
 
-    info = user_info(',')
-    return (f"Фамилия: {info[0]}\n" + f"Имя: {info[1]}\n" + f"Отчество: {info[2]}\n" + f"Дата рождения: {info[3]}\n" + f"Запрошенная сумма: {info[4]}")
+    info = user_info.split(',')
+    return (f"Фамилия: {info[0]}\n" +
+            f"Имя: {info[1]}\n" +
+            f"Отчество: {info[2]}\n" +
+            f"Дата рождения: {info[3]}\n" +
+            f"Запрошенная сумма: {info[4]}")
