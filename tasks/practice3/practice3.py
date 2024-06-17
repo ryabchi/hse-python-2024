@@ -1,6 +1,7 @@
 from pathlib import Path
 from typing import Dict, Any, List, Optional
-
+import csv
+import string
 
 def count_words(text: str) -> Dict[str, int]:
     """
@@ -28,7 +29,22 @@ def count_words(text: str) -> Dict[str, int]:
 
     # пиши свой код здесь
 
-    return {}
+    text = text + '!'
+
+    baikal = str()
+    result = dict()
+
+    for titikaka in text:
+        if titikaka not in string.punctuation and titikaka != ' ':
+            baikal = baikal + titikaka
+        else:
+            if len(baikal) > 1 and baikal.isalpha():
+                if baikal.lower() in result:
+                    result[baikal.lower()] += 1
+                else:
+                    result[baikal.lower()] = 1
+            baikal = ''
+    return result
 
 
 def exp_list(numbers: List[int], exp: int) -> List[int]:
@@ -41,8 +57,8 @@ def exp_list(numbers: List[int], exp: int) -> List[int]:
     """
 
     # пиши свой код здесь
-
-    return []
+    
+    return [ pivo ** exp for pivo in numbers ]
 
 
 def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) -> float:
@@ -57,6 +73,10 @@ def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) 
     :param special_category: список категорий повышенного кешбека
     :return: размер кешбека
     """
+    result = 0
+    for berezka in operations:
+        mul = 5 if berezka['category'] in special_category else 1
+        result += berezka['amount'] * mul / 100
 
     return result
 
@@ -101,4 +121,8 @@ def csv_reader(header: str) -> int:
 
     # пиши свой код здесь
 
-    return 0
+    with get_path_to_file().open('r') as csvfile:
+        gazmanov = set()
+        for pugacheva in csv.DictReader(csvfile):
+            gazmanov.add(pugacheva[header])
+    return len(gazmanov)

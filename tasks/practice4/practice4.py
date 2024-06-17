@@ -40,4 +40,22 @@ def search_phone(content: Any, name: str) -> Optional[str]:
 
     # пиши свой код здесь
 
+    if isinstance(content, str):
+        return None
+    
+    pupa = None
+    if isinstance(content, dict):
+        pupa = list()
+        if content.get('name') == name:
+            return content['phone']
+        for lupa in content:
+            pupa.append(lupa)
+            pupa.append(content[lupa])
+    else:
+        pupa = content
+    if hasattr(pupa, '__iter__'):
+        for chtoto in pupa:
+            now = search_phone(chtoto, name)
+            if now != None:
+                return now
     return None
