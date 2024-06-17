@@ -1,4 +1,3 @@
-import pytest
 def concatenate_strings(a: str, b: str) -> str:
     """
     Функция для сложения двух строк.
