@@ -37,7 +37,36 @@ def search_phone(content: Any, name: str) -> Optional[str]:
     :param name: имя пользователя, у которого будем искать номер телефона
     :return: номер телефона пользователя или None
     """
-
+    flag = True
     # пиши свой код здесь
-
-    return None
+    if isinstance(content, list):
+        for element in content:
+            if isinstance(element, list):
+                return search_phone(element, name)
+            elif isinstance(element, dict):
+                if "name" in element.keys():
+                    if element["name"] == name:
+                        return element["phone"]
+                        flag = False
+                else:
+                    return search_phone(element, name)
+        if flag:
+            return None
+    elif isinstance(content, dict):
+        if "name" in content.keys():
+                    if content["name"] == name:
+                        return content["phone"]
+                    else:
+                        return None
+        else:
+            for element in content.values():
+                if isinstance(element, list):
+                    return search_phone(element, name)
+                elif isinstance(element, dict):
+                    if "name" in element.keys():
+                        if element["name"] == name:
+                            return element["phone"]
+                        else:
+                            return None
+                    else:
+                        return search_phone(element, name)
