@@ -151,7 +151,7 @@ def developer():
 def test_team_add_member_success(team, developer):
     team.add_member(developer)
 
-    assert developer in team ._Team__members
+    assert developer in team._Team__members
 
 
 @pytest.mark.parametrize('member', [1, 'Ivan'])

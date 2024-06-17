@@ -10,7 +10,7 @@ def test_concatenate_strings_success():
 
 @pytest.mark.parametrize(
     ('total_compensation', 'result'), [
-        (100, 87),  
+        (100, 87),
         (0, 0),
         (99, 86.13),
     ]
