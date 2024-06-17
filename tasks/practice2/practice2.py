@@ -1,5 +1,5 @@
 from typing import Iterable
-
+import random
 UNCULTURED_WORDS = ('kotleta', 'pirog')
 
 
@@ -13,6 +13,7 @@ def greet_user(name: str) -> str:
     """
 
     # пиши код здесь
+    greeting="Hello"+name
     return greeting
 
 
@@ -29,6 +30,14 @@ def get_amount() -> float:
     """
 
     # пиши код здесь
+    import random
+
+    while True:
+        amount = random.uniform(100, 1000000)
+        amount = round(amount, 2)
+
+        if len(str(amount).split(".")[1]) <= 2:
+            break
     return amount
 
 
@@ -43,7 +52,16 @@ def is_phone_correct(phone_number: str) -> bool:
     """
 
     # пиши код здесь
-    return result
+    if len(phone_number) != 12:
+        return False
+
+    if phone_number[:2] != "+7":
+        return False
+
+    for sym in phone_number[2:]:
+        if not sym.isdigit():
+            return False
+    return True
 
 
 def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
@@ -59,7 +77,9 @@ def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
     """
 
     # пиши код здесь
-    return result
+    if int(current_amount) >= float(transfer_amount):
+        return True
+    return False
 
 
 def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
@@ -78,6 +98,15 @@ def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
     """
 
     # пиши код здесь
+    text = text.lower().strip()
+
+    text = text.replace('"', '').replace("'", '')
+
+    for word in uncultured_words:
+        text = text.replace(word, "#" * len(word))
+
+    result = text[0].upper() + text[1:]
+
     return result
 
 
@@ -101,4 +130,13 @@ def create_request_for_loan(user_info: str) -> str:
     """
 
     # пиши код здесь
+    user_info = user_info.split(",")
+    last_name, first_name, middle_name, date_of_birth, requested_amount = user_info
+    result = (
+        f"Фамилия: {last_name}\n"
+        f"Имя: {first_name}\n"
+        f"Отчество: {middle_name}\n"
+        f"Дата рождения: {date_of_birth}\n"
+        f"Запрошенная сумма: {requested_amount}"
+    )
     return result
