@@ -13,7 +13,7 @@ def greet_user(name: str) -> str:
     :return: приветствие
     """
 
-    greeting = 'Hello, ' + name + '!'
+    greeting = 'Hi, ' + name
     return greeting
 
 
@@ -29,8 +29,7 @@ def get_amount() -> float:
     :return: случайную сумму на счете
     """
     
-    amount = round(random.uniform(100, 1000000), 2)
-    return amount
+    return round(random.uniform(100, 1000000), 2)
 
 
 def is_phone_correct(phone_number: str) -> bool:
@@ -43,8 +42,7 @@ def is_phone_correct(phone_number: str) -> bool:
                                           False - если номер некорректный
     """
 
-    result = (phone_number[:2] == '+7') and (phone_number[2:].isdigit())
-    return result
+    return (phone_number[:2] == '+7') and (phone_number[2:].isdigit())
 
 
 def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
@@ -59,8 +57,7 @@ def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
                                           False - если денег недостаточно
     """
 
-    result = current_amount >= float(transfer_amount)
-    return result
+    return current_amount >= float(transfer_amount)
 
 
 def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
