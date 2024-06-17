@@ -27,15 +27,19 @@ def count_words(text: str) -> Dict[str, int]:
              значение - количество вхождений слов в текст
     """
 
+    punctuation_marks = ",.?!:;-"
+    for mark in punctuation_marks:
+        text = text.replace(mark, "")
     words = text.split()
-    result = {}
-    for word in words:
-        if any(char.isdigit() for char in word):
-            continue
-        word = ''.join(char.lower() for char in word if char.isalpha())
-        if word:
-            result[word] = result.get(word, 0) + 1
-    return result
+    valid_words = [word.lower().strip() for word in words if word.isalpha()]
+    word_count = {}
+    for word in valid_words:
+        if word in word_count:
+            word_count[word] += 1
+        else:
+            word_count[word] = 1
+    
+    return word_count
 
 
 def exp_list(numbers: List[int], exp: int) -> List[int]:
