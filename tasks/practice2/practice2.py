@@ -1,5 +1,6 @@
 from typing import Iterable
-
+import random
+import re
 UNCULTURED_WORDS = ('kotleta', 'pirog')
 
 
@@ -12,7 +13,7 @@ def greet_user(name: str) -> str:
     :return: приветствие
     """
 
-    # пиши код здесь
+    greeting = "Hello " + name
     return greeting
 
 
@@ -28,7 +29,7 @@ def get_amount() -> float:
     :return: случайную сумму на счете
     """
 
-    # пиши код здесь
+    amount = round(random.uniform(100, 1000000), 2)
     return amount
 
 
@@ -42,7 +43,9 @@ def is_phone_correct(phone_number: str) -> bool:
                                           False - если номер некорректный
     """
 
-    # пиши код здесь
+    pattern = r'\+7\d{10}$'
+
+    return bool(re.match(pattern, phone_number))
     return result
 
 
@@ -58,8 +61,8 @@ def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
                                           False - если денег недостаточно
     """
 
-    # пиши код здесь
-    return result
+    transfer_amount_float = float(transfer_amount)
+    return current_amount >= transfer_amount_float
 
 
 def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
@@ -76,9 +79,15 @@ def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
     :param uncultured_words: список запрещенных слов
     :return: текст, соответсвующий правилам
     """
+    text = ' '.join(text.split())
+    text = text.capitalize()
 
-    # пиши код здесь
-    return result
+    text = text.replace('"', '').replace("'", '')
+
+    for word in uncultured_words:
+        text = text.replace(word.lower(), '#' * len(word))
+
+    return text
 
 
 def create_request_for_loan(user_info: str) -> str:
@@ -100,5 +109,13 @@ def create_request_for_loan(user_info: str) -> str:
     :return: текст кредитной заявки
     """
 
-    # пиши код здесь
+    user_info_list = user_info.split(',')
+    if len(user_info_list) != 5:
+        return "Error, not enough info"
+    last_name = user_info_list[0]
+    first_name = user_info_list[1]
+    middle_name = user_info_list[2]
+    date_of_birth = user_info_list[3]
+    loan_amount = user_info_list[4]
+    result = f"Фамилия: {last_name}\nИмя: {first_name}\nОтчество: {middle_name}\nДата рождения: {date_of_birth}\nЗапрошенная сумма: {loan_amount}"
     return result

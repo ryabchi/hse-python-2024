@@ -1,7 +1,8 @@
+from collections import defaultdict
 from pathlib import Path
 from typing import Dict, Any, List, Optional
-
-
+import re
+import csv
 def count_words(text: str) -> Dict[str, int]:
     """
     Функция для подсчета слов в тексте.
@@ -25,10 +26,13 @@ def count_words(text: str) -> Dict[str, int]:
              ключ - слово в нижнем регистре
              значение - количество вхождений слов в текст
     """
+    word_count = defaultdict(int)
+    words = re.findall(r'\b[A-Za-z]+\b', text)
+    for word in words:
+        word_count[word.lower()] += 1
+    return dict(word_count)
 
-    # пиши свой код здесь
 
-    return {}
 
 
 def exp_list(numbers: List[int], exp: int) -> List[int]:
@@ -41,8 +45,10 @@ def exp_list(numbers: List[int], exp: int) -> List[int]:
     """
 
     # пиши свой код здесь
-
-    return []
+    powered_numbers = []
+    for num in numbers:
+        powered_numbers.append(num ** exp)
+    return powered_numbers
 
 
 def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) -> float:
@@ -57,7 +63,14 @@ def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) 
     :param special_category: список категорий повышенного кешбека
     :return: размер кешбека
     """
-
+    result = 0
+    for operation in operations:
+        amount = operation['amount']
+        category = operation['category']
+        if category in special_category:
+            result += amount * 0.05
+        else:
+            result += amount * 0.01
     return result
 
 
@@ -98,7 +111,13 @@ def csv_reader(header: str) -> int:
     :param header: название заголовка
     :return: количество уникальных элементов в столбце
     """
+    path = get_path_to_file()
 
-    # пиши свой код здесь
+    unique_elements = {}
+    with open(path, 'r') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            value = row[header]
+            unique_elements[value] = unique_elements.get(value, 0) + 1
 
-    return 0
+    return len(unique_elements)
