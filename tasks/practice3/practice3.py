@@ -38,18 +38,7 @@ def count_words(text: str) -> Dict[str, int]:
         if any(char.isdigit() for char in word) == False:
             word_count[word] = word_count.get(word, 0) + 1
     return word_count
-    # word_count = {}
-    # word = ""
-    # for char in text:
-    #     if char.isalpha():
-    #         word += char.lower()
-    #     else:
-    #         if word:
-    #             word_count[word] = word_count.get(word, 0) + 1
-    #             word = ""
-    # if word:
-    #     word_count[word] = word_count.get(word, 0) + 1
-    # return word_count
+
 
 
 def exp_list(numbers: List[int], exp: int) -> List[int]:

@@ -29,7 +29,6 @@ def get_amount() -> float:
     :return: случайную сумму на счете
     """
 
-    # пиши код здесь
     return round(random.uniform(100, 1000000), 2)
 
 
