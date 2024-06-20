@@ -40,12 +40,19 @@ class Employee:
 
         # пиши свой код здесь
 
+        self.name = name
+        self.position = position
+        if isinstance(salary, int):
+            self._salary = salary
+        else:
+            raise ValueError
+
     def get_salary(self) -> int:
         """
         Метод возвращает зарплату сотрудника.
         """
 
-        # пиши свой код здесь
+        return self._salary
 
     def __eq__(self, other: object) -> bool:
         """
@@ -55,7 +62,13 @@ class Employee:
         Если что-то идет не так - бросаются исключения. Смотрим что происходит в тестах.
         """
 
-        # пиши свой код здесь
+        if isinstance(other, Employee):
+            try:
+                return get_position_level(self.position) == get_position_level(other.position)
+            except NoSuchPositionError:
+                raise ValueError
+        else:
+            raise TypeError
 
     def __str__(self):
         """
@@ -63,7 +76,7 @@ class Employee:
         Пример вывода: 'name: Ivan position manager'
         """
 
-        # пиши свой код здесь
+        return f'name: {self.name} position: {self.position}'
 
     def __hash__(self):
         return id(self)
@@ -83,6 +96,8 @@ class Developer(Employee):
         """
 
         # пиши свой код здесь
+        super().__init__(name, 'developer', salary)
+        self.language = language
 
 
 class Manager(Employee):
@@ -98,3 +113,4 @@ class Manager(Employee):
         """
 
         # пиши свой код здесь
+        super().__init__(name, 'manager', salary)
