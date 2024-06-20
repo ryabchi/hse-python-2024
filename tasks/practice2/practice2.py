@@ -1,3 +1,4 @@
+import random
 from typing import Iterable
 
 UNCULTURED_WORDS = ('kotleta', 'pirog')
@@ -13,7 +14,7 @@ def greet_user(name: str) -> str:
     """
 
     # пиши код здесь
-    return greeting
+    return f"Hello, {name}! How are you?"
 
 
 def get_amount() -> float:
@@ -28,8 +29,7 @@ def get_amount() -> float:
     :return: случайную сумму на счете
     """
 
-    # пиши код здесь
-    return amount
+    return round(random.uniform(100, 1000000), 2)
 
 
 def is_phone_correct(phone_number: str) -> bool:
@@ -42,8 +42,17 @@ def is_phone_correct(phone_number: str) -> bool:
                                           False - если номер некорректный
     """
 
-    # пиши код здесь
-    return result
+    if len(phone_number) != 12:
+        return False
+
+    if phone_number[0] != '+' or phone_number[1:2] != '7':
+        return False
+
+    for digit in phone_number[2:]:
+        if not digit.isdigit():
+            return False
+
+    return True
 
 
 def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
@@ -58,8 +67,13 @@ def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
                                           False - если денег недостаточно
     """
 
-    # пиши код здесь
-    return result
+    try:
+        transfer_amount_float = float(transfer_amount)
+        return current_amount >= transfer_amount_float
+    except ValueError:
+        return False
+
+    
 
 
 def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
@@ -76,9 +90,18 @@ def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
     :param uncultured_words: список запрещенных слов
     :return: текст, соответсвующий правилам
     """
+    text = text.strip()
+    
+    text = text.capitalize()
 
-    # пиши код здесь
-    return result
+    text = ' '.join(text.split())
+
+    text = text.replace('"', '').replace("'", '')
+
+    for word in uncultured_words:
+        text = text.replace(word, '#' * len(word))
+
+    return text
 
 
 def create_request_for_loan(user_info: str) -> str:
@@ -100,5 +123,10 @@ def create_request_for_loan(user_info: str) -> str:
     :return: текст кредитной заявки
     """
 
-    # пиши код здесь
-    return result
+    info_list = user_info.split(',')
+    
+    last_name, first_name, middle_name, dob, amount = info_list
+    
+    request_text = f"Фамилия: {last_name}\nИмя: {first_name}\nОтчество: {middle_name}\nДата рождения: {dob}\nЗапрошенная сумма: {amount}"
+    
+    return request_text
