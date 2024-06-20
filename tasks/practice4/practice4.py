@@ -37,7 +37,28 @@ def search_phone(content: Any, name: str) -> Optional[str]:
     :param name: имя пользователя, у которого будем искать номер телефона
     :return: номер телефона пользователя или None
     """
+    ans = None
 
-    # пиши свой код здесь
+    def f(struct):
+        nonlocal ans
+        if isinstance(struct, list) or isinstance(struct, tuple):
+            for i in struct:
+                f(i)
+        if isinstance(struct, dict):
+            if 'name' in struct.keys() and struct['name'] == name:
+                ans = struct['phone']
 
-    return None
+            for i in struct.values():
+                if isinstance(i, list) or isinstance(i, tuple) or isinstance(i, dict):
+                    f(i)
+
+    f(content)
+    return ans
+
+
+
+
+
+
+
+

@@ -1,4 +1,5 @@
 from typing import Iterable
+import random
 
 UNCULTURED_WORDS = ('kotleta', 'pirog')
 
@@ -11,7 +12,7 @@ def greet_user(name: str) -> str:
     :param name: имя пользователя
     :return: приветствие
     """
-
+    greeting = f"Hello, {name}!"
     # пиши код здесь
     return greeting
 
@@ -27,6 +28,8 @@ def get_amount() -> float:
 
     :return: случайную сумму на счете
     """
+    amount = random.uniform(100, 1000000)
+    amount = round(amount, 2)
 
     # пиши код здесь
     return amount
@@ -41,7 +44,13 @@ def is_phone_correct(phone_number: str) -> bool:
     :return: буленовское значение - bool: True - если номер корректны,
                                           False - если номер некорректный
     """
-
+    try:
+        int(phone_number[2:])
+        result = True
+    except:
+        result = False
+    if phone_number[:2] != "+7" or len(phone_number) != 12:
+        result = False
     # пиши код здесь
     return result
 
@@ -57,7 +66,10 @@ def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
     :return: буленовское значение - bool: True - если перевод возможен,
                                           False - если денег недостаточно
     """
-
+    if current_amount >= float(transfer_amount):
+        result = True
+    else:
+        result = False
     # пиши код здесь
     return result
 
@@ -76,6 +88,11 @@ def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
     :param uncultured_words: список запрещенных слов
     :return: текст, соответсвующий правилам
     """
+    result = text.replace("'", '').replace('"', '')
+    for word in uncultured_words:
+        result = result.replace(word, len(word) * '#')
+    result = ' '.join(result.split()).lower()
+    result = result[0].upper() + result[1:]
 
     # пиши код здесь
     return result
@@ -99,6 +116,9 @@ def create_request_for_loan(user_info: str) -> str:
     :param user_info: строка с информацией о клиенте
     :return: текст кредитной заявки
     """
-
+    user_info = user_info.split(',')
+    result = (f"Фамилия: {user_info[0]}\nИмя: {user_info[1]}\nОтчество: {user_info[2]}\nДата рождения:"
+              f" {user_info[3]}\nЗапрошенная сумма: {user_info[4]}")
+    print(result)
     # пиши код здесь
     return result
