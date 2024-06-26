@@ -197,3 +197,4 @@ def test_team_show(team):
         team.__str__() == f'team: {team.name} manager: {team.manager.name} '
         f'number of members: {len(team.get_members())}'
     )
+    
