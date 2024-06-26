@@ -1,6 +1,7 @@
 from pathlib import Path
 from typing import Dict, Any, List, Optional
-
+import re
+import csv
 
 def count_words(text: str) -> Dict[str, int]:
     """
@@ -27,8 +28,16 @@ def count_words(text: str) -> Dict[str, int]:
     """
 
     # пиши свой код здесь
+    result = {}
+    for word in re.finditer(r'[0-9a-zA-z]+', text):
+        token = word.group()
+        print(token)
+        if re.search(r'\d', token):
+            continue
+        token = token.lower()
+        result[token] = result.get(token, 0) + 1
 
-    return {}
+    return result
 
 
 def exp_list(numbers: List[int], exp: int) -> List[int]:
@@ -40,9 +49,9 @@ def exp_list(numbers: List[int], exp: int) -> List[int]:
     :return: список натуральных чисел
     """
 
-    # пиши свой код здесь
+    result = [num**exp for num in numbers]
 
-    return []
+    return result
 
 
 def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) -> float:
@@ -57,6 +66,12 @@ def get_cashback(operations: List[Dict[str, Any]], special_category: List[str]) 
     :param special_category: список категорий повышенного кешбека
     :return: размер кешбека
     """
+    result = 0
+    for oper in operations:
+        if oper['category'] in special_category:
+            result += oper['amount'] * 5 / 100
+        else:
+            result += oper['amount'] / 100
 
     return result
 
@@ -98,7 +113,14 @@ def csv_reader(header: str) -> int:
     :param header: название заголовка
     :return: количество уникальных элементов в столбце
     """
+    uniqs = set()
+    with open(get_path_to_file()) as csvfile:
+        reader = csv.reader(csvfile, delimiter = ',')
+        i = None
+        for row in reader:
+            if i is None:
+                i = row.index(header)
+            else:
+                uniqs.add(row[i])
 
-    # пиши свой код здесь
-
-    return 0
+    return len(uniqs)
