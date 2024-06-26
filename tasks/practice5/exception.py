@@ -7,12 +7,16 @@ class EmployeeError(Exception):
     def __init__(self, position: str):
         self.position = position
 
+    def __str__(self):
+        raise f"EmployeeError: {self.position}"
+
 
 class NoSuchPositionError(EmployeeError):
     """ 
     Исключение поднимается, когда нет позиции в бд
     """
-    pass
+    def __str__(self):
+        return f"NoSuchPositionError: {self.position} position does not exist"
 
 
 class TeamError(Exception):
@@ -24,6 +28,9 @@ class TeamError(Exception):
     def __init__(self, team_name: str):
         self.team_name = team_name
 
+    def __str__(self):
+        return f"TeamError in team: {self.team_name}"
+
 
 class NoSuchMemberError(TeamError):
     """
@@ -33,5 +40,7 @@ class NoSuchMemberError(TeamError):
 
     def __init__(self, team_name: str, member: 'Employee'):
         self.member = member
-
         super().__init__(team_name)
+
+    def __str__(self):
+        return f"NoSuchMemberError: Member {self.member.name} does not exist in team {self.team_name}"
