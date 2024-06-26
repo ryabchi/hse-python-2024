@@ -79,3 +79,4 @@ class Team:
         этого метода
         """
         print(self)
+
