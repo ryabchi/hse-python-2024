@@ -1,4 +1,6 @@
 from typing import Iterable
+import random
+import re
 
 UNCULTURED_WORDS = ('kotleta', 'pirog')
 
@@ -13,7 +15,9 @@ def greet_user(name: str) -> str:
     """
 
     # пиши код здесь
-    return greeting
+    if not name or name.isspace():
+        return "Привет, незнакомец!"
+    return f"Привет, {name}!"
 
 
 def get_amount() -> float:
@@ -29,6 +33,7 @@ def get_amount() -> float:
     """
 
     # пиши код здесь
+    amount = round(random.uniform(100, 1000000), 2)
     return amount
 
 
@@ -43,6 +48,8 @@ def is_phone_correct(phone_number: str) -> bool:
     """
 
     # пиши код здесь
+    pattern = re.compile(r'^\+7\d{10}$')
+    result = bool(pattern.match(phone_number))
     return result
 
 
@@ -58,8 +65,10 @@ def is_amount_correct(current_amount: float, transfer_amount: str) -> bool:
                                           False - если денег недостаточно
     """
 
-    # пиши код здесь
-    return result
+    if float(transfer_amount) <= current_amount:
+        return True
+
+    return False
 
 
 def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
@@ -77,8 +86,13 @@ def moderate_text(text: str, uncultured_words: Iterable[str]) -> str:
     :return: текст, соответсвующий правилам
     """
 
-    # пиши код здесь
-    return result
+    text = ' '.join(text.split())
+    text = text.replace('"', '').replace("'", '')
+    for word in uncultured_words:
+        text = re.sub(word, '#' * len(word), text, flags=re.IGNORECASE)
+    text = text.capitalize()
+    return text
+
 
 
 def create_request_for_loan(user_info: str) -> str:
@@ -101,4 +115,15 @@ def create_request_for_loan(user_info: str) -> str:
     """
 
     # пиши код здесь
+    try:
+        last_name, first_name, patronymic, birth_date, amount = user_info.split(',')
+        result = (
+            f"Фамилия: {last_name}\n"
+            f"Имя: {first_name}\n"
+            f"Отчество: {patronymic}\n"
+            f"Дата рождения: {birth_date}\n"
+            f"Запрошенная сумма: {amount}"
+        )
+    except ValueError:
+        raise ValueError("Некорректный формат входных данных")
     return result
